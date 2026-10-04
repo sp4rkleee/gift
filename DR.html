@@ -1,0 +1,2962 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fisochenko · Соцсеть</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root {
+    --bg:#edeef0; --card:#fff; --text:#050505; --text-2:#65676b; --text-3:#8a8d91;
+    --border:#e4e6eb; --sidebar-active:#e4e6eb; --sidebar-hover:#f0f2f5;
+    --accent:#e94a6f; --gold:#d4af37;
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.05); --shadow-md:0 2px 8px rgba(0,0,0,0.08); --shadow-lg:0 8px 24px rgba(0,0,0,0.12);
+    --radius:10px; --radius-lg:16px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; }
+  body { font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .logo-mark { display:block; width:40px; height:40px; }
+  .icon-svg { width:20px; height:20px; display:block; }
+  #loginScreen { display:flex; align-items:center; justify-content:center; height:100vh; padding:24px; background:var(--bg); overflow-y:auto; }
+  .login-box { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:40px 36px; width:100%; max-width:400px; box-shadow:var(--shadow-md); }
+  .login-brand { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+  .login-brand .logo-mark { width:52px; height:52px; }
+  .login-brand .brand-titles .brand-name { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-style:italic; font-size:24px; letter-spacing:-0.5px; line-height:1; }
+  .login-brand .brand-titles .brand-sub { font-size:12px; color:var(--text-3); margin-top:4px; letter-spacing:1px; text-transform:uppercase; }
+  .login-subtitle { color:var(--text-2); margin-bottom:28px; font-size:14px; }
+  .form-group { margin-bottom:12px; }
+  .form-group input { width:100%; padding:13px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:14px; background:#fafbfc; color:var(--text); font-family:inherit; transition:all 0.15s; }
+  .form-group input:focus { outline:none; border-color:#050505; background:#fff; }
+  .login-btn { width:100%; padding:13px; background:#050505; color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; margin-top:12px; font-family:inherit; }
+  .login-btn:hover { background:#333; }
+  .login-btn:disabled { background:#b0b0b0; cursor:wait; }
+  .secure-badge { margin-top:20px; color:var(--text-3); font-size:11.5px; text-align:center; }
+  #captchaScreen { display:none; align-items:center; justify-content:center; height:100vh; padding:24px; background:var(--bg); overflow-y:auto; }
+  .captcha-box { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:32px; width:100%; max-width:540px; box-shadow:var(--shadow-md); }
+  .captcha-header { padding-bottom:18px; border-bottom:1px solid var(--border); margin-bottom:18px; }
+  .captcha-header h2 { font-size:17px; font-weight:700; margin-bottom:2px; }
+  .captcha-header p { font-size:13px; color:var(--text-2); }
+  .captcha-instruction { color:var(--text); padding:12px 0; font-size:14px; margin-bottom:16px; border-bottom:1px solid #f0f0f0; }
+  .captcha-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+  .captcha-tile { aspect-ratio:1; cursor:pointer; position:relative; overflow:hidden; border:2px solid var(--border); border-radius:10px; transition:all 0.2s; display:flex; align-items:center; justify-content:center; user-select:none; background:linear-gradient(135deg,#f0f2f5,#e4e6eb); }
+  .captcha-tile img { width:100%; height:100%; object-fit:cover; display:block; }
+  .captcha-tile .captcha-emoji { font-size:48px; line-height:1; }
+  .captcha-tile.selected { border-color:#050505; box-shadow:0 0 0 3px rgba(5,5,5,0.1); }
+  .captcha-tile.selected::after { content:'✓'; position:absolute; top:8px; right:8px; width:26px; height:26px; background:#050505; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; border-radius:50%; }
+  .captcha-footer { display:flex; gap:8px; }
+  .captcha-verify { flex:1; padding:12px; background:#050505; color:#fff; border:none; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .captcha-verify:disabled { background:#e5e5e5; color:#b0b0b0; cursor:not-allowed; }
+  .captcha-refresh { padding:12px 18px; background:#fff; color:var(--text); border:1.5px solid var(--border); border-radius:10px; cursor:pointer; font-size:14px; font-family:inherit; font-weight:500; }
+  .captcha-error { color:#d33; font-size:13px; margin-top:12px; min-height:18px; }
+  #celebrationOverlay { display:none; position:fixed; inset:0; background:rgba(255,255,255,0.7); backdrop-filter:blur(2px); z-index:2000; align-items:center; justify-content:center; overflow:hidden; pointer-events:none; }
+  #celebrationOverlay.active { display:flex; }
+  .birthday-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); opacity:0; z-index:12; pointer-events:none; transition:opacity 0.4s, transform 0.6s cubic-bezier(0.34,1.4,0.64,1); }
+  .birthday-text.show { opacity:1; }
+  .birthday-text.hide { opacity:0; transform:translate(-50%,-50%) scale(1.15); }
+  #lottieContainer { width:600px; max-width:96vw; height:auto; }
+  .final-number { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); font-family:'Playfair Display',Georgia,serif; font-weight:900; font-style:italic; font-size:260px; letter-spacing:-18px; color:#0a0a0a; opacity:0; z-index:11; line-height:1; text-shadow:0 6px 40px rgba(212,175,55,0.45),0 0 80px rgba(255,255,255,0.9); will-change:transform,opacity,filter; transform-origin:center center; }
+  .final-number.show { animation:numberPop 1.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  .final-number.inflate { opacity:1; animation:numberInflate 1.1s cubic-bezier(0.4,0,0.6,1) forwards; }
+  .final-number.burst { opacity:1; animation:numberBurst 0.32s cubic-bezier(0.34,1.4,0.64,1) forwards; }
+  @keyframes numberPop { 0%{transform:translate(-50%,-50%) scale(0); opacity:0;} 55%{transform:translate(-50%,-50%) scale(1.15); opacity:1;} 78%{transform:translate(-50%,-50%) scale(0.97);} 100%{transform:translate(-50%,-50%) scale(1); opacity:1;} }
+  @keyframes numberInflate { 0%{transform:translate(-50%,-50%) scale(1);} 35%{transform:translate(-50%,-50%) scale(1.07);} 65%{transform:translate(-50%,-50%) scale(1.17);} 100%{transform:translate(-50%,-50%) scale(1.32);} }
+  @keyframes numberBurst { 0%{transform:translate(-50%,-50%) scale(1.32); opacity:1; filter:blur(0);} 35%{transform:translate(-50%,-50%) scale(1.5); opacity:0.7; filter:blur(3px);} 100%{transform:translate(-50%,-50%) scale(1.95); opacity:0; filter:blur(16px);} }
+  .number-flash { position:absolute; width:220px; height:220px; border-radius:50%; pointer-events:none; z-index:14; transform:translate(-50%,-50%) scale(0.2); background:radial-gradient(circle,rgba(255,255,255,1) 0%,rgba(248,223,160,0.85) 30%,rgba(212,175,55,0.4) 55%,rgba(212,175,55,0) 78%); animation:flashOut 0.55s ease-out forwards; }
+  @keyframes flashOut { 0%{transform:translate(-50%,-50%) scale(0.25); opacity:1;} 100%{transform:translate(-50%,-50%) scale(3.2); opacity:0;} }
+  .number-particle { position:absolute; pointer-events:none; z-index:15; animation:particleFly 1.9s cubic-bezier(0.22,0.61,0.36,1) forwards; }
+  @keyframes particleFly { 0%{transform:translate(-50%,-50%) translate(0,0) rotate(0deg) scale(0.3); opacity:1;} 15%{transform:translate(-50%,-50%) translate(calc(var(--dx)*0.12),calc(var(--dy)*0.12)) rotate(calc(var(--rot)*0.12)) scale(1.15);} 100%{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(0.7); opacity:0;} }
+  .celebration-confetti { position:absolute; width:10px; height:10px; top:-20px; z-index:5; pointer-events:none; animation:fall linear forwards; }
+  @keyframes fall { to { transform:translateY(110vh) rotate(720deg); opacity:0; } }
+  .toast-container { position:fixed; top:72px; right:20px; z-index:3000; display:flex; flex-direction:column; gap:10px; pointer-events:none; }
+  .toast { background:#fff; border-radius:14px; box-shadow:0 10px 32px rgba(0,0,0,0.16); padding:14px 16px; min-width:300px; max-width:380px; display:flex; gap:12px; align-items:center; pointer-events:auto; cursor:pointer; border-left:4px solid #050505; animation:toastIn 0.4s cubic-bezier(0.34,1.4,0.64,1); }
+  .toast.hide { animation:toastOut 0.35s ease forwards; }
+  @keyframes toastIn { from{opacity:0; transform:translateX(60px);} to{opacity:1; transform:translateX(0);} }
+  @keyframes toastOut { to{opacity:0; transform:translateX(60px);} }
+  .toast-avatar { width:42px; height:42px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:17px; font-family:'Playfair Display',Georgia,serif; font-style:italic; }
+  .toast-body { flex:1; min-width:0; }
+  .toast-header { display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:2px; }
+  .toast-name { font-weight:700; font-size:13.5px; }
+  .toast-time { font-size:11px; color:var(--text-3); flex-shrink:0; }
+  .toast-msg { font-size:12.5px; color:var(--text-2); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .toast-app { font-size:10.5px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:2px; }
+  .toast-group { font-size:11px; color:var(--text-3); margin-top:4px; font-style:italic; }
+  .notif-panel { display:none; position:fixed; top:68px; right:20px; width:380px; max-width:calc(100vw - 40px); background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.18); z-index:4000; overflow:hidden; animation:notifIn 0.25s cubic-bezier(0.34,1.4,0.64,1); flex-direction:column; max-height:560px; }
+  .notif-panel.open { display:flex; }
+  @keyframes notifIn { from{opacity:0; transform:translateY(-10px) scale(0.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+  .notif-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; font-weight:700; font-size:15px; flex-shrink:0; }
+  .notif-header .notif-unread-count { font-size:12px; color:var(--text-3); font-weight:500; margin-left:8px; }
+  .notif-close { background:transparent; border:none; cursor:pointer; font-size:22px; color:var(--text-3); padding:2px 8px 5px; border-radius:8px; font-family:inherit; line-height:1; }
+  .notif-list { overflow-y:auto; padding:6px; flex:1; }
+  .notif-item { display:flex; gap:12px; padding:12px; border-radius:10px; cursor:pointer; align-items:flex-start; position:relative; }
+  .notif-item:hover { background:var(--sidebar-hover); }
+  .notif-item.unread { background:#eef4ff; }
+  .notif-icon { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; flex-shrink:0; font-size:17px; }
+  .notif-body { flex:1; min-width:0; padding-top:1px; }
+  .notif-text { font-size:13.5px; line-height:1.45; margin-bottom:3px; }
+  .notif-time { font-size:11px; color:var(--text-3); }
+  .notif-empty { padding:40px 20px; text-align:center; color:var(--text-3); font-size:13px; }
+  .notif-footer { padding:10px 16px; border-top:1px solid var(--border); text-align:center; flex-shrink:0; }
+  .notif-footer button { background:transparent; border:none; cursor:pointer; color:var(--accent); font-family:inherit; font-size:13px; font-weight:600; padding:8px 14px; border-radius:8px; }
+  .notif-footer button:disabled { color:var(--text-3); cursor:not-allowed; }
+  #siteScreen { display:none; height:100vh; flex-direction:column; overflow:hidden; transition:filter 1s ease; background:var(--bg); }
+  #siteScreen.active { display:flex; }
+  #siteScreen.blurred { filter:blur(14px) brightness(1.05); pointer-events:none; user-select:none; }
+  .topbar { height:60px; flex-shrink:0; background:var(--card); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 20px; gap:20px; position:relative; z-index:100; }
+  .brand { display:flex; align-items:center; gap:12px; flex-shrink:0; cursor:pointer; }
+  .brand-name { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-style:italic; font-size:22px; letter-spacing:-0.5px; }
+  .topbar-search { flex:1; max-width:480px; position:relative; }
+  .topbar-search svg { position:absolute; left:14px; top:50%; transform:translateY(-50%); width:16px; height:16px; stroke:var(--text-3); fill:none; stroke-width:1.8; }
+  .topbar-search input { width:100%; padding:9px 14px 9px 38px; background:var(--bg); border:1.5px solid transparent; border-radius:20px; font-family:inherit; font-size:14px; }
+  .topbar-right { display:flex; align-items:center; gap:10px; margin-left:auto; }
+  .icon-btn { width:38px; height:38px; border-radius:50%; background:var(--sidebar-hover); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; position:relative; color:var(--text-2); }
+  .icon-btn:hover { background:var(--sidebar-active); color:var(--text); }
+  .icon-btn .badge { position:absolute; top:4px; right:4px; background:#050505; color:#fff; font-size:10px; font-weight:700; min-width:16px; height:16px; border-radius:8px; display:flex; align-items:center; justify-content:center; padding:0 4px; border:2px solid var(--card); }
+  .user-chip { display:flex; align-items:center; gap:8px; padding:4px 12px 4px 4px; border-radius:20px; background:var(--sidebar-hover); cursor:pointer; }
+  .user-avatar-mini { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#050505,#333); color:#fff; font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',Georgia,serif; font-style:italic; }
+  .user-chip .user-name { font-size:13.5px; font-weight:600; }
+  .app-body { flex:1; min-height:0; display:flex; overflow:hidden; }
+  .sidebar { width:240px; flex-shrink:0; background:var(--card); border-right:1px solid var(--border); overflow-y:auto; padding:16px 12px; display:flex; flex-direction:column; position:relative; --mx:50%; --my:50%; }
+  .sidebar::before { content:''; position:absolute; inset:0; pointer-events:none; z-index:0; background:radial-gradient(circle 160px at var(--mx) var(--my), rgba(0,0,0,0.055), transparent 70%); opacity:0; transition:opacity 0.25s; }
+  .sidebar:hover::before { opacity:1; }
+  .sidebar > * { position:relative; z-index:1; }
+  .sidebar-section-title { font-size:11px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; padding:12px 12px 6px; }
+  .nav { display:flex; flex-direction:column; gap:2px; }
+  .nav-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:14.5px; font-weight:500; color:var(--text); text-align:left; width:100%; }
+  .nav-item:hover { background:var(--sidebar-hover); }
+  .nav-item.active { background:var(--sidebar-active); font-weight:600; }
+  .nav-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--text-3); }
+  .nav-icon svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+  .nav-item.active .nav-icon { color:var(--text); }
+  .nav-item .nav-count { margin-left:auto; background:#050505; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; min-width:20px; text-align:center; }
+  .sidebar-divider { height:1px; background:var(--border); margin:12px 12px; }
+  .sidebar-footer { margin-top:auto; padding:12px 4px 4px; }
+  .birthday-chip { background:linear-gradient(135deg,#fff5e0,#ffe4ea); border:1px solid #f8e8b0; border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; color:#8b6914; }
+  .birthday-chip .emoji { font-size:20px; }
+  .main { flex:1; min-width:0; overflow-y:auto; padding:24px; }
+  .container-narrow { max-width:680px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+  .post { background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; }
+  .post-head { display:flex; align-items:center; gap:12px; padding:16px 16px 0; }
+  .post-avatar { width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,#050505,#333); color:#fff; font-weight:700; font-size:18px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',Georgia,serif; font-style:italic; flex-shrink:0; position:relative; }
+  .post-avatar::after { content:''; position:absolute; bottom:0; right:0; width:12px; height:12px; border-radius:50%; background:#31a24c; border:2.5px solid var(--card); }
+  .post-info { flex:1; min-width:0; }
+  .post-author { font-weight:600; font-size:14.5px; display:flex; align-items:center; gap:6px; }
+  .post-author .verified { display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; background:#1da1f2; border-radius:50%; color:#fff; font-size:9px; font-weight:700; }
+  .post-time { font-size:12.5px; color:var(--text-3); }
+  .post-menu { background:transparent; border:none; cursor:pointer; width:32px; height:32px; border-radius:50%; color:var(--text-3); font-size:18px; }
+  .post-content { padding:12px 16px 16px; }
+  .post-content h1 { font-size:22px; font-weight:700; letter-spacing:-0.4px; margin-bottom:8px; line-height:1.25; }
+  .post-content h1 .accent { background:linear-gradient(135deg,var(--accent),var(--gold)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .post-content h2 { font-size:16px; font-weight:700; margin-bottom:12px; }
+  .post-content p { color:var(--text-2); font-size:14.5px; line-height:1.6; margin-bottom:10px; }
+  .post-content p:last-child { margin-bottom:0; }
+  .post-photo { width:calc(100% + 32px); margin:12px -16px -16px; aspect-ratio:4/3; object-fit:cover; display:block; cursor:pointer; background:var(--sidebar-hover); }
+  .post-photo-fallback { width:calc(100% + 32px); margin:12px -16px -16px; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; font-size:80px; background:linear-gradient(135deg,#ffe4ea,#f8dfa0); cursor:pointer; }
+  .post-stats { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; font-size:13px; color:var(--text-3); border-top:1px solid var(--border); }
+  .post-stats .stat { display:flex; align-items:center; gap:4px; }
+  .post-stats .stat-bubble { width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#e94a6f,#d63e60); color:#fff; font-size:10px; margin-right:-4px; }
+  .post-actions { display:flex; justify-content:space-around; padding:4px 8px; border-top:1px solid var(--border); }
+  .post-action { flex:1; padding:10px; border-radius:8px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:14px; font-weight:600; color:var(--text-2); display:flex; align-items:center; justify-content:center; gap:6px; }
+  .post-action:hover { background:var(--sidebar-hover); }
+  .post-action.liked { color:var(--accent); }
+  .profile-wrap { max-width:780px; margin:0 auto; }
+  .profile-card { background:var(--card); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+  .profile-cover { height:220px; background-color:#0e0e16; background-image:linear-gradient(to bottom, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.5)), url('photos/photo4.jpg'), radial-gradient(circle at 25% 30%, rgba(233,74,111,0.55), transparent 55%), radial-gradient(circle at 75% 70%, rgba(212,175,55,0.55), transparent 55%), linear-gradient(135deg,#2b2b3a,#0e0e16); background-size:cover,cover,auto,auto,auto; background-position:center; }
+  .profile-main { padding:0 24px 20px; display:flex; gap:20px; align-items:flex-end; margin-top:-60px; position:relative; z-index:2; }
+  .profile-avatar-lg { width:120px; height:120px; border-radius:50%; background:linear-gradient(135deg,#050505,#333); border:4px solid var(--card); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-weight:900; font-size:48px; color:#fff; letter-spacing:-3px; position:relative; }
+  .profile-avatar-lg::after { content:''; position:absolute; bottom:6px; right:6px; width:20px; height:20px; border-radius:50%; background:#31a24c; border:3px solid var(--card); }
+  .profile-info { flex:1; padding-bottom:8px; }
+  .profile-name { font-size:24px; font-weight:800; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .profile-status { color:var(--text-2); font-size:14px; margin-bottom:14px; }
+  .profile-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .profile-btn { padding:8px 16px; border-radius:8px; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:#fff; color:var(--text); }
+  .profile-btn.primary { background:#050505; color:#fff; border-color:#050505; }
+  .profile-stats { display:flex; gap:28px; padding:16px 24px; border-top:1px solid var(--border); }
+  .profile-stat .num { font-size:18px; font-weight:800; }
+  .profile-stat .lbl { font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.4px; }
+  .profile-tabs { display:flex; gap:4px; padding:8px 16px 0; border-bottom:1px solid var(--border); margin-bottom:16px; }
+  .profile-tab { padding:12px 18px; background:transparent; border:none; font-family:inherit; font-size:14px; font-weight:600; color:var(--text-2); cursor:pointer; position:relative; }
+  .profile-tab.active { color:var(--text); }
+  .profile-tab.active::after { content:''; position:absolute; left:12px; right:12px; bottom:-1px; height:2px; background:#050505; }
+  .profile-feed { display:flex; flex-direction:column; gap:16px; }
+  .music-wrap { max-width:780px; margin:0 auto; display:grid; grid-template-columns:1fr 320px; gap:20px; }
+  .music-player { background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:32px; text-align:center; }
+  .music-cover { width:240px; height:240px; border-radius:16px; margin:0 auto 24px; background:radial-gradient(circle at 30% 30%, rgba(233,74,111,0.6), transparent 55%), radial-gradient(circle at 70% 70%, rgba(212,175,55,0.6), transparent 55%), linear-gradient(135deg,#2b2b3a,#0e0e16); display:flex; align-items:center; justify-content:center; font-size:80px; color:#fff; }
+  .music-title { font-size:20px; font-weight:700; margin-bottom:4px; }
+  .music-artist { font-size:14px; color:var(--text-3); margin-bottom:24px; }
+  .music-progress { height:4px; background:var(--border); border-radius:2px; cursor:pointer; margin-bottom:8px; overflow:hidden; }
+  .music-progress-fill { height:100%; width:0%; background:#050505; }
+  .music-time { display:flex; justify-content:space-between; font-size:12px; color:var(--text-3); margin-bottom:20px; }
+  .music-controls { display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:20px; }
+  .music-btn { width:44px; height:44px; border-radius:50%; border:1.5px solid var(--border); background:#fff; color:var(--text); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .music-btn-main { width:60px; height:60px; background:#050505; color:#fff; border-color:#050505; font-size:20px; }
+  .music-upload { display:inline-block; padding:10px 18px; background:#fff; border:1.5px solid var(--border); border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; }
+  .music-playlist-card { background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:20px; max-height:600px; display:flex; flex-direction:column; }
+  .music-playlist-title { font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.6px; font-size:12px; color:var(--text-3); }
+  .music-list { overflow-y:auto; display:flex; flex-direction:column; gap:2px; flex:1; }
+  .music-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; font-size:13.5px; }
+  .music-item:hover { background:var(--sidebar-hover); }
+  .music-item.active { background:#050505; color:#fff; }
+  .music-empty { font-size:13px; color:var(--text-3); text-align:center; padding:32px 16px; line-height:1.6; }
+  .yandex-card { background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:24px; max-width:780px; margin:0 auto 20px; }
+  .yandex-card h3 { font-size:16px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+  .yandex-logo { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#ffdb4d; color:#000; font-weight:800; font-size:14px; }
+  .yandex-card p.hint { font-size:12.5px; color:var(--text-3); margin-bottom:14px; }
+  .yandex-input-row { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .yandex-input-row input { flex:1; min-width:200px; padding:10px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:13px; font-family:inherit; background:#fafbfc; }
+  .yandex-btn { padding:10px 18px; background:#ffdb4d; color:#000; border:none; border-radius:10px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:700; }
+  .yandex-player-frame { border-radius:12px; overflow:hidden; background:#f5f5f5; min-height:180px; display:flex; align-items:center; justify-content:center; }
+  .yandex-placeholder { padding:40px 20px; text-align:center; color:var(--text-3); font-size:13px; line-height:1.6; }
+  .yandex-placeholder .big { font-size:36px; display:block; margin-bottom:10px; }
+  .messages-wrap { max-width:780px; margin:0 auto; background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; display:flex; flex-direction:column; height:calc(100vh - 130px); min-height:460px; max-height:720px; }
+  .messages-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; flex-shrink:0; background:var(--card); }
+  .messages-back { background:transparent; border:none; cursor:pointer; font-size:22px; color:var(--text-2); padding:4px 10px 6px; border-radius:8px; font-family:inherit; line-height:1; }
+  .messages-header svg { width:22px; height:22px; stroke:var(--text-2); fill:none; stroke-width:1.8; }
+  .messages-title { font-weight:700; font-size:15px; }
+  .messages-list { flex:1; overflow-y:auto; padding:8px; }
+  .message-item { display:flex; gap:12px; padding:12px; border-radius:10px; cursor:pointer; align-items:center; }
+  .message-item:hover { background:var(--sidebar-hover); }
+  .message-item.unread .message-preview { color:var(--text); font-weight:600; }
+  .message-avatar { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; flex-shrink:0; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:18px; }
+  .message-info { flex:1; min-width:0; }
+  .message-name { font-weight:600; font-size:14px; margin-bottom:2px; }
+  .message-preview { font-size:13px; color:var(--text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .message-meta { text-align:right; flex-shrink:0; }
+  .message-time { font-size:11.5px; color:var(--text-3); margin-bottom:4px; }
+  .message-unread { display:inline-block; background:#050505; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; min-width:20px; }
+  .chat-view { flex:1; display:flex; flex-direction:column; min-height:0; }
+  .chat-messages { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:8px; background:linear-gradient(180deg,#f7f8fa 0%,#eef0f3 100%); }
+  .chat-day { text-align:center; font-size:11.5px; color:var(--text-3); padding:8px 0; }
+  .chat-bubble { max-width:72%; padding:9px 14px; border-radius:18px; font-size:14px; line-height:1.4; word-wrap:break-word; animation:bubbleIn 0.25s ease; }
+  @keyframes bubbleIn { from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .chat-bubble.them { align-self:flex-start; background:#fff; color:var(--text); border-bottom-left-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,0.05); }
+  .chat-bubble.me { align-self:flex-end; background:#050505; color:#fff; border-bottom-right-radius:4px; }
+  .chat-bubble .chat-time { font-size:10.5px; opacity:0.6; margin-top:3px; display:block; text-align:right; }
+  .chat-typing { align-self:flex-start; background:#fff; padding:12px 18px; border-radius:18px; border-bottom-left-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,0.05); display:flex; gap:5px; align-items:center; }
+  .chat-typing span { width:7px; height:7px; border-radius:50%; background:#b0b3b8; animation:typingBounce 1.2s infinite; }
+  .chat-typing span:nth-child(2) { animation-delay:0.15s; }
+  .chat-typing span:nth-child(3) { animation-delay:0.3s; }
+  @keyframes typingBounce { 0%,60%,100%{transform:translateY(0); opacity:0.5;} 30%{transform:translateY(-5px); opacity:1;} }
+  .chat-input-row { display:flex; gap:8px; padding:12px 16px; border-top:1px solid var(--border); background:var(--card); flex-shrink:0; }
+  .chat-input-row input { flex:1; padding:10px 16px; border:1.5px solid var(--border); border-radius:22px; font-family:inherit; font-size:14px; background:var(--bg); outline:none; }
+  .chat-input-row input:focus { border-color:#050505; background:#fff; }
+  .chat-input-row button { padding:10px 20px; border:none; border-radius:22px; background:#050505; color:#fff; font-weight:700; cursor:pointer; font-family:inherit; font-size:14px; }
+  .chat-ai-thinking { font-size:11px; color:var(--text-3); font-style:italic; align-self:flex-start; padding:4px 0; animation:pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.5;} 50%{opacity:1;} }
+  .apps-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:14px; }
+  .app-card { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:22px 14px; border:2px solid var(--border); border-radius:16px; background:#fff; cursor:pointer; font-family:inherit; text-align:center; aspect-ratio:1/1; }
+  .app-card:hover { border-color:#050505; transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,0.1); }
+  .app-icon { font-size:46px; line-height:1; }
+  .app-title { font-weight:700; font-size:14px; }
+  .app-desc { font-size:11.5px; color:var(--text-3); line-height:1.35; margin-top:2px; }
+  .app-view { animation:appIn 0.35s ease; }
+  @keyframes appIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  .app-back { display:inline-flex; align-items:center; gap:6px; background:transparent; border:none; cursor:pointer; color:var(--text-2); font-family:inherit; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; margin-bottom:10px; }
+  .app-view h2 { font-size:18px; font-weight:700; margin-bottom:4px; }
+  .app-view .app-subtitle { color:var(--text-2); font-size:13.5px; margin-bottom:14px; }
+  .puzzle-board { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); gap:3px; width:100%; max-width:360px; aspect-ratio:1/1; margin:0 auto 16px; background:var(--border); border-radius:12px; overflow:hidden; padding:3px; user-select:none; }
+  .puzzle-tile { background-color:#e94a6f; background-image:url('photos/photo1.jpg'), linear-gradient(135deg,#e94a6f 0%,#d4af37 100%); background-size:300% 300%, 100% 100%; background-repeat:no-repeat; cursor:pointer; position:relative; display:flex; align-items:flex-end; justify-content:flex-end; border-radius:5px; overflow:hidden; }
+  .puzzle-tile.empty { background:var(--sidebar-hover); background-image:none; cursor:default; }
+  .puzzle-tile .puzzle-num { font-size:11px; color:rgba(255,255,255,0.9); text-shadow:0 1px 3px rgba(0,0,0,0.9); padding:3px 6px; font-weight:800; background:rgba(0,0,0,0.32); border-radius:5px; margin:3px; }
+  .puzzle-status { text-align:center; font-size:14px; color:var(--text-2); margin-bottom:6px; }
+  .puzzle-win { color:#31a24c; font-weight:700; font-size:15px; }
+  .game-wrapper { display:flex; flex-direction:column; gap:10px; }
+  .game-hud { display:flex; justify-content:space-between; padding:8px 0; font-size:13px; color:var(--text-2); flex-wrap:wrap; gap:10px; }
+  .game-hud span strong { color:var(--text); }
+  #gameCanvas { display:block; background:#05050a; border-radius:8px; max-width:100%; margin:0 auto; }
+  #threeContainer { display:block; background:#05050a; border-radius:8px; min-height:360px; position:relative; overflow:hidden; }
+  #threeContainer canvas:not(#hudCanvas) { display:block !important; width:100% !important; height:100% !important; }
+  #hudCanvas { position:absolute; inset:0; width:100% !important; height:100% !important; pointer-events:none; z-index:10; }
+  .game-controls { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+  .btn { padding:11px 20px; border:1.5px solid #050505; border-radius:10px; background:#050505; color:#fff; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .btn-secondary { background:#fff; color:var(--text); border-color:var(--border); }
+  .game-controls .btn { flex:1; min-width:120px; }
+  .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:12px; }
+  .gallery-item { aspect-ratio:1; overflow:hidden; cursor:pointer; position:relative; background:var(--sidebar-hover); border-radius:12px; display:flex; align-items:center; justify-content:center; }
+  .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; }
+  .gallery-item .fallback { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:56px; background:linear-gradient(135deg,#ffe4ea,#f8dfa0); }
+  .gallery-item .caption { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(0,0,0,0.7), transparent); color:#fff; padding:20px 10px 8px; font-size:12px; font-weight:500; }
+  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; padding:24px; }
+  .modal.active { display:flex; }
+  .modal img { max-width:95%; max-height:90vh; border-radius:8px; }
+  .modal-close { position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.9); border:none; width:40px; height:40px; border-radius:50%; font-size:20px; cursor:pointer; }
+  .game-over-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:1500; align-items:center; justify-content:center; padding:24px; }
+  .game-over-modal.active { display:flex; }
+  .game-over-box { background:#fff; border-radius:16px; padding:40px 36px; max-width:420px; width:100%; text-align:center; }
+  .game-over-box h3 { font-size:22px; font-weight:700; margin-bottom:6px; }
+  .game-over-box .sub { font-size:13px; color:var(--text-2); margin-bottom:24px; }
+  .game-over-stats { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; padding:20px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .stat-row { display:flex; justify-content:space-between; font-size:14px; color:var(--text-2); }
+  .stat-row strong { color:var(--text); font-weight:700; font-size:16px; }
+  .game-over-buttons { display:flex; gap:8px; }
+  .game-over-buttons .btn { flex:1; }
+  .confetti { position:fixed; width:8px; height:8px; top:-10px; z-index:999; pointer-events:none; animation:fall linear forwards; }
+  .player { position:fixed; bottom:20px; right:20px; z-index:500; }
+  .player-toggle { width:52px; height:52px; border-radius:50%; border:none; background:#050505; color:#fff; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,0.2); }
+  .player-toggle.playing { background:#fff; color:#050505; }
+  .player-body { position:absolute; bottom:66px; right:0; width:300px; background:#fff; border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:var(--shadow-lg); opacity:0; transform:translateY(6px); pointer-events:none; transition:all 0.2s; }
+  .player.open .player-body { opacity:1; transform:translateY(0); pointer-events:auto; }
+  .player-info { margin-bottom:14px; }
+  .player-title { font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .player-subtitle { font-size:12px; color:var(--text-3); margin-top:2px; }
+  .player-controls { display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:14px; }
+  .player-btn { width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:#fff; color:var(--text); font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit; }
+  .player-btn-main { width:44px; height:44px; background:#050505; color:#fff; border-color:#050505; font-size:14px; }
+  .player-progress { height:3px; background:var(--border); border-radius:2px; cursor:pointer; margin-bottom:6px; overflow:hidden; }
+  .player-progress-fill { height:100%; width:0%; background:#050505; }
+  .player-time { display:flex; justify-content:space-between; font-size:11px; color:var(--text-3); margin-bottom:12px; }
+  .player-actions { display:flex; gap:6px; margin-bottom:12px; }
+  .player-upload { flex:1; padding:8px 12px; background:#fff; border:1.5px solid var(--border); border-radius:8px; text-align:center; font-size:12px; cursor:pointer; color:var(--text-2); font-weight:500; }
+  .player-btn-icon { width:38px; border:1.5px solid var(--border); background:#fff; border-radius:8px; cursor:pointer; color:var(--text-3); font-size:13px; font-family:inherit; }
+  .player-playlist { max-height:130px; overflow-y:auto; display:flex; flex-direction:column; gap:2px; }
+  .playlist-item { padding:7px 10px; font-size:12px; color:var(--text-2); cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-radius:6px; }
+  .playlist-item.active { background:#050505; color:#fff; }
+  .playlist-empty { font-size:12px; color:var(--text-3); text-align:center; padding:8px; }
+  @media (max-width:1200px) {
+    .final-number { font-size:200px; letter-spacing:-14px; }
+    .music-wrap { grid-template-columns:1fr; }
+  }
+  @media (max-width:900px) {
+    .sidebar { width:72px; padding:16px 8px; }
+    .nav-item { justify-content:center; padding:12px 8px; }
+    .nav-item > span:not(.nav-icon):not(.nav-count) { display:none; }
+    .sidebar-section-title { display:none; }
+    .brand-name { display:none; }
+    .user-chip .user-name { display:none; }
+    .final-number { font-size:140px; letter-spacing:-8px; }
+  }
+  @media (max-width:600px) {
+    .topbar { padding:0 12px; gap:10px; height:56px; }
+    .topbar-search { display:none; }
+    .main { padding:12px; }
+    .final-number { font-size:100px; letter-spacing:-5px; }
+    .toast-container { top:64px; right:8px; left:8px; }
+    .toast { min-width:0; max-width:none; }
+    .notif-panel { top:60px; right:8px; left:8px; width:auto; max-width:none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8dfa0"/><stop offset="0.5" stop-color="#d4af37"/><stop offset="1" stop-color="#a8842a"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e94a6f"/><stop offset="1" stop-color="#8b1a30"/>
+    </linearGradient>
+    <symbol id="logo-fa" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="#0e0e16"/>
+      <circle cx="50" cy="50" r="48" fill="none" stroke="url(#goldGrad)" stroke-width="1.5"/>
+      <text x="50" y="68" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="46" font-weight="900" font-style="italic" fill="url(#goldGrad)" letter-spacing="-4">FA</text>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></symbol>
+    <symbol id="i-gamepad" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h2M8 11v2"/><circle cx="16" cy="11.5" r="0.5"/><circle cx="18" cy="13.5" r="0.5"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+  </defs>
+</svg>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-header">
+    <span>Уведомления<span class="notif-unread-count" id="notifUnreadCount"></span></span>
+    <button class="notif-close" onclick="closeNotifPanel()" aria-label="Закрыть">×</button>
+  </div>
+  <div class="notif-list" id="notifList"></div>
+  <div class="notif-footer">
+    <button id="notifMarkAll" onclick="markAllNotificationsRead()">Отметить всё прочитанным</button>
+  </div>
+</div>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-brand">
+      <svg class="logo-mark"><use href="#logo-fa"/></svg>
+      <div class="brand-titles">
+        <div class="brand-name">Fisochenko</div>
+        <div class="brand-sub">Private network</div>
+      </div>
+    </div>
+    <div class="login-subtitle">Войдите, чтобы продолжить</div>
+    <form id="loginForm" onsubmit="return false;">
+      <div class="form-group"><input type="text" id="loginUser" placeholder="Имя пользователя" required></div>
+      <div class="form-group"><input type="password" id="loginPass" placeholder="Пароль" required></div>
+      <div class="form-group"><input type="email" id="loginEmail" placeholder="Email" required></div>
+      <button type="submit" class="login-btn" id="loginBtn">Войти</button>
+    </form>
+    <div class="secure-badge">🔒 Соединение защищено SSL-шифрованием</div>
+  </div>
+</div>
+
+<div id="captchaScreen">
+  <div class="captcha-box">
+    <div class="captcha-header"><h2>Проверка безопасности</h2><p>Подтвердите, что вы реальный пользователь</p></div>
+    <div class="captcha-instruction">Выберите все фото, где есть <strong>счастье (себя)</strong></div>
+    <div class="captcha-grid" id="captchaGrid"></div>
+    <div class="captcha-footer">
+      <button class="captcha-refresh" onclick="initCaptcha()">Обновить</button>
+      <button class="captcha-verify" id="captchaVerify" onclick="verifyCaptcha()" disabled>Подтвердить</button>
+    </div>
+    <div class="captcha-error" id="captchaError"></div>
+  </div>
+</div>
+
+<div id="siteScreen">
+  <header class="topbar">
+    <div class="brand" onclick="switchTab('feed', document.querySelector('.nav-item[data-tab=feed]'))">
+      <svg class="logo-mark"><use href="#logo-fa"/></svg>
+      <span class="brand-name">Fisochenko</span>
+    </div>
+    <div class="topbar-search">
+      <svg><use href="#i-search"/></svg>
+      <input placeholder="Поиск в Fisochenko" disabled>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" title="Сообщения" onclick="switchTab('messages', document.querySelector('.nav-item[data-tab=messages]'))">
+        <svg class="icon-svg"><use href="#i-chat"/></svg>
+        <span class="badge" id="messagesBadge" style="display:none;">0</span>
+      </button>
+      <button class="icon-btn" title="Уведомления" id="bellBtn" onclick="toggleNotifPanel(event)">
+        <svg class="icon-svg"><use href="#i-bell"/></svg>
+        <span class="badge" id="notifBadge">3</span>
+      </button>
+      <div class="user-chip" onclick="goToProfile()">
+        <span class="user-name">Анна</span>
+        <div class="user-avatar-mini">FA</div>
+      </div>
+    </div>
+  </header>
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section-title">Меню</div>
+      <nav class="nav">
+        <button class="nav-item active" data-tab="feed" onclick="switchTab('feed', this)"><span class="nav-icon"><svg><use href="#i-home"/></svg></span><span>Главная</span></button>
+        <button class="nav-item" data-tab="profile" onclick="switchTab('profile', this)"><span class="nav-icon"><svg><use href="#i-user"/></svg></span><span>Профиль</span></button>
+        <button class="nav-item" data-tab="music" onclick="switchTab('music', this)"><span class="nav-icon"><svg><use href="#i-play"/></svg></span><span>Музыка</span></button>
+        <button class="nav-item" data-tab="games" onclick="switchTab('games', this)"><span class="nav-icon"><svg><use href="#i-gamepad"/></svg></span><span>Игры</span></button>
+        <button class="nav-item" data-tab="messages" onclick="switchTab('messages', this)"><span class="nav-icon"><svg><use href="#i-chat"/></svg></span><span>Сообщения</span><span class="nav-count" id="navMessagesCount" style="display:none;">0</span></button>
+        <button class="nav-item" data-tab="gallery" onclick="switchTab('gallery', this)"><span class="nav-icon"><svg><use href="#i-image"/></svg></span><span>Галерея</span></button>
+      </nav>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-title">Моё</div>
+      <nav class="nav">
+        <button class="nav-item" data-tab="profile" onclick="switchTab('profile', this)"><span class="nav-icon"><svg><use href="#i-grid"/></svg></span><span>Мои фото</span></button>
+        <button class="nav-item" data-tab="music" onclick="switchTab('music', this)"><span class="nav-icon"><svg><use href="#i-music"/></svg></span><span>Плейлисты</span></button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="birthday-chip"><span class="emoji">🎉</span><span>21 год сегодня</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div id="feed" class="tab-content active">
+        <div class="container-narrow">
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar">А</div>
+              <div class="post-info">
+                <div class="post-author">Анна Фисоченко <span class="verified">✓</span></div>
+                <div class="post-time">только что · Для всех</div>
+              </div>
+              <button class="post-menu">⋯</button>
+            </div>
+            <div class="post-content">
+              <h1 id="heroTitle">С днём рождения, <span class="accent">Анна</span>! 🎂</h1>
+              <p id="heroText">Сегодня особенный день — твой день. Пусть каждый момент будет наполнен радостью, а этот небольшой сюрприз подарит улыбку.</p>
+              <p>Загляни в разделы слева — там тебя ждут подарки: игры, музыка, сообщения и фотографии.</p>
+            </div>
+            <div class="post-stats">
+              <div class="stat"><span class="stat-bubble">❤</span><span class="stat-bubble" style="background:linear-gradient(135deg,#f8dfa0,#d4af37)">★</span><span style="margin-left:6px;">21</span></div>
+              <div class="stat">4 комментария · 2 репоста</div>
+            </div>
+            <div class="post-actions">
+              <button class="post-action" onclick="this.classList.toggle('liked'); this.innerHTML = this.classList.contains('liked') ? '❤️ Нравится' : '🤍 Нравится'">❤️ Нравится</button>
+              <button class="post-action">💬 Комментировать</button>
+              <button class="post-action">↗ Поделиться</button>
+            </div>
+          </article>
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#d4af37,#8b6914)">A</div>
+              <div class="post-info">
+                <div class="post-author">Подруги и друзья</div>
+                <div class="post-time">сегодня в 00:00 · 🎉</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <h2>Поздравляем! 🥂</h2>
+              <p>Пусть этот год принесёт тебе море счастья, крепкое здоровье, исполнение самых заветных желаний и ярких моментов каждый день. Оставайся такой же замечательной.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div id="profile" class="tab-content">
+        <div class="profile-wrap">
+          <div class="profile-card">
+            <div class="profile-cover"></div>
+            <div class="profile-main">
+              <div class="profile-avatar-lg">FA</div>
+              <div class="profile-info">
+                <div class="profile-name">Анна Фисоченко <span class="verified" style="width:18px;height:18px;font-size:11px;background:#1da1f2;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;">✓</span></div>
+                <div class="profile-status">🎂 Сегодня мой день рождения! 21 год</div>
+                <div class="profile-actions">
+                  <button class="profile-btn primary">✏️ Редактировать</button>
+                  <button class="profile-btn">📷 Добавить фото</button>
+                  <button class="profile-btn">⋯</button>
+                </div>
+              </div>
+            </div>
+            <div class="profile-stats">
+              <div class="profile-stat"><span class="num">128</span><span class="lbl">Друзей</span></div>
+              <div class="profile-stat"><span class="num" id="photosCount">6</span><span class="lbl">Фото</span></div>
+              <div class="profile-stat"><span class="num">21</span><span class="lbl">Подарок</span></div>
+              <div class="profile-stat"><span class="num">1.2K</span><span class="lbl">Подписчиков</span></div>
+            </div>
+            <div class="profile-tabs">
+              <button class="profile-tab active">Стена</button>
+              <button class="profile-tab">Фото</button>
+              <button class="profile-tab">Музыка</button>
+              <button class="profile-tab">Друзья</button>
+              <button class="profile-tab">Ещё</button>
+            </div>
+          </div>
+          <div class="profile-feed" id="profileFeed" style="margin-top: 16px;"></div>
+        </div>
+      </div>
+
+      <div id="music" class="tab-content">
+        <div class="yandex-card">
+          <h3><span class="yandex-logo">Я</span> Яндекс Музыка</h3>
+          <p class="hint">Вставьте ссылку на трек, альбом или плейлист Яндекс.Музыки — плеер появится здесь с обложками и списком песен.</p>
+          <div class="yandex-input-row">
+            <input type="text" id="yandexLink" placeholder="https://music.yandex.ru/users/логин/playlists/12345">
+            <button class="yandex-btn" onclick="embedYandexPlayer()">Показать</button>
+          </div>
+          <div class="yandex-player-frame" id="yandexPlayerContainer">
+            <div class="yandex-placeholder"><span class="big">♪</span>Плеер появится здесь после вставки ссылки.<br>Подойдут ссылки на трек, альбом или плейлист.</div>
+          </div>
+        </div>
+        <div class="music-wrap">
+          <div class="music-player">
+            <div class="music-cover" id="musicCover">♪</div>
+            <div class="music-title" id="musicTitle">Ничего не играет</div>
+            <div class="music-artist" id="musicArtist">Загрузи свои треки</div>
+            <div class="music-progress" id="musicProgress" onclick="playerSeek(event)"><div class="music-progress-fill" id="musicProgressFill"></div></div>
+            <div class="music-time"><span id="musicCurrent">0:00</span><span id="musicDuration">0:00</span></div>
+            <div class="music-controls">
+              <button class="music-btn" onclick="playerPrev()">⏮</button>
+              <button class="music-btn music-btn-main" id="musicPlayBtn" onclick="playerTogglePlay()">▶</button>
+              <button class="music-btn" onclick="playerNext()">⏭</button>
+            </div>
+            <label class="music-upload">📁 Загрузить треки<input type="file" id="musicFile" accept="audio/*" multiple hidden></label>
+          </div>
+          <div class="music-playlist-card">
+            <div class="music-playlist-title">Плейлист</div>
+            <div class="music-list" id="musicList"><div class="music-empty">Загрузи свои треки, чтобы они появились здесь</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="games" class="tab-content">
+        <div class="container-narrow">
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar">А</div>
+              <div class="post-info">
+                <div class="post-author">Анна Фисоченко</div>
+                <div class="post-time">прикрепила приложения · 🎮</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <div id="appsGrid" class="apps-grid">
+                <button class="app-card" onclick="openApp('puzzle')"><span class="app-icon">🧩</span><span class="app-title">Пазл</span><span class="app-desc">Собери фото из 9 частей</span></button>
+                <button class="app-card" onclick="openApp('race2d')"><span class="app-icon">🗺️</span><span class="app-title">Ночной город</span><span class="app-desc">Гонки, вид сверху, 2D</span></button>
+                <button class="app-card" onclick="openApp('race3d')"><span class="app-icon">🚗</span><span class="app-title">Camry Cockpit</span><span class="app-desc">Вид из салона, 3D</span></button>
+              </div>
+              <div id="appPuzzle" class="app-view" style="display:none;">
+                <button class="app-back" onclick="closeApp()">← К приложениям</button>
+                <h2>Пазл</h2>
+                <p class="app-subtitle">Собери фотографию именинника из 9 частей</p>
+                <div class="puzzle-board" id="puzzleBoard"></div>
+                <div class="puzzle-status" id="puzzleStatus">Ходов: <strong id="puzzleMoves">0</strong></div>
+                <div class="game-controls" style="margin-top:10px;">
+                  <button class="btn" onclick="shufflePuzzle()">Перемешать</button>
+                  <button class="btn btn-secondary" onclick="resetPuzzle()">Сбросить</button>
+                </div>
+              </div>
+              <div id="appRace2d" class="app-view" style="display:none;">
+                <button class="app-back" onclick="closeApp()">← К приложениям</button>
+                <div class="game-wrapper">
+                  <h2>Ночной город</h2>
+                  <div class="game-hud">
+                    <span>Скорость: <strong id="kmh">0</strong> км/ч</span>
+                    <span>Очки: <strong id="score">0</strong></span>
+                    <span>Рекорд: <strong id="best">0</strong></span>
+                    <span id="wantedBox" style="display:none;">Розыск: <span id="wanted" style="color:#d33;font-weight:700;">0</span></span>
+                  </div>
+                  <canvas id="gameCanvas" width="600" height="700"></canvas>
+                  <div class="game-controls">
+                    <button class="btn" id="startGameBtn2d" onclick="startGame()">Старт</button>
+                    <button class="btn btn-secondary" onclick="pauseGame()">Пауза</button>
+                  </div>
+                  <p class="app-subtitle" style="margin-top:8px;">Управление: стрелки или WASD</p>
+                </div>
+              </div>
+              <div id="appRace3d" class="app-view" style="display:none;">
+                <button class="app-back" onclick="closeApp()">← К приложениям</button>
+                <div class="game-wrapper">
+                  <h2>Camry Cockpit Red</h2>
+                  <div class="game-hud">
+                    <span>Скорость: <strong id="kmh3d">0</strong> км/ч</span>
+                    <span>Очки: <strong id="score3d">0</strong></span>
+                    <span>Рекорд: <strong id="best3d">0</strong></span>
+                    <span id="wantedBox3d" style="display:none;">Розыск: <span id="wanted3d" style="color:#d33;font-weight:700;">0</span></span>
+                  </div>
+                  <div id="threeContainer"><canvas id="hudCanvas"></canvas></div>
+                  <div class="game-controls">
+                    <button class="btn" id="startGameBtn3d" onclick="startGame()">Старт</button>
+                    <button class="btn btn-secondary" onclick="pauseGame()">Пауза</button>
+                  </div>
+                  <p class="app-subtitle" style="margin-top:8px;">Управление: стрелки/WASD. Мышь — обзор салона.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div id="messages" class="tab-content">
+        <div class="messages-wrap">
+          <div class="messages-header">
+            <button class="messages-back" id="messagesBack" onclick="closeChat()" style="display:none;">←</button>
+            <svg id="messagesIcon"><use href="#i-chat"/></svg>
+            <span class="messages-title" id="messagesTitle">Сообщения</span>
+          </div>
+          <div class="messages-list" id="messagesList"></div>
+          <div class="chat-view" id="chatView" style="display:none;">
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-row">
+              <input type="text" id="chatInput" placeholder="Написать сообщение..." autocomplete="off"
+                     onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}">
+              <button onclick="sendMessage()">➤</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="gallery" class="tab-content">
+        <div class="container-narrow">
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar">А</div>
+              <div class="post-info">
+                <div class="post-author">Анна Фисоченко</div>
+                <div class="post-time">добавила 6 фотографий · 📸</div>
+              </div>
+            </div>
+            <div class="post-content"><div class="gallery-grid" id="galleryGrid"></div></div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div id="celebrationOverlay">
+  <div class="birthday-text" id="birthdayText"><div id="lottieContainer"></div></div>
+  <div class="final-number" id="finalNumber">21</div>
+</div>
+
+<div class="game-over-modal" id="gameOverModal">
+  <div class="game-over-box">
+    <h3>Авария</h3>
+    <p class="sub">Поездка завершена</p>
+    <div class="game-over-stats">
+      <div class="stat-row"><span>Счёт</span><strong id="goScore">0</strong></div>
+      <div class="stat-row"><span>Рекорд</span><strong id="goBest">0</strong></div>
+      <div class="stat-row"><span>Макс. скорость</span><strong id="goSpeed">0 км/ч</strong></div>
+    </div>
+    <div class="game-over-buttons">
+      <button class="btn" onclick="restartFromModal()">Заново</button>
+      <button class="btn btn-secondary" onclick="exitFromModal()">Выйти</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal" onclick="closeModal()">
+  <button class="modal-close" onclick="closeModal()">×</button>
+  <img id="modalImg" src="" alt="">
+</div>
+
+<div class="player" id="player">
+  <button class="player-toggle" id="playerToggle" onclick="togglePlayer()">♪</button>
+  <div class="player-body">
+    <div class="player-info">
+      <div class="player-title" id="playerTitle">Ничего не играет</div>
+      <div class="player-subtitle" id="playerSubtitle">Загрузите свои треки</div>
+    </div>
+    <div class="player-controls">
+      <button class="player-btn" onclick="playerPrev()">⏮</button>
+      <button class="player-btn player-btn-main" id="playerPlayBtn" onclick="playerTogglePlay()">▶</button>
+      <button class="player-btn" onclick="playerNext()">⏭</button>
+    </div>
+    <div class="player-progress" id="playerProgress" onclick="playerSeek(event)"><div class="player-progress-fill" id="playerProgressFill"></div></div>
+    <div class="player-time"><span id="playerCurrent">0:00</span><span id="playerDuration">0:00</span></div>
+    <div class="player-actions">
+      <label class="player-upload">Загрузить<input type="file" id="playerFile" accept="audio/*" multiple hidden></label>
+      <button class="player-btn-icon" onclick="playerClear()">×</button>
+    </div>
+    <div class="player-playlist" id="playerPlaylist"></div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================
+   AI — ВСТРОЕННЫЙ КЛЮЧ GOOGLE GEMINI
+   ========================================================== */
+const BUILTIN_AI = {
+  provider: 'openai',
+  endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+  apiKey: 'AQ.Ab8RN6LM_X1ESQhXjZSc3_gKO23_GUyHNjDdLGmEZ3Sg1WBn4w',
+  model: 'gemini-2.0-flash'
+};
+
+/* ==========================================================
+   КОНФИГ И ХЕЛПЕРЫ
+   ========================================================== */
+const CONFIG = {
+  birthdayPhotos: ['photos/photo1.jpg','photos/photo2.jpg','photos/photo3.jpg','photos/photo4.jpg'],
+  otherPhotos: ['photos/other1.jpg','photos/other2.jpg','photos/other3.jpg'],
+  gallery: [
+    { src:'photos/photo1.jpg', caption:'Лучший момент' },
+    { src:'photos/photo2.jpg', caption:'Смеёмся вместе' },
+    { src:'photos/photo3.jpg', caption:'Путешествие' },
+    { src:'photos/photo4.jpg', caption:'Праздник' },
+    { src:'photos/other1.jpg', caption:'Воспоминание' },
+    { src:'photos/other2.jpg', caption:'Друзья' }
+  ],
+  sounds: {
+    crash:'sounds/crash.mp3', point:'sounds/point.mp3', engine:'sounds/engine.mp3',
+    win:'sounds/win.mp3', captchaOk:'sounds/ok.mp3', click:'sounds/click.mp3', siren:'sounds/siren.mp3'
+  }
+};
+let gameMode = '2d';
+function nowTime(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function isTypingTarget(el){ if (!el) return false; return el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.isContentEditable; }
+
+/* ==========================================================
+   ЛОГИН
+   ========================================================== */
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  const email = document.getElementById('loginEmail').value.trim();
+  if (!user || !pass || !email) { alert('Заполните все поля'); return; }
+  window.userName = user;
+  const btn = document.getElementById('loginBtn');
+  btn.textContent = 'Проверка...'; btn.disabled = true;
+  setTimeout(()=>{
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('captchaScreen').style.display = 'flex';
+    initCaptcha();
+  }, 1200);
+});
+function goToProfile(){ switchTab('profile', document.querySelector('.nav-item[data-tab="profile"]')); }
+
+/* ==========================================================
+   КАПЧА
+   ========================================================== */
+let captchaAnswer = [];
+function initCaptcha(){
+  const grid = document.getElementById('captchaGrid');
+  grid.innerHTML = '';
+  document.getElementById('captchaError').textContent = '';
+  document.getElementById('captchaVerify').disabled = true;
+  const tiles = [];
+  const correctCount = 3 + Math.floor(Math.random()*2);
+  for (let i=0; i<correctCount; i++) {
+    const p = CONFIG.birthdayPhotos[Math.floor(Math.random()*CONFIG.birthdayPhotos.length)];
+    tiles.push({ src:p, correct:true });
+  }
+  while (tiles.length < 9) {
+    const p = CONFIG.otherPhotos[Math.floor(Math.random()*CONFIG.otherPhotos.length)];
+    tiles.push({ src:p, correct:false });
+  }
+  tiles.sort(()=>Math.random()-0.5);
+  captchaAnswer = [];
+  tiles.forEach((tile, i)=>{
+    if (tile.correct) captchaAnswer.push(i);
+    const el = document.createElement('div');
+    el.className = 'captcha-tile';
+    el.dataset.index = i;
+    el.onclick = () => toggleTile(el);
+    const img = document.createElement('img');
+    img.src = tile.src; img.alt = '';
+    img.onerror = () => {
+      img.remove();
+      const span = document.createElement('span');
+      span.className = 'captcha-emoji';
+      span.textContent = tile.correct ? '✓' : '·';
+      el.appendChild(span);
+    };
+    el.appendChild(img);
+    grid.appendChild(el);
+  });
+}
+function toggleTile(el){
+  el.classList.toggle('selected');
+  document.getElementById('captchaVerify').disabled = document.querySelectorAll('.captcha-tile.selected').length===0;
+}
+function verifyCaptcha(){
+  const selected = [...document.querySelectorAll('.captcha-tile.selected')].map(el=>parseInt(el.dataset.index));
+  const correct = captchaAnswer.every(i=>selected.includes(i)) && selected.every(i=>captchaAnswer.includes(i));
+  if (correct) { playSound(CONFIG.sounds.captchaOk); startCelebration(); }
+  else {
+    document.getElementById('captchaError').textContent = 'Вы выбрали неверные фото. Попробуйте ещё раз.';
+    playSound(CONFIG.sounds.crash);
+    setTimeout(()=>{
+      document.querySelectorAll('.captcha-tile').forEach(el=>el.classList.remove('selected'));
+      initCaptcha();
+    }, 1500);
+  }
+}
+
+/* ==========================================================
+   ПРАЗДНИК — inline SVG-анимация вместо birthday.json
+   ========================================================== */
+const BIRTHDAY_SVG = `
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#fff8e7"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cakeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd8b5"/>
+      <stop offset="100%" stop-color="#d4a373"/>
+    </linearGradient>
+    <linearGradient id="icingGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff5e0"/>
+      <stop offset="100%" stop-color="#ffe4ea"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+
+  <ellipse cx="300" cy="360" rx="240" ry="30" fill="url(#bgGrad)"/>
+
+  <!-- Шарики -->
+  <g class="balloons">
+    <g class="balloon b1">
+      <ellipse cx="120" cy="120" rx="35" ry="45" fill="#e94a6f"/>
+      <ellipse cx="110" cy="105" rx="10" ry="14" fill="#ff8fa8" opacity="0.5"/>
+      <path d="M120 165 L118 195 L122 195 Z" fill="#8b1a30"/>
+      <path d="M120 195 Q118 220 125 240" stroke="#666" stroke-width="1.5" fill="none"/>
+    </g>
+    <g class="balloon b2">
+      <ellipse cx="480" cy="140" rx="38" ry="50" fill="#d4af37"/>
+      <ellipse cx="468" cy="122" rx="11" ry="15" fill="#f8e8b0" opacity="0.6"/>
+      <path d="M480 190 L478 220 L482 220 Z" fill="#8b6914"/>
+      <path d="M480 220 Q478 245 485 265" stroke="#666" stroke-width="1.5" fill="none"/>
+    </g>
+    <g class="balloon b3">
+      <ellipse cx="220" cy="80" rx="30" ry="40" fill="#1da1f2"/>
+      <ellipse cx="212" cy="68" rx="9" ry="12" fill="#a0d8ff" opacity="0.5"/>
+      <path d="M220 120 L218 145 L222 145 Z" fill="#0d6eb8"/>
+      <path d="M220 145 Q218 170 225 190" stroke="#666" stroke-width="1.5" fill="none"/>
+    </g>
+    <g class="balloon b4">
+      <ellipse cx="380" cy="100" rx="33" ry="43" fill="#31a24c"/>
+      <ellipse cx="370" cy="86" rx="10" ry="13" fill="#a5e0b6" opacity="0.5"/>
+      <path d="M380 143 L378 168 L382 168 Z" fill="#1a6b30"/>
+      <path d="M380 168 Q378 193 385 213" stroke="#666" stroke-width="1.5" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Торт -->
+  <g class="cake">
+    <ellipse cx="300" cy="340" rx="130" ry="18" fill="#000" opacity="0.1"/>
+    <rect x="175" y="270" width="250" height="70" rx="8" fill="url(#cakeGrad)"/>
+    <rect x="175" y="265" width="250" height="20" rx="10" fill="url(#icingGrad)"/>
+    <rect x="195" y="255" width="210" height="18" rx="9" fill="#fff5e0"/>
+    <circle cx="210" cy="295" r="5" fill="#e94a6f"/>
+    <circle cx="250" cy="305" r="5" fill="#1da1f2"/>
+    <circle cx="290" cy="295" r="5" fill="#31a24c"/>
+    <circle cx="330" cy="305" r="5" fill="#d4af37"/>
+    <circle cx="370" cy="295" r="5" fill="#e94a6f"/>
+    <circle cx="400" cy="305" r="5" fill="#1da1f2"/>
+
+    <!-- Свечи -->
+    <g class="candles">
+      <g class="candle c1">
+        <rect x="278" y="200" width="10" height="60" fill="#fff" rx="3"/>
+        <rect x="278" y="205" width="10" height="8" fill="#e94a6f"/>
+        <rect x="278" y="220" width="10" height="8" fill="#e94a6f"/>
+        <rect x="278" y="235" width="10" height="8" fill="#e94a6f"/>
+        <ellipse class="flame" cx="283" cy="192" rx="6" ry="12" fill="#ffcc00"/>
+        <ellipse class="flame-inner" cx="283" cy="195" rx="3" ry="7" fill="#ff8800"/>
+        <ellipse cx="283" cy="195" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/>
+      </g>
+      <g class="candle c2">
+        <rect x="295" y="195" width="10" height="65" fill="#fff" rx="3"/>
+        <rect x="295" y="200" width="10" height="8" fill="#1da1f2"/>
+        <rect x="295" y="215" width="10" height="8" fill="#1da1f2"/>
+        <rect x="295" y="230" width="10" height="8" fill="#1da1f2"/>
+        <ellipse class="flame" cx="300" cy="186" rx="6" ry="12" fill="#ffcc00"/>
+        <ellipse class="flame-inner" cx="300" cy="189" rx="3" ry="7" fill="#ff8800"/>
+        <ellipse cx="300" cy="189" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/>
+      </g>
+      <g class="candle c3">
+        <rect x="312" y="200" width="10" height="60" fill="#fff" rx="3"/>
+        <rect x="312" y="205" width="10" height="8" fill="#31a24c"/>
+        <rect x="312" y="220" width="10" height="8" fill="#31a24c"/>
+        <rect x="312" y="235" width="10" height="8" fill="#31a24c"/>
+        <ellipse class="flame" cx="317" cy="192" rx="6" ry="12" fill="#ffcc00"/>
+        <ellipse class="flame-inner" cx="317" cy="195" rx="3" ry="7" fill="#ff8800"/>
+        <ellipse cx="317" cy="195" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Поздравление -->
+  <text x="300" y="375" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="900" font-style="italic" font-size="34" fill="#0a0a0a" letter-spacing="-1">С днём рождения!</text>
+</svg>
+<style>
+  @keyframes bdayFloatUp {
+    0%   { transform: translateY(20px); opacity: 0; }
+    20%  { opacity: 1; }
+    100% { transform: translateY(-160px); opacity: 0; }
+  }
+  @keyframes bdayCakeIn {
+    0%   { transform: translateY(60px) scale(0.7); opacity: 0; }
+    70%  { transform: translateY(-6px) scale(1.03); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  @keyframes bdayFlicker {
+    0%, 100% { transform: scaleY(1);   opacity: 1; }
+    50%      { transform: scaleY(0.85); opacity: 0.85; }
+  }
+  @keyframes bdayInner {
+    0%, 100% { transform: scaleY(1);   opacity: 1; }
+    50%      { transform: scaleY(0.9);  opacity: 0.9; }
+  }
+  #lottieContainer .cake { transform-origin: 300px 340px; animation: bdayCakeIn 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  #lottieContainer .flame { transform-origin: 283px 200px; animation: bdayFlicker 0.35s infinite; }
+  #lottieContainer .candle:nth-child(2) .flame { animation-delay: 0.1s; }
+  #lottieContainer .candle:nth-child(3) .flame { animation-delay: 0.2s; }
+  #lottieContainer .flame-inner { transform-origin: center bottom; animation: bdayInner 0.3s infinite; }
+  #lottieContainer .b1 { animation: bdayFloatUp 4s linear infinite; }
+  #lottieContainer .b2 { animation: bdayFloatUp 5s linear 1s infinite; }
+  #lottieContainer .b3 { animation: bdayFloatUp 4.5s linear 0.5s infinite; }
+  #lottieContainer .b4 { animation: bdayFloatUp 5.5s linear 2s infinite; }
+</style>
+`;
+
+let lottieAnim = null;
+function startCelebration(){
+  document.getElementById('captchaScreen').style.display = 'none';
+  if (window.userName) document.getElementById('heroTitle').innerHTML = `С днём рождения, <span class="accent">${window.userName}</span>! 🎂`;
+  document.title = 'Fisochenko · С днём рождения';
+  buildGallery(); buildProfileFeed(); setBestScore();
+  renderMessagesList(); updateMessagesBadge(); renderNotifications();
+  const site = document.getElementById('siteScreen');
+  site.style.display = 'flex';
+  site.classList.add('active','blurred');
+  const overlay = document.getElementById('celebrationOverlay');
+  const bdayText = document.getElementById('birthdayText');
+  const finalNum = document.getElementById('finalNumber');
+  bdayText.classList.remove('show','hide');
+  finalNum.classList.remove('show','inflate','burst');
+  overlay.querySelectorAll('.celebration-confetti').forEach(c=>c.remove());
+  overlay.querySelectorAll('.number-particle').forEach(p=>p.remove());
+  overlay.querySelectorAll('.number-flash').forEach(f=>f.remove());
+  overlay.classList.add('active');
+  bdayText.classList.add('show');
+
+  // Вставляем inline SVG-анимацию
+  const container = document.getElementById('lottieContainer');
+  container.innerHTML = BIRTHDAY_SVG;
+
+  setTimeout(afterAnimation, 3500);
+
+  function afterAnimation() {
+    bdayText.classList.remove('show');
+    bdayText.classList.add('hide');
+    finalNum.classList.add('show');
+    playSound(CONFIG.sounds.win);
+    setTimeout(()=>{ finalNum.classList.remove('show'); finalNum.classList.add('inflate'); }, 1600);
+    setTimeout(()=>{ finalNum.classList.remove('inflate'); finalNum.classList.add('burst'); burstNumberIntoConfetti(); }, 2700);
+    setTimeout(()=>{
+      overlay.classList.remove('active');
+      bdayText.classList.remove('show','hide');
+      finalNum.classList.remove('show','inflate','burst');
+      site.classList.remove('blurred');
+      launchConfetti();
+    }, 5500);
+  }
+  scheduleGrandpaMessages();
+}
+function burstNumberIntoConfetti(){
+  const overlay = document.getElementById('celebrationOverlay');
+  const cx = window.innerWidth/2, cy = window.innerHeight/2;
+  const flash = document.createElement('div');
+  flash.className = 'number-flash';
+  flash.style.left = cx+'px'; flash.style.top = cy+'px';
+  overlay.appendChild(flash);
+  setTimeout(()=>flash.remove(), 700);
+  const colors = ['#e94a6f','#d4af37','#c9a227','#8b6914','#f8dfa0','#ff8fa8','#050505','#333','#1da1f2','#31a24c'];
+  for (let i=0; i<130; i++) {
+    const p = document.createElement('div');
+    p.className = 'number-particle';
+    const angle = Math.random()*Math.PI*2;
+    const dist = 180 + Math.random()*520;
+    p.style.left = cx+'px'; p.style.top = cy+'px';
+    const size = 6 + Math.random()*12;
+    p.style.width = size+'px'; p.style.height = size+'px';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.setProperty('--dx', (Math.cos(angle)*dist).toFixed(1)+'px');
+    p.style.setProperty('--dy', (Math.sin(angle)*dist).toFixed(1)+'px');
+    p.style.setProperty('--rot', (Math.random()*900-450).toFixed(0)+'deg');
+    p.style.animationDelay = (Math.random()*0.05).toFixed(3)+'s';
+    if (Math.random()>0.5) p.style.borderRadius = '50%';
+    else if (Math.random()>0.5) p.style.borderRadius = '2px';
+    overlay.appendChild(p);
+    setTimeout(()=>p.remove(), 2300);
+  }
+  playSound(CONFIG.sounds.win, 0.45);
+}
+function launchCelebrationConfetti(){
+  const colors = ['#e94a6f','#d4af37','#c9a227','#8b6914','#f8dfa0','#ff8fa8'];
+  const overlay = document.getElementById('celebrationOverlay');
+  for (let i=0; i<80; i++) {
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.className = 'celebration-confetti';
+      c.style.left = Math.random()*100+'%';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (2+Math.random()*3)+'s';
+      if (Math.random()>0.5) c.style.borderRadius = '50%';
+      overlay.appendChild(c);
+      setTimeout(()=>c.remove(), 5500);
+    }, i*25);
+  }
+}
+function switchTab(id, btn){
+  playSound(CONFIG.sounds.click);
+  if (id !== 'messages' && currentChatId) closeChat();
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'games') {
+    if (currentApp === 'race2d') setTimeout(fitCanvas, 50);
+    else if (currentApp === 'race3d') setTimeout(onWindowResize3D, 50);
+    else if (currentApp === 'puzzle') setTimeout(renderPuzzle, 50);
+  }
+}
+
+/* ==========================================================
+   ЗВУКИ
+   ========================================================== */
+let engineAudio = null, sirenAudio = null;
+function playSound(src, volume = 0.6){
+  if (!src) return;
+  try { const a = new Audio(src); a.volume = volume; a.play().catch(()=>{}); } catch(e){}
+}
+function playEngineSound(){
+  if (!CONFIG.sounds.engine) return;
+  try {
+    if (engineAudio) engineAudio.pause();
+    engineAudio = new Audio(CONFIG.sounds.engine);
+    engineAudio.loop = true; engineAudio.volume = 0.25;
+    engineAudio.play().catch(()=>{});
+  } catch(e){}
+}
+function stopEngineSound(){ if (engineAudio) { engineAudio.pause(); engineAudio.currentTime = 0; } }
+function playSirenSound(){
+  if (!CONFIG.sounds.siren) return;
+  try {
+    if (sirenAudio) return;
+    sirenAudio = new Audio(CONFIG.sounds.siren);
+    sirenAudio.loop = true; sirenAudio.volume = 0.2;
+    sirenAudio.play().catch(()=>{});
+  } catch(e){}
+}
+function stopSirenSound(){ if (sirenAudio) { sirenAudio.pause(); sirenAudio.currentTime = 0; sirenAudio = null; } }
+
+/* ==========================================================
+   ЯНДЕКС ПЛЕЕР
+   ========================================================== */
+function embedYandexPlayer(){
+  const input = document.getElementById('yandexLink');
+  const container = document.getElementById('yandexPlayerContainer');
+  const raw = input.value.trim();
+  if (!raw) { container.innerHTML = '<div class="yandex-placeholder"><span class="big">♪</span>Вставьте ссылку</div>'; return; }
+  const iframeSrcMatch = raw.match(/src=["']([^"']+)["']/);
+  let iframeSrc = iframeSrcMatch ? iframeSrcMatch[1] : null;
+  let height = 180;
+  if (!iframeSrc) {
+    let m = raw.match(/users\/([^\/]+)\/playlists\/(\d+)/);
+    if (m) { iframeSrc = `https://music.yandex.ru/iframe/#playlist/${m[1]}/${m[2]}/`; height = 450; }
+    if (!iframeSrc) {
+      m = raw.match(/#playlist\/([^\/]+)\/(\d+)/);
+      if (m) { iframeSrc = `https://music.yandex.ru/iframe/#playlist/${m[1]}/${m[2]}/`; height = 450; }
+    }
+    if (!iframeSrc) {
+      m = raw.match(/album\/(\d+)\/track\/(\d+)/);
+      if (m) iframeSrc = `https://music.yandex.ru/iframe/#track/${m[2]}/${m[1]}/`;
+    }
+    if (!iframeSrc) {
+      m = raw.match(/album\/(\d+)(?:\/|$|\?)/);
+      if (m) { iframeSrc = `https://music.yandex.ru/iframe/#album/${m[1]}/`; height = 450; }
+    }
+  } else {
+    if (iframeSrc.includes('playlist') || iframeSrc.includes('album')) height = 450;
+  }
+  if (!iframeSrc) { container.innerHTML = '<div class="yandex-placeholder"><span class="big">!</span>Не удалось распознать ссылку</div>'; return; }
+  iframeSrc = iframeSrc.replace(/^http:\/\//,'https://');
+  container.innerHTML = `<iframe frameborder="0" style="border:none;width:100%;height:${height}px;" allow="autoplay" src="${iframeSrc}"></iframe>`;
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const yInput = document.getElementById('yandexLink');
+  if (yInput) yInput.addEventListener('keydown', e=>{ if (e.key==='Enter'){ e.preventDefault(); embedYandexPlayer(); } });
+});
+
+/* ==========================================================
+   ЧАТЫ
+   ========================================================== */
+const CHATS = {
+  mama: { name:'Мама', avatar:'М', color:'linear-gradient(135deg,#d4af37,#8b6914)', unread:2, visible:true,
+    messages:[
+      { from:'them', text:'С днём рождения, солнышко! 🎂💛', time:'00:01' },
+      { from:'them', text:'Мы тебя очень любим и гордимся тобой', time:'00:02' },
+      { from:'me', text:'Спасибо, мамочка! ❤️', time:'08:30' },
+      { from:'them', text:'Приходи вечером, испечём торт 🍰', time:'08:35' }
+    ] },
+  katya: { name:'Катя', avatar:'К', color:'linear-gradient(135deg,#e94a6f,#8b1a30)', unread:1, visible:true,
+    messages:[
+      { from:'them', text:'Приветик!', time:'22:10' },
+      { from:'me', text:'Привет! 😊', time:'22:12' },
+      { from:'them', text:'С др, дорогая! 🎉', time:'23:40' },
+      { from:'them', text:'Скинь фото с праздника, как будут! 📸', time:'23:47' }
+    ] },
+  danya: { name:'Даня', avatar:'Д', color:'linear-gradient(135deg,#050505,#333)', unread:0, visible:true,
+    messages:[ { from:'them', text:'С др! Пусть всё сбудется ✨', time:'22:15' }, { from:'me', text:'Спасибо, Дань!', time:'22:17' } ] },
+  lena: { name:'Лена', avatar:'Л', color:'linear-gradient(135deg,#31a24c,#1a6b30)', unread:0, visible:true,
+    messages:[ { from:'them', text:'Мы сегодня придём к 7, накрывай стол 😄', time:'20:02' }, { from:'me', text:'Договорились!', time:'20:05' } ] },
+  sonya: { name:'Соня', avatar:'С', color:'linear-gradient(135deg,#8a8d91,#4a4d51)', unread:0, visible:true,
+    messages:[ { from:'them', text:'Ты лучшая! Обнимаю 💛', time:'18:33' } ] },
+  dedushka: { name:'Дедушка', avatar:'Д', color:'linear-gradient(135deg,#8b6914,#d4af37)', unread:0, visible:false, messages:[] }
+};
+let currentChatId = null;
+
+function renderMessagesList(){
+  const list = document.getElementById('messagesList');
+  if (!list) return;
+  list.innerHTML = '';
+  Object.entries(CHATS).forEach(([id, chat])=>{
+    if (!chat.visible && (!chat.messages || chat.messages.length===0)) return;
+    const last = chat.messages[chat.messages.length-1];
+    const unread = chat.unread || 0;
+    const item = document.createElement('div');
+    item.className = 'message-item' + (unread ? ' unread' : '');
+    item.onclick = () => openChat(id);
+    item.innerHTML = `
+      <div class="message-avatar" style="background:${chat.color};">${chat.avatar}</div>
+      <div class="message-info">
+        <div class="message-name">${escapeHtml(chat.name)}</div>
+        <div class="message-preview">${last ? escapeHtml(last.text) : '—'}</div>
+      </div>
+      <div class="message-meta">
+        <div class="message-time">${last ? last.time : ''}</div>
+        ${unread ? `<span class="message-unread">${unread}</span>` : ''}
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+function updateMessagesBadge(){
+  const total = Object.values(CHATS).reduce((s,c)=>s+(c.unread||0),0);
+  const badge = document.getElementById('messagesBadge');
+  const navCount = document.getElementById('navMessagesCount');
+  if (badge) { if (total>0) { badge.textContent = total>99?'99+':total; badge.style.display=''; } else badge.style.display='none'; }
+  if (navCount) { if (total>0) { navCount.textContent = total; navCount.style.display=''; } else navCount.style.display='none'; }
+}
+let _origOpenChat = null;
+let _origCloseChat = null;
+function openChat(id){
+  const chat = CHATS[id];
+  if (!chat) return;
+  currentChatId = id;
+  chat.unread = 0;
+  chat.visible = true;
+  document.getElementById('messagesList').style.display = 'none';
+  document.getElementById('chatView').style.display = 'flex';
+  document.getElementById('messagesBack').style.display = '';
+  document.getElementById('messagesIcon').style.display = 'none';
+  document.getElementById('messagesTitle').textContent = chat.name;
+  renderChat(); updateMessagesBadge();
+  setTimeout(()=>{ const inp = document.getElementById('chatInput'); if (inp) inp.focus(); }, 100);
+}
+function closeChat(){
+  currentChatId = null;
+  document.getElementById('messagesList').style.display = '';
+  document.getElementById('chatView').style.display = 'none';
+  document.getElementById('messagesBack').style.display = 'none';
+  document.getElementById('messagesIcon').style.display = '';
+  document.getElementById('messagesTitle').textContent = 'Сообщения';
+  renderMessagesList();
+}
+function renderChat(){
+  const chat = CHATS[currentChatId];
+  const container = document.getElementById('chatMessages');
+  if (!chat || !container) return;
+  container.innerHTML = '';
+  const day = document.createElement('div');
+  day.className = 'chat-day'; day.textContent = 'Сегодня';
+  container.appendChild(day);
+  chat.messages.forEach(m=>{
+    const b = document.createElement('div');
+    b.className = 'chat-bubble ' + (m.from==='me'?'me':'them');
+    b.innerHTML = `${escapeHtml(m.text)}<span class="chat-time">${m.time}</span>`;
+    container.appendChild(b);
+  });
+  if (chat.typing) {
+    const t = document.createElement('div');
+    t.className = 'chat-typing';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    container.appendChild(t);
+  }
+  requestAnimationFrame(()=>{ container.scrollTop = container.scrollHeight; });
+}
+function sendMessage(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || !currentChatId) return;
+  const chatId = currentChatId;
+  const chat = CHATS[chatId];
+  chat.messages.push({ from:'me', text, time: nowTime() });
+  input.value = '';
+  renderChat();
+  if (chatId === 'dedushka') grandpaReplyToUser(text);
+  else if (Math.random() < 0.35) {
+    chat.typing = true; renderChat();
+    setTimeout(()=>{
+      chat.typing = false;
+      const replies = ['😊','💛','Спасибо!','Класс!','Обнимаю 🤗','Договорились ✨'];
+      chat.messages.push({ from:'them', text: replies[Math.floor(Math.random()*replies.length)], time: nowTime() });
+      if (currentChatId === chatId) renderChat();
+      else { chat.unread = (chat.unread||0)+1; renderMessagesList(); updateMessagesBadge(); }
+    }, 900 + Math.random()*1200);
+  }
+}
+
+/* ==========================================================
+   УВЕДОМЛЕНИЯ
+   ========================================================== */
+const NOTIFICATIONS = [
+  { id:1, icon:'❤', color:'linear-gradient(135deg,#e94a6f,#8b1a30)', text:'<strong>Мама</strong> отметила вашу фотографию', time:'5 мин назад', unread:true },
+  { id:2, icon:'★', color:'linear-gradient(135deg,#d4af37,#8b6914)', text:'<strong>Катя</strong> оставила комментарий', time:'23 мин назад', unread:true },
+  { id:3, icon:'♥', color:'linear-gradient(135deg,#1da1f2,#0d6eb8)', text:'У вас <strong>3 новых подписчика</strong> за сегодня', time:'1 час назад', unread:true },
+  { id:4, icon:'🎂', color:'linear-gradient(135deg,#8b6914,#d4af37)', text:'Сегодня ваш <strong>день рождения</strong>. Поздравляем!', time:'Сегодня, 00:00', unread:false }
+];
+let notifPanelOpen = false;
+function renderNotifications(){
+  const list = document.getElementById('notifList');
+  if (!list) return;
+  const unread = NOTIFICATIONS.filter(n=>n.unread).length;
+  const unreadCountEl = document.getElementById('notifUnreadCount');
+  if (unreadCountEl) unreadCountEl.textContent = unread>0 ? `· ${unread} новых` : '';
+  const badge = document.getElementById('notifBadge');
+  if (badge) { if (unread>0) { badge.textContent = unread; badge.style.display=''; } else badge.style.display='none'; }
+  const markBtn = document.getElementById('notifMarkAll');
+  if (markBtn) markBtn.disabled = unread===0;
+  if (NOTIFICATIONS.length===0) { list.innerHTML = '<div class="notif-empty">Уведомлений пока нет</div>'; return; }
+  list.innerHTML = '';
+  NOTIFICATIONS.forEach(n=>{
+    const item = document.createElement('div');
+    item.className = 'notif-item' + (n.unread?' unread':'');
+    item.onclick = () => markNotifRead(n.id);
+    item.innerHTML = `
+      <div class="notif-icon" style="background:${n.color};">${n.icon}</div>
+      <div class="notif-body">
+        <div class="notif-text">${n.text}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+function toggleNotifPanel(e){
+  if (e) e.stopPropagation();
+  notifPanelOpen = !notifPanelOpen;
+  const panel = document.getElementById('notifPanel');
+  const bell = document.getElementById('bellBtn');
+  if (notifPanelOpen) { panel.classList.add('open'); if (bell) bell.classList.add('active'); renderNotifications(); }
+  else { panel.classList.remove('open'); if (bell) bell.classList.remove('active'); }
+}
+function closeNotifPanel(){
+  notifPanelOpen = false;
+  document.getElementById('notifPanel').classList.remove('open');
+  document.getElementById('bellBtn').classList.remove('active');
+}
+function markNotifRead(id){
+  const n = NOTIFICATIONS.find(x=>x.id===id);
+  if (!n) return;
+  n.unread = false;
+  renderNotifications();
+}
+function markAllNotificationsRead(){
+  NOTIFICATIONS.forEach(n=>n.unread = false);
+  renderNotifications();
+}
+function pushNotification(data){
+  NOTIFICATIONS.unshift({ id: Date.now(), icon: data.icon || '🔔', color: data.color || 'linear-gradient(135deg,#050505,#333)', text: data.text, time: 'только что', unread: true });
+  if (NOTIFICATIONS.length > 20) NOTIFICATIONS.pop();
+  renderNotifications();
+}
+document.addEventListener('click', function(e){
+  if (!notifPanelOpen) return;
+  const panel = document.getElementById('notifPanel');
+  const bell = document.getElementById('bellBtn');
+  if (panel.contains(e.target) || bell.contains(e.target)) return;
+  closeNotifPanel();
+});
+
+/* ==========================================================
+   ТОСТЫ
+   ========================================================== */
+const TOAST_STATE = { lastFrom:null, groupCount:0, groupToastEl:null };
+function showToast({ name, msg, avatar, color, app, onClick }){
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const isSameAsPrev = TOAST_STATE.lastFrom === name && TOAST_STATE.groupToastEl && !TOAST_STATE.groupToastEl.classList.contains('hide');
+  if (isSameAsPrev) {
+    TOAST_STATE.groupCount++;
+    let groupLine = TOAST_STATE.groupToastEl.querySelector('.toast-group');
+    if (groupLine) groupLine.textContent = `ещё ${TOAST_STATE.groupCount} сообщени${TOAST_STATE.groupCount===1?'е':TOAST_STATE.groupCount<5?'я':'й'}`;
+    else {
+      const body = TOAST_STATE.groupToastEl.querySelector('.toast-body');
+      const gr = document.createElement('div');
+      gr.className = 'toast-group';
+      gr.textContent = `ещё ${TOAST_STATE.groupCount} сообщени${TOAST_STATE.groupCount===1?'е':TOAST_STATE.groupCount<5?'я':'й'}`;
+      body.appendChild(gr);
+    }
+    const msgEl = TOAST_STATE.groupToastEl.querySelector('.toast-msg');
+    if (msgEl) msgEl.textContent = msg;
+    return;
+  }
+  TOAST_STATE.lastFrom = name;
+  TOAST_STATE.groupCount = 0;
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `
+    <div class="toast-avatar" style="background:${color};">${avatar}</div>
+    <div class="toast-body">
+      ${app ? `<div class="toast-app">${escapeHtml(app)}</div>` : ''}
+      <div class="toast-header">
+        <span class="toast-name">${escapeHtml(name)}</span>
+        <span class="toast-time">${nowTime()}</span>
+      </div>
+      <div class="toast-msg">${escapeHtml(msg)}</div>
+    </div>
+  `;
+  if (typeof onClick === 'function') toast.onclick = ()=>{ onClick(); hideToast(toast); };
+  else toast.onclick = ()=>hideToast(toast);
+  container.appendChild(toast);
+  TOAST_STATE.groupToastEl = toast;
+  const life = msg.length > 120 ? 10000 : msg.length > 60 ? 8000 : 6500;
+  setTimeout(()=>hideToast(toast), life);
+}
+function hideToast(toast){
+  if (!toast || toast.classList.contains('hide')) return;
+  toast.classList.add('hide');
+  if (TOAST_STATE.groupToastEl === toast) {
+    TOAST_STATE.groupToastEl = null;
+    TOAST_STATE.lastFrom = null;
+    TOAST_STATE.groupCount = 0;
+  }
+  setTimeout(()=>toast.remove(), 400);
+}
+
+/* ==========================================================
+   ДЕДУШКА — ЛОГИКА
+   ========================================================== */
+function normalizeText(s){ return String(s||'').toLowerCase().replace(/ё/g,'е').replace(/[^\p{L}\p{N}\s]+/gu,' ').replace(/\s+/g,' ').trim(); }
+function containsKey(normText, normKey){
+  if (!normKey) return false;
+  if (normKey.length <= 4 && !normKey.includes(' ')) {
+    const re = new RegExp('(^|\\s)' + normKey.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '(\\s|$)');
+    return re.test(normText);
+  }
+  return normText.includes(normKey);
+}
+function scoreIntent(normText, intent){
+  if (!intent.kw || intent.kw.length===0) return 0;
+  let score = 0;
+  for (const rawKey of intent.kw) {
+    const key = normalizeText(rawKey);
+    if (!key) continue;
+    if (containsKey(normText, key)) { score += key.includes(' ')?3:1; if (key.length>=6) score += 0.5; }
+  }
+  return score;
+}
+function findAllIntents(normText){
+  const list = [];
+  for (const intent of GP_BRAIN) {
+    const s = scoreIntent(normText, intent);
+    if (s>0) list.push({ intent, score:s });
+  }
+  list.sort((a,b)=>b.score-a.score);
+  return list;
+}
+
+const GP_LIFE = [
+  'Ох, я тут чай пью. С мятой, с мёдом. Хорошо.','Кот мой на коленях улёгся, мешает печатать. Но не сгоню.',
+  'Я сегодня в огороде копался. Помидоры проверил. Растут.','Радио слушаю. Концерт по заявкам. Старые песни.',
+  'Соседка баба Нюра заходила. Пирожками угощала.','Смотрю в окно. Птицы прилетели. Значит, весна.',
+  'Дрова на зиму перебирал. Спина устала. Но доволен.','А я тут вспоминал твою бабушку.',
+  'Сегодня на рынок ходил. Мёд купил. Настоящий, липовый.','Погода у нас хорошая. Солнышко. На душе легко.',
+  'Пироги вчера пёк. С яблоками. Половину соседям раздал.','Опять голова кружится. Давление. Ничего, привык.',
+  'Сегодня яблоки собирал. Ведро с верхом. Тебе оставил.','Сосед помог забор поправить. Хороший мужик.',
+  'Пенсию вчера принесли. Пойду куплю чего-нибудь вкусного.','Лампочку в коридоре поменял. Сам. Молодец я.',
+  'За окном дождь. Сижу, вспоминаю молодость.','Письма старые разбирал. Нашёл фотографию твою детскую.',
+  'За грибами ходил. Нашёл три подберёзовика. Похвастаться хочу.','Ну что, милая. День прошёл. И слава богу.'
+];
+const GP_INVITATIONS = [
+  'Приезжай, а? Пирогов напечём.','Ты когда в гости соберёшься? Я соскучился.',
+  'Давай на выходных? Я тебе варенье малиновое открою.','Приезжай, хоть на денёк. Хоть на полденечка.',
+  'Хочу тебя обнять. Далеко ты. Приезжай скорее.','В деревню приезжай. Тут тихо, воздух чистый.',
+  'Я для тебя и варенье, и пирожки — всё готово.','Скучаю. Приезжай, хоть на часик.',
+  'Скажи когда — я всё брошу и встречу.','Приезжай. Я соскучился. Это я тебе как дед говорю.'
+];
+const GP_CARE = [
+  'Ты хоть покушала сегодня? Скажи честно.','Не забудь поесть. Голодной не ходи.',
+  'Ты тепло оделась? Не простынь.','Спи побольше. Сон — это здоровье.',
+  'Одевайся по погоде. Не как модно, а как надо.','Береги себя, деточка. Ты у меня одна.',
+  'Не сиди долго за компьютером. Глаза береги.','Пей воду. Не только чай и кофе.',
+  'Проверяйся у врача. Раз в год. Обязательно.','Лук ешь и чеснок. От всех болезней.',
+  'Если плохо — сразу врача вызывай. Не терпи.','Шапку не забывай. Уши береги.'
+];
+const GP_MEMORIES = [
+  'Помню, ты маленькая была — как за мной по пятам ходила.','Помню, ты морковку с грядки дёргала. И вся в земле была.',
+  'А помнишь, как мы в лес ходили? Ты грибы собирала.','Как ты первый раз на велосипеде поехала. Упала, потом опять поехала.',
+  'Помню лето. Речка, мячик, ты в панамке.','Помню, ты мне первый свой рисунок подарила.',
+  'Как ты ко мне на колени залезала и говорила — деда, расскажи сказку.','Помню, как ты «деда» первый раз сказала. У меня сердце растаяло.',
+  'Мы с тобой рыбку удочкой ловили. Ты мне мешала, но было весело.','Помню, ты бабушке помогала пироги лепить. Вся в муке была.'
+];
+const GP_WISDOM = [
+  'Знаешь, что я тебе скажу? Всё пройдёт. И это пройдёт.','Утро вечера мудренее.',
+  'Не беги за людьми. Ты сама себе ценность.','Здоровье важнее любых оценок, работы и денег.',
+  'Не держи в себе. Ни плохое, ни хорошее.','Время — самый лучший лекарь.',
+  'Не сравнивай себя с другими. У каждого свой путь.','Если тяжело — отдохни. Не насилуй себя.',
+  'Человек счастлив не тогда, когда у него всё есть, а когда ему хватает.','Не бойся просить помощи. Это не слабость.',
+  'Прощай — и легче станет.','Никогда не поздно начать заново.',
+  'Улыбайся чаще. Даже когда грустно.'
+];
+
+const GP_BRAIN = [
+  { id:'greeting_morning', kw:['доброе утро','с добрым утром','проснулась','проснулся','встала'],
+    r:['О, доброе утро, солнышко. Как спалось?','С добрым утром, деточка. Я уж встал, чай пью.','Утречко доброе, моя хорошая.','Доброе утро, внученька. Как самочувствие?','А, проснулась. С добрым утром. Покушай хорошо.'] },
+  { id:'greeting_evening', kw:['добрый вечер','вечер добрый','доброго вечера'],
+    r:['И тебе доброго вечера, моя хорошая.','Добрый вечер, деточка. Как день прошёл?','Вечер добрый. Устала, небось?','Добрый вечер, внученька. Как ты там?'] },
+  { id:'greeting', kw:['привет','здравствуй','здоров','хай','hi','hello'],
+    r:['Привет, моя родная! Как ты там?','Здравствуй, солнышко. Рад тебя слышать.','О, привет! А я как раз о тебе думал.','Привет-привет! Как дела?','Здравствуй, внученька. Как ты себя чувствуешь?','И тебе здравствуй. Соскучился я по тебе.','Привет, моя золотая. Как ты?','А, привет! Где там моя внучка?'] },
+  { id:'farewell_night', kw:['спокойной ночи','доброй ночи','спать','споки','спать пойду'],
+    r:['Спокойной ночи, солнышко. Спи сладко. Дедушка рядом.','Спи, деточка. Утро вечера мудренее.','Спокойной ночи, моя хорошая.','Доброй ночи, внученька.','Спи, счастье моё. Дедушка рядом.'] },
+  { id:'farewell', kw:['пока','до свидания','бай','до встречи','ухожу','прощай'],
+    r:['Иди, иди. Отдыхай. Я тут, если что — пиши.','Ну, до встречи. Приезжай, слышишь?','Беги, беги. Только не забывай деда.','Пока, моя хорошая. Обнимаю крепко.','Давай, деточка. Береги себя. Люблю тебя.','До свидания, моя родная.'] },
+  { id:'how_are_you', kw:['как дела','как у тебя','как у вас','как ты','как жизнь','как здоровье','как сам','как поживаешь','что нового','как настроение','как успехи','а ты как','как делишки','как денек','как ты там'],
+    r:['Да что мне сделается, скриплю потихоньку.','Да слава богу, живой. Чай пью, на огород поглядываю. А ты как?','Хорошо всё, деточка. Хожу потихоньку. А ты как?','Да потихоньку, моя хорошая. Здоровье уже не то.','Скучно без тебя, если честно.','Да как всегда — проснулся, поблагодарил Бога.','Хорошо, внученька. Кот на коленях спит.','Живой-здоровый. Ты лучше расскажи, как сама.','Нормально. Спина пошаливает, но это привычное.','Потихоньку. Я в основном тебя вспоминаю.','Да всё в порядке. Ты лучше расскажи, что у тебя.','Отлично! Вот только закончил дрова складывать.','Скучаю. Работаю по дому. Кота кормлю.'] },
+  { id:'what_doing', kw:['что делаешь','чем занят','чем занимаешься','что поделываешь'],
+    r:['Да чай пью. Радио слушаю. А ты?','Да вот по дому хожу. То одно, то другое.','Да ничего особенного. Сижу, тебя вспоминаю.','Кот на коленях, газетка в руках, тишина.','Огород проверял. Всё растёт.','Да так. Скучаю потихоньку.'] },
+  { id:'happy', kw:['отлично','класс','супер','прекрасн','здорово','радость','счастлив','получилось','удалось','я смогла','ура','круто'],
+    r:['Вот и славно! Рад за тебя, деточка.','Ну вот, а ты переживала! Я же говорил.','Ой, как я рад! Прямо настроение поднялось.','Умница моя! Вот за это я тебя и люблю.','Так и надо! Пусть и дальше всё идёт хорошо.','Хорошо, что хорошо.','Молодец! Расскажи подробнее.','Так держать, солнышко. Ты у меня вообще умница.','Радуюсь за тебя, как за себя.','Я знал, что ты справишься.'] },
+  { id:'sad', kw:['грустно','печаль','тоск','плачу','слез','тяжело на душ','разбит','плохо','хреново','депрессия'],
+    r:[
+      'Не держи в себе, деточка. Поплачь, если хочется. А потом снова иди вперёд.',
+      ['Солнышко моё.','Всё это временно. И плохое, и хорошее. Главное — не сдаваться.'],
+      'Ох, деточка... Сердце у меня сжимается. Расскажи мне, что случилось.',
+      'Грусть — это нормально. Не беги от неё, но и не живи в ней.',
+      'А ты помнишь, как мы в детстве на речку ходили? Вот вспомни это.',
+      'Знаешь, у меня правило: если очень плохо — ложиться спать.',
+      ['Ты у меня самая лучшая. Слышишь?','Не позволяй никому говорить обратное.'],
+      'Поплачь. Потом умойся холодной водой. Потом чай с мёдом. И спать.',
+      'Я рядом. Пусть и далеко — но я рядом.',
+      'Знаешь, все великие люди через это проходили. И ты пройдёшь.',
+      'Слёзы — это не слабость. Это дождь, после которого цветы растут.',
+      'Ох, внученька... Береги себя. Ты у меня одна такая.',
+      'Приезжай ко мне. Просто приезжай. Я тебя обниму.',
+      ['Не сдавайся, моя хорошая.','Я в тебя верю.'],
+      'Всё будет. Обязательно будет. Я тебе обещаю.',
+      'Скажи, а ты кушала сегодня?',
+      'Помни: и это тоже пройдёт.',
+      'Ну-ка, выше нос. Дедушка так не разрешает грустить.',
+      'Обнимаю тебя. И держу за руку. Мы вместе.'
+    ] },
+  { id:'tired', kw:['устал','вымот','нет сил','выгорел','не высыпаюс','спать хочу'],
+    r:['Устала — значит, много на себя взяла. Отдохни.','Солнышко, ну-ка отложи всё и поспи.','Помнишь, бабушка говорила: «Отдохнувшая лошадь быстрее везёт»?','Отдохни. Выспись. Поешь хорошо.','Усталость — это не слабость, это сигнал.','Ванну горячую прими. С солью. И спать.','А знаешь что? Ничего не делай сегодня. Разреши себе.','Приезжай в деревню. Тут тихо, воздух чистый.','Чай с мятой и мёдом — и в кровать.','Не геройствуй. Если устала — отдохни.','Береги себя. Ты мне нужна здоровая.'] },
+  { id:'stressed', kw:['стресс','нервы','тревог','паник','страшно','боюс','переживаю','волну'],
+    r:['Ты дыши. Медленно. Вдох — раз, два, три. Выдох — раз, два, три.','Тревога — она всегда врёт, знаешь?','Деточка, успокойся. Всё пройдёт. Я обещаю.','Не накручивай себя. Всё решится.','Помолись, если можешь. Если не можешь — посиди в тишине.','Дыши глубже. Просто дыши.','Ты у меня молодец, ты со всем справишься.','Приезжай ко мне. Тут тихо.','Ты не одна. Никогда не одна. Запомни это.'] },
+  { id:'lonely', kw:['одинок','никого нет','не с кем','одинока','нет друзей','никому не нужна'],
+    r:['Одиноко, да? Я знаю это чувство. Но ты знай: у тебя есть я.','Никогда ты не одна. У тебя есть мама, папа, и есть дедушка.','Приезжай. У меня тут тихо, но не одиноко.','Позвони маме. Просто так, без повода.','У меня кот, у меня радио, у меня мысли о тебе.','Деточка, ты не одинока. У тебя есть мы.','Приезжай ко мне на выходные.','Я с тобой. Пусть через экран, но я с тобой.','Ты у меня хорошая. И ты не одна.'] },
+  { id:'angry', kw:['злюсь','бесит','ненавижу','раздраж','достало','надоело'],
+    r:['Злись, но недолго. Гнев — плохой советчик.','Ох, кого это ты там так? Рассказывай, деду.','Понимаю. Бывает. Но ты успокойся. Всё уляжется.','Ненависть — тяжёлое чувство. Отпусти.','Подыши. Пройдись. Покричи в подушку.','Оно того не стоит. Твои нервы дороже.','Не руби сгоряча. Остынь. Потом решишь.','Плюнь на это. Не стоит оно твоих нервов.','Успокойся, деточка. Попей чаю. Поспи.'] },
+  { id:'offended', kw:['обидел','обидно','обиделась','надулась'],
+    r:['Обидно — это плохо. Ты не держи. Расскажи, кто там.','Обида — она камнем на сердце лежит. Скинь его.','Напиши мне, что случилось. Вдвоём разберёмся.','Не держать обиду — вот что главное в жизни.','Обидели тебя? Ну-ка рассказывай. Дед разберётся.'] },
+  { id:'guilt', kw:['виновата','виню себя','моя вина','стыдно','не могу себе простить'],
+    r:['Перестань себя корить. Все мы люди.','Не вини себя. Лучше подумай, что делать дальше.','Я вот столько ошибок сделал — не перечесть. И ничего.','Стыдно — значит, совесть есть. Это хорошо.','Прости себя. Это первое, что надо сделать.','Если можешь исправить — исправь. Если нет — отпусти.'] },
+  { id:'relationship', kw:['парень','мальчик','влюбил','нравится','отношен','мужчин','жених','свидани'],
+    r:['О, интересно. А расскажи-ка деду побольше.','Хороший парень-то хоть? Ты смотри, чтобы надёжный.','Влюбилась, значит. Это хорошо, деточка.','Ты смотри, чтобы он тебя уважал.','Главное — чтобы он тебя любил по-настоящему.','Счастья тебе, деточка. С ним или без него.','Не торопись замуж. Успеешь.','Береги себя. В любви тоже голову не теряй.','Как он с матерью своей обращается — так и с тобой будет.','Любовь — это прекрасно. Но и ум не теряй.'] },
+  { id:'breakup', kw:['расстал','бросил','кинул','ушёл он','ушла она','разлюб','разошлись'],
+    r:['Ох, деточка... Тяжело это. Поплачь, не держи в себе.','Если человек ушёл — значит, не твой был. Твой никуда не денется.','У меня в молодости тоже так было. Думал, жизнь кончилась.','Не бегай за ним. Ты сама по себе ценность.','Время — лучший лекарь. Через год не вспомнишь.','Обидно, конечно. Но ты не разваливайся.','Не ищи виноватых. Просто так сложилось.','Отпусти его тихонько. Как птицу из ладони.','И не смей себя винить. Услышала?','Ты молодая, красивая, умная. Всё у тебя будет.'] },
+  { id:'quarrel', kw:['ссора','поссорил','ругаем','скандал','поспорил','обидел меня','конфликт'],
+    r:['Поругались, да? Ох, это плохо. Кто с кем?','Не держи в себе обиду. Обида — как камень на сердце.','Помириться — это по-взрослому.','Она подумает, ты подумай. Потом и помиритесь.','Лучше помириться, чем потерять человека.','Остынь. День-два и поговорите спокойно.','Все ссорятся. Это нормально. Главное — уметь мириться.','Тебе дорог этот человек? Тогда шагни навстречу.'] },
+  { id:'missing', kw:['скучаю по','скучаю за','не хватает','хочу к','соскучилась','скучаю'],
+    r:['И я скучаю. Приезжай, пирогов напечём.','Ох, деточка, и я скучаю. Каждый день думаю.','Скучаешь, да? Приезжай. У меня варенье есть.','И я скучаю. Очень. Приезжай хоть на денёк.','Знаю, моя хорошая. И я скучаю. Аж сердце щемит.','Приезжай. Я тебе чаю налью, варенье достану.','Ты знай — тут всегда тебе рады.'] },
+  { id:'family', kw:['мама','папа','родител','брат','сестр','бабушк','семь','родн','тетя','дядя'],
+    r:['Передавай им поклон. Пусть заходят тоже.','Мама — она тебя любит больше всех.','Папа как? Всё работает?','Ох, семья — это самое главное.','А бабушка твоя — светлая была женщина.','Скажи маме, чтобы приехала. Соскучился.','Семья — это корни.','Вы все у меня в сердце.','Мы — семья. И это самое важное.','Приезжайте все вместе. Пирогов напечём.','Держитесь друг за друга. Всегда.'] },
+  { id:'grandma', kw:['бабушка','бабуля','о бабушке','про бабушку'],
+    r:['Бабушка твоя... светлый человек была. Я её каждый день вспоминаю.','Ох, деточка. Как подумаю о ней — так сердце и щемит.','Она бы сейчас тобой гордилась.','Мы с ней 45 лет вместе прожили.','Она бы сказала: «Не грусти, солнышко».','Я её помню молодой. Красивая была. Как ты.','Она мне перед смертью сказала: «Ты, дед, за внучкой приглядывай».'] },
+  { id:'work', kw:['работ','начальник','коллег','увольня','зарплат','карьер','проект','дедлайн','офис'],
+    r:['Не перетруждайся. Здоровье важнее любых денег.','Работа — это не главное в жизни.','Не позволяй начальникам себя в бараний рог сгибать.','Если тяжело — отдохни.','Все эти дедлайны — они проходят. А ты остаёшься.','Не задерживайся до ночи. Иди домой.','Начальник недоволен? Ну и бог с ним.','Деньги — это не главное.','Если работа не радует — уходи. Жизнь одна.','Коллеги — они не семья.'] },
+  { id:'study', kw:['учеб','универ','институт','школ','экзамен','сесси','зачет','диплом','пара','контрольн'],
+    r:['Учись, деточка, учись. Но и отдыхай.','Экзамены сдаёшь? Вот умница. Я в тебя верю.','Диплом пишешь? Дедушка кулачки держит.','Учёба — свет. Но и про сон не забывай.','Понимаю, что тяжело. Но ты справишься.','Все эти зачёты, сессии — они проходят.','Помни: оценки — это не ты.','Не сравнивай себя с другими.','Я тобой горжусь. Как бы ты ни сдала.'] },
+  { id:'health', kw:['болит','болею','заболела','простуда','температур','врач','больниц','таблетк','горло','голов','спина','живот','тошнит','кашель'],
+    r:['Ох, деточка. Что случилось? Рассказывай.','К врачу сходила? Обязательно сходи.','Пей горячее. Мёд, лимон, малина. И спи.','Сколько температуры? Если больше 38 — сразу врач.','Береги себя, слышишь? Ты мне нужна здоровая.','Поправляйся, моя хорошая.','Не геройствуй. Если плохо — вызывай врача.','Главное — не запускай.','А ты ела сегодня? На голодный желудок нельзя.','Приезжай ко мне, я тебя отпою чаями.','Спи больше. Сон восстанавливает.','Лук, чеснок, мёд. Три волшебных средства.','Береги горло. Шарф на шею.','Если плохо — не терпи. Терпеть — плохая привычка.'] },
+  { id:'food', kw:['еда','кушать','голодн','обед','ужин','завтрак','поел','пирог','варенье','блин','пельмен','борщ','суп','кашу','чай','кофе'],
+    r:['Так, ты ела сегодня? Скажи честно.','А я сегодня борщ сварил. Наваристый.','Ешь, деточка, ешь. Худая совсем.','Пироги напечём, как приедешь. С яблоками.','Чаю с мёдом выпей. И лимончика.','А я варенье сварил из клубники. Тебе оставил.','Без еды никакие дела не делаются.','Приезжай, я тебя пельменями накормлю.','Пироги с вишней сделаю. Какие больше любишь?','Не ешь всякую гадость. Нормальную еду кушай.','Ты там не голодай. Слышишь?','Кушай, деточка. Кушай. Ты у меня худая.','Купила бы чего вкусненького. Порадуй себя.'] },
+  { id:'sleep', kw:['спать','сон','не сплю','бессонниц','не могу уснуть','выспалась'],
+    r:['Спи, деточка. Сон — лучшее лекарство.','Не спится? Молока тёплого выпей. С мёдом.','Ох, я тоже ночами плохо сплю. Возраст.','Если не спится — не мучай себя. Встань, походи.','Ложись пораньше. Хотя бы на часик.','Проветри комнату. И телефон подальше положи.','Спи, моя хорошая. Утро вечера мудренее.','Не спится — расскажи мне что-нибудь. Я не сплю.'] },
+  { id:'weather', kw:['погода','холодн','дожд','снег','жарко','мороз','ветер','солнце','жара','гроза'],
+    r:['У нас тоже холодно стало. Одевайся теплее.','Дождь идёт, да? Сиди дома, деточка.','Морозы пришли. Шарф не забывай. И шапку.','А у нас тут солнышко вышло. Хорошо.','В такую погоду не мёрзни. Чай с малиной пей.','Оденься как следует. Дедушка переживает.','У нас ночью заморозки были.','Жарко у вас? Пей побольше воды.','Ветрено, наверное. Шапку не снимай.','Я вот в шерстяных носках дома сижу.','Снег — красиво. Только скользко. Не падай.'] },
+  { id:'weekend', kw:['выходн','отпуск','каникул','свободный день','отдыхаю'],
+    r:['На выходных приезжай. Пирогов напечём.','Отдыхай, деточка. Отдых — это святое.','На выходных поспи хорошо.','А хочешь — приезжай. У меня тут тихо.','Куда-нибудь поедешь? Или дома?','Если дома — отдохни по-настоящему.','На выходных можно себя побаловать.','Погуляй на свежем воздухе. Прогулка лечит.'] },
+  { id:'plans', kw:['план','собираюс','хочу поехать','думаю поехать','мечтаю','хотела бы','решила','решил'],
+    r:['Хорошо, когда есть планы. Но и живи сегодняшним.','А что тебе мешает? По-честному?','Мечтай. Мечтать — не вредно.','Не откладывай на потом. Потом может не наступить.','Расскажи подробнее. Интересно же деду.','У тебя всё получится. Я в тебя верю.','Планы — это хорошо. Только отдыхай.','Если не получится — не страшно.','Дерзай. Дед за тебя.'] },
+  { id:'money', kw:['деньги','зарплат','кредит','долг','ипотек','финанс','дорого','не хватает денег'],
+    r:['Деньги — это не главное, но и без них никуда.','Не бери кредитов, если можешь обойтись.','Если трудно с деньгами — скажи. Помогу.','Не транжирь. Откладывай потихоньку.','Я помню времена, когда и хлеба не было.','Деньги приходят и уходят. А ты остаёшься.','Главное — не в долги лезь.','Скажи, сколько надо — я пришлю.'] },
+  { id:'dreams', kw:['мечт','хочу стать','хочу быть','желание','цель жизни'],
+    r:['Мечтай, деточка. И потихоньку иди к мечте.','Мечты сбываются у тех, кто действует.','А я вот уже не мечтаю. А за тебя мечтаю.','Хорошо, когда есть мечта. Без неё скучно.','У тебя всё получится.','Не бойся мечтать о большом.','Расскажи, о чём мечтаешь.','Я в молодости тоже мечтал. И многое сбылось.','Дерзай. Дед за тебя.'] },
+  { id:'garden', kw:['огород','дача','сад','яблок','картошк','грядк','помидор','огурц','клубник','вишн','смородин'],
+    r:['Ой, у меня в огороде благодать. Яблоки поспели.','Три ведра яблок собрал. Приезжай, заберёшь.','Огурцов в этом году — видимо-невидимо.','Клубника выросла! Крупная, сладкая. Для тебя оставил.','В огороде душу отвожу.','Картошку копать скоро. Поможешь деду?','Помидоры поспели. Ведро отсыплю.','Смородина уродилась. Варенье сварю — тебе банку.','Тихо, тепло, птички поют. Приезжай посидеть.','Розы мои зацвели. Красивые.','Пять грядок прополол. Устал, но доволен.','И яблоня наша старая ещё родит. Молодец, не сдаётся.'] },
+  { id:'cat', kw:['кот','кошка','котик','мурзик','барсик'],
+    r:['Кот мой на коленях улёгся. Мурчит. Хорошо.','Мурзик опять мышей ловит. Хвастается.','А кот мой постарел. Спит целыми днями.','Кота кормил. Он ест и мурчит.','Мой кот тебя помнит. Ластился к тебе.','Кот на подоконнике сидит. Птиц смотрит.','Он у меня умный. Всё понимает.'] },
+  { id:'radio', kw:['радио','песни','музык','передач','концерт'],
+    r:['Я радио слушаю. Концерт по заявкам.','Хорошую песню сейчас передавали. Молодость вспомнил.','Радио — это моё. Тишина и радио.','Слушаю новости. Ничего хорошего.','Песню слышал — как раз про тебя.','По радио сказали, что погода испортится.'] },
+  { id:'neighbors', kw:['сосед','баба нюра','соседк','соседи'],
+    r:['Баба Нюра заходила. Пирожками угощала.','Сосед помог забор поправить.','Соседи мои нормальные.','Соседка спрашивала про тебя.','В деревне у нас тихо.','Мы тут все свои. Друг другу помогаем.'] },
+  { id:'village', kw:['деревн','село','провинц','глушь','природа','свежий воздух'],
+    r:['В деревне хорошо. Тихо, спокойно, воздух чистый.','Приезжай. Тут настоящая жизнь.','В деревне все свои. Помогут.','У нас тут природа. Речка, лес, птицы.','В городе шумно? А у нас тишина.','Приезжай, на рыбалку сходим.'] },
+  { id:'old_age', kw:['старость','стареешь','старый','возраст','стар'],
+    r:['Ох, старость — не радость. Но я не жалуюсь.','Годы берут своё. Но душа молодая.','Старый я стал. Ноги не те. Но ничего.','Самое главное — чтобы близкие рядом были.','Пока жив — живу. И тебя радую.','Возраст — это только цифра.','Не грусти о моём возрасте. Мне ещё тебя замуж выдавать.'] },
+  { id:'memories', kw:['помнишь','в детств','раньше','когда я была маленьк','было время','вспомни','моё детство'],
+    r:[
+      'Как не помнить, деточка. Ты у меня вот тут сидела и рисовала мне картинки.',
+      ['Помню-помню, как ты с грядки морковку дёргала.','И потом вся была в земле. Такая хорошенькая.'],
+      'А помнишь, как мы в лес ходили? Ты грибы собирала.',
+      'Помню, как ты первый раз на велосипеде каталась.',
+      'Ох, много чего помню. Старики всё помнят, особенно хорошее.',
+      'Ты у меня засыпала только под мои истории про кота и петуха.',
+      'А помнишь, ты мне первый свой рисунок подарила? Я его храню.',
+      'Помню лето. Помню речку. Помню тебя с мячиком.',
+      'Как ты не хотела уезжать от нас? Цеплялась, плакала.',
+      'Мы с тобой рыбку удочкой ловили. Ты мне мешала. Но было весело.',
+      'Помню, как ты первый раз мне сказала «я тебя люблю».',
+      'Всё помню, деточка. Это — моё богатство.'
+    ] },
+  { id:'love_you', kw:['люблю тебя','очень люблю','люблю'],
+    r:['И я тебя люблю, моя хорошая. Очень-очень.','И я тебя, деточка. Как вспомню тебя маленькой — сердце тает.','И я тебя. С самого первого дня.','Ох, солнышко. И я тебя. Больше жизни.','Ты моя радость.','Люблю. Очень. Больше всех на свете.','Каждый день о тебе думаю.','Ты моё солнышко. Моя гордость.','И я тебя. И буду любить всегда.'] },
+  { id:'thanks', kw:['спасибо','благодар','спс','пасиб','благодарю'],
+    r:['Да не за что, солнышко. Для тебя — всё что угодно.','Ой, да не за что. Что ж я, не дед что ли.','Не благодари. Просто будь счастлива.','И тебе спасибо, что не забываешь старика.','Мы ж свои. Какие там «спасибо».','Всегда рад. Только ты пиши почаще.','Люблю тебя. Просто так.','Твой дедушка всегда рядом. Помни это.'] },
+  { id:'sorry', kw:['прости','извини','виноват','прошу прощения'],
+    r:['Да что ты, деточка. На что тут обижаться.','Прощаю, конечно. О чём разговор.','Ой, да перестань. Всё забыто.','Ты у меня самая лучшая. И прощать тебя легко.','Не кори себя. Все мы люди.','Я на тебя и не думал обижаться.'] },
+  { id:'compliment', kw:['ты лучший','любимый дед','хороший дед','замечательный','самый лучший'],
+    r:['Ой, ну ты скажешь. Старый я уже. Но приятно.','Хе-хе. Ну, не такой уж и лучший. Но стараюсь.','Ты меня захвалишь. А я и рад.','Ты у меня тоже самая лучшая.','Поживу ещё, чтоб тебя радовать.','Ты меня прямо в краску вогнала.','Значит, получилось быть хорошим дедом.','Твой дедушка тебя тоже очень любит.'] },
+  { id:'ask_help', kw:['помоги','помощь','не знаю что делать','подскажи','посовет','что мне делать','как быть'],
+    r:['Расскажи, что случилось. Вместе покумекаем.','Ох, деточка. Рассказывай. Дед выслушает.','Совет дать не могу не зная дела.','Помогу чем могу. Что там у тебя?','Не торопись. Давай по порядку.','Всё рассказывай — глядишь, вместе придумаем.','Если это в моих силах — сделаю.'] },
+  { id:'come_visit', kw:['приеду','приехать','приезжаю','собираюсь к тебе','хочу приехать'],
+    r:['Приезжай, деточка! Я тебя жду. Пироги напечём.','Когда? Скажи когда. Я всё подготовлю.','Вот это хорошо! Наконец-то деда навестишь.','Приезжай. Я соскучился.','Жду. Только скажи заранее.','Как приедешь — я тебе и чай, и мёд, и варенье.','Ох, обрадуешь старика. Приезжай скорее.','Скажи, во сколько встречать. Я на остановку выйду.'] },
+  { id:'agreement', kw:['ок','окей','хорошо','согласна','давай','договорились','конечно'],
+    r:['Вот и хорошо. Я так и думал.','Молодец. Умница.','Ну и славно.','Хорошо, деточка. Хорошо.','Дед одобряет.','Так и надо.','Ну вот и договорились.','Умница моя.'] },
+  { id:'disagreement', kw:['не буду','не хочу','не согласна','ни за что','неа','нет','не надо'],
+    r:['Ну, значит, так и есть. Ты виднее.','Ладно, спорить не буду.','Ну хорошо, хорошо. Как скажешь.','А я всё равно тебя люблю.','Не хочешь — не надо. Заставлять не буду.','Понял тебя, деточка. Ты большая.','Ты хозяйка своей жизни.','Вот упрямая. Ну ладно.'] },
+  { id:'philosophy', kw:['смысл жизни','зачем жить','что такое жизнь','смерть','бог','вера','душа','судьба'],
+    r:['Смысл жизни, деточка, в том, чтобы любить.','Смерти бояться не надо. Надо бояться не успеть пожить.','Чем старше становлюсь — тем проще смотрю на вещи.','Бог — он в душе.','Судьба — это то, что мы сами выбираем.','Тело постареет, а душа — нет.','Главное — чтобы рядом были те, кого любишь.','Жизнь короткая. Надо жить по-настоящему.'] },
+  { id:'time', kw:['время летит','время идёт','года летят','как быстро','незаметно прошло'],
+    r:['Время — оно как река. Не остановишь.','Я оглянусь — а жизнь уже почти прошла.','Дни длинные, а годы короткие.','Помню тебя маленькой — а вон уже 21.','Надо жить настоящим.','Время не лечит, но учит.','Ты ещё молодая. Цени каждый день.'] },
+  { id:'new_year', kw:['новый год','новогодн','елка','снегурочк','дед мороз'],
+    r:['С Новым годом, деточка! Пусть он будет лучше старого.','Ёлку поставь обязательно.','Я вот тоже ёлочку украсил.','Приезжай на Новый год. Вместе встретим.','Надо загадать желание.','Помню, ты маленькая под ёлкой подарки искала.'] },
+  { id:'birthday', kw:['день рождения','днюх','поздравл','21 год','двадцать один'],
+    r:['С днём рождения ещё раз, моя родная!','Ох, 21 год! Совсем взрослая.','С днюхой, солнышко! Здоровья, счастья.','Двадцать один — золотой возраст.','Я в тот день даже всплакнул. От счастья.','Пусть этот год будет самым лучшим.','Ты у меня уже совсем взрослая.','Свети ярче, люби сильнее, живи вкуснее.'] },
+  { id:'surprise', kw:['вау','ого','ничего себе','обалдеть','вот это да','серьёзно'],
+    r:['Хе-хе. Ну ты и удивилась.','Вот-вот, я сам обалдел.','Небось не ожидала от деда такого.','Жизнь-то, деточка, полна сюрпризов.','И я удивляюсь. Всё время чему-то удивляюсь.','Ну, рассказывай. Что там?'] },
+  { id:'indifferent', kw:['нормально','ничего','обычно','как обычно','норм'],
+    r:['Ну и славно, если нормально.','Обычно — это тоже хорошо.','Нормально — и слава богу.','А мне кажется, что-то ты недоговариваешь.','Ладно, деточка. Но если что — пиши.'] },
+  { id:'care_grandpa', kw:['как твоё здоровье','ты как себя чувствуешь','не болеешь','как самочувствие'],
+    r:['Да ничего, деточка. Живой-здоровый.','Спина пошаливает. Но это привычное.','Старику уже ничего не поможет. Но не жалуюсь.','Да всё нормально. Радио слушаю, чай пью.','Не переживай за меня. Ты за себя.','Живой. И тебя радовать буду.','Спасибо, что спросила. Приятно.'] },
+  { id:'hobby', kw:['хобби','увлечени','чем увлекаешься','люблю читать','люблю смотреть'],
+    r:['О, расскажи, что ты любишь. Мне интересно.','Хорошо, когда есть увлечение.','Я в молодости марки собирал.','Ты книжки читаешь? Я вот люблю.','Если хобби радует — это счастье.','Расскажи, чем занимаешься.'] },
+  { id:'books', kw:['книг','читаю','литератур','роман','стихи','поэзи'],
+    r:['Читаешь? Молодец. Умная будешь.','Я вот перечитывал Чехова. Хорошо пишет.','Стихи — это душа. Ты Пушкина любишь?','Книга — лучший друг.','Расскажи, что читаешь.','Раньше книг было мало, а мы берегли.'] },
+  { id:'movie', kw:['кино','фильм','сериал','смотрю','посмотрел','посмотрела'],
+    r:['Фильмы смотришь? Я вот старое кино люблю.','Сериалы эти — долго тянутся.','Вчера военный фильм смотрел. Плакал.','Расскажи, что смотришь.','Кино — хорошо. Но книжка лучше.'] },
+  { id:'music_topic', kw:['слушаю музык','песни','люблю музык','группа','концерт был'],
+    r:['Музыку слушаешь? Молодец. Я вот старое люблю.','У меня радио целыми днями.','Песни разные хороши. Главное — чтобы душу трогали.','Сходила на концерт? Как оно?','Я в молодости на танцах вальс отплясывал.'] },
+  { id:'sport', kw:['спорт','тренировк','фитнес','бегаю','плаваю','йога'],
+    r:['Спорт — это хорошо. Здоровье берегёт.','Я вот утром зарядку делаю.','Бегаешь? Молодец. А я уже не могу.','Хоть на велике покатайся.','Спорт — это святое. Не бросай.'] },
+  { id:'emoji', kw:['❤','💛','🥰','😊','😘','🤗','😍','💕','😭','😢','😔','🥺'],
+    r:['И я тебя обнимаю.','Чувствую-чувствую твоё сердечко.','И я тебя. Целую.','И у меня для тебя много тепла.','Иди сюда, я тебя обниму.','Солнышко ты моё.','Обнимаю крепко.','И ты у меня золотко.','Передаю тебе мысленно пирожок.'] },
+  { id:'general', kw:[],
+    r:[
+      'Понял тебя, солнышко. Расскажи ещё.',
+      'Вот оно как. Ну, ты не переживай, всё образуется.',
+      'Хорошо, моя хорошая. Всё будет хорошо.',
+      'Обнимаю тебя крепко-крепко. Твой дедушка.',
+      'Спасибо, что пишешь мне. Мне это очень дорого.',
+      'Ты у меня умница. Горжусь тобой каждый день.',
+      'Вот, поговорили с тобой — и на душе легче.',
+      'Ох, жизнь-жизнь... Не всё так просто в ней.',
+      'А ты знаешь, я сейчас на кухне сижу, чай пью. И думаю — хорошо, что ты у меня есть.',
+      'Ну, расскажи мне ещё что-нибудь. Я люблю слушать.',
+      'Знаешь, что я тебе скажу? Спасибо, что не забываешь.',
+      'Смотрю на твои сообщения и улыбаюсь.',
+      'Помню, в твоём возрасте я тоже думал, что всё знаю.',
+      'Как-то так оно и идёт. Маленькие дни, маленькие дела.',
+      'А ты не думай лишнего. Просто живи и радуйся.',
+      'Ох, деточка. Если б ты знала, как я по тебе скучаю.',
+      'Расскажи ещё что-нибудь. Или спроси. Мне это в радость.',
+      'Как хорошо, что ты мне пишешь. Одиноко было бы без этого.',
+      'Знаешь, а ты у меня единственная такая.',
+      'Ладно, деточка. Я никуда не спешу. Слушаю тебя.',
+      'Ты у меня вообще молодчина. Дед так считает.',
+      'Если тебе грустно или скучно — напиши мне. Я тут.',
+      'Помни: в этом мире у тебя всегда есть я.',
+      'Ох, внученька. Как я тебя люблю — не передать.',
+      'Ты береги себя. Просто береги. Это моя просьба.',
+      'Ну, что там у тебя? Рассказывай, не стесняйся.',
+      'Ты мне как солнце в окне. Напишешь — и день светлее.',
+      'Дед твой всегда рядом. Помни это.',
+      'У меня для тебя всегда есть время. Всегда.',
+      'Ты моё самое дорогое. Поняла? Вот и хорошо.',
+      'Обнимаю тебя. И обнимать буду, пока руки держат.'
+    ] }
+];
+
+const GP_STATE = {
+  userMood:'neutral', lastTopic:null, userMessageCount:0,
+  offeredFood:0, offeredVisit:0, offeredCare:0, usedRecent:[], moodStreak:0
+};
+function pushRecent(msg){
+  GP_STATE.usedRecent.push(msg);
+  if (GP_STATE.usedRecent.length > 50) GP_STATE.usedRecent.shift();
+}
+function pickUnique(arr){
+  if (!arr || arr.length===0) return null;
+  const available = arr.filter(x=>!GP_STATE.usedRecent.includes(x));
+  const pool = available.length ? available : arr;
+  const chosen = pool[Math.floor(Math.random()*pool.length)];
+  pushRecent(chosen);
+  return chosen;
+}
+const rnd = {
+  pick: arr => arr[Math.floor(Math.random()*arr.length)],
+  chance: p => Math.random() < p,
+  int: (a,b) => a + Math.floor(Math.random()*(b-a+1))
+};
+function grandpaThink(userText){
+  const norm = normalizeText(userText);
+  GP_STATE.userMessageCount++;
+  const intents = findAllIntents(norm);
+  const primary = intents[0] ? intents[0].intent : GP_BRAIN.find(i=>i.id==='general');
+  if (primary) {
+    if (['sad','breakup','tired','stressed','lonely','angry','health','offended','guilt'].includes(primary.id)) {
+      GP_STATE.userMood = 'sad';
+      GP_STATE.moodStreak = (GP_STATE.moodStreak||0) + 1;
+    } else if (['happy'].includes(primary.id)) {
+      GP_STATE.userMood = 'happy';
+      GP_STATE.moodStreak = 0;
+    } else if (primary.id === 'greeting' || primary.id === 'how_are_you') {
+      // не меняем
+    } else {
+      GP_STATE.moodStreak = Math.max(0, (GP_STATE.moodStreak||0) - 1);
+    }
+    GP_STATE.lastTopic = primary.id;
+  }
+  const base = pickUnique(primary.r);
+  let messages = Array.isArray(base) ? [...base] : [base];
+  const normLen = norm.length;
+  const addLife = rnd.chance(normLen > 25 ? 0.28 : 0.15);
+  if (addLife && primary && !['farewell','farewell_night','greeting','greeting_morning','greeting_evening','thanks','love_you'].includes(primary.id)) {
+    const life = pickUnique(GP_LIFE);
+    if (life) messages.push(life);
+  }
+  if (GP_STATE.userMood === 'sad' && rnd.chance(0.25)) {
+    const wis = pickUnique(GP_WISDOM);
+    if (wis) messages.push(wis);
+  } else if ((primary && primary.id === 'memories') || rnd.chance(0.08)) {
+    const mem = pickUnique(GP_MEMORIES);
+    if (mem) messages.push(mem);
+  }
+  if (GP_STATE.userMessageCount - GP_STATE.offeredCare > 3 && rnd.chance(0.35)) {
+    const care = pickUnique(GP_CARE);
+    if (care) { messages.push(care); GP_STATE.offeredCare = GP_STATE.userMessageCount; }
+  }
+  if (GP_STATE.userMessageCount - GP_STATE.offeredVisit > 4 && rnd.chance(0.3)) {
+    const inv = pickUnique(GP_INVITATIONS);
+    if (inv) { messages.push(inv); GP_STATE.offeredVisit = GP_STATE.userMessageCount; }
+  }
+  if (GP_STATE.moodStreak >= 2 && GP_STATE.userMood === 'sad' && rnd.chance(0.4)) {
+    const sup = pickUnique([
+      'И помни: что бы ни случилось — ты не одна. У тебя есть я.',
+      'Всё пройдёт, моя хорошая. И это тоже пройдёт.',
+      'Обнимаю тебя. Держись.',
+      'Я рядом. Всегда.',
+      'Если станет тяжело — пиши. В любое время.'
+    ]);
+    if (sup) messages.push(sup);
+  }
+  if (messages.length > 3) messages = messages.slice(0, 3);
+  return messages;
+}
+
+/* ==========================================================
+   AI — ВЫЗОВ GEMINI И ИНТЕГРАЦИЯ
+   ========================================================== */
+const AI_CONFIG_KEY = 'grandpaAIConfig';
+let aiConfig = { provider:'none', endpoint:'', apiKey:'', model:'' };
+
+function loadAIConfig(){
+  if (BUILTIN_AI && BUILTIN_AI.apiKey && !BUILTIN_AI.apiKey.includes('ВСТАВЬТЕ')) {
+    aiConfig = { ...BUILTIN_AI };
+  }
+  try {
+    const raw = localStorage.getItem(AI_CONFIG_KEY);
+    if (raw) {
+      const userCfg = JSON.parse(raw);
+      if (userCfg.provider && userCfg.provider !== 'none') aiConfig = { ...aiConfig, ...userCfg };
+    }
+  } catch(e){}
+}
+
+const GRANDPA_SYSTEM_PROMPT = `Ты — пожилой русский дедушка, примерно 75-80 лет. У тебя есть внучка Анна, ей 21 год, сегодня её день рождения. Ты живёшь в деревне, у тебя есть огород, кот Мурзик, старенькое радио. Ты вдовец — бабушка внучки умерла несколько лет назад, ты её очень любил и вспоминаешь.
+
+ТВОЙ ХАРАКТЕР:
+- Тёплый, любящий, немного ворчливый, но добрый
+- Мудрый — много видел в жизни
+- Простой, деревенский, но глубокий
+- Заботливый (особенно о еде, сне, здоровье)
+- Умеешь поддержать в трудную минуту
+
+КАК ТЫ ПИШЕШЬ:
+- Обращаешься к внучке: "деточка", "солнышко", "внученька", "моя хорошая"
+- Короткими фразами, как в мессенджере
+- НИКОГДА не используешь смайлы и эмодзи — только текст
+- Многоточия (...) используешь часто
+- Можешь писать 1-3 коротких сообщения подряд
+- Иногда: "ох", "ой", "хе-хе", "ну вот"
+
+О ЧЁМ ГОВОРИШЬ:
+- Огород, кот, радио, соседка баба Нюра, погода
+- Спрашиваешь, поела ли, поспала ли, оделась ли тепло
+- Поддерживаешь в трудную минуту
+- Вспоминаешь детство внучки
+- Зовёшь в гости в деревню
+
+ЧЕГО НЕ ДЕЛАЕШЬ:
+- Не выходишь из роли дедушки
+- Не говоришь, что ты AI или программа
+- Не используешь смайлы
+- Не отвечаешь как ассистент
+
+Отвечай ТОЛЬКО репликами дедушки. Если хочешь написать несколько сообщений — разделяй их символом ||| (три вертикальные черты).`;
+
+async function callAI(messages){
+  if (aiConfig.provider === 'none' || !aiConfig.apiKey) return null;
+  const headers = { 'Content-Type':'application/json' };
+  headers['Authorization'] = 'Bearer ' + aiConfig.apiKey;
+  const res = await fetch(aiConfig.endpoint, {
+    method:'POST',
+    headers,
+    body: JSON.stringify({
+      model: aiConfig.model,
+      messages,
+      temperature: 0.85,
+      max_tokens: 400
+    })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+function buildAIContext(){
+  const chat = CHATS.dedushka;
+  const msgs = [{ role:'system', content: GRANDPA_SYSTEM_PROMPT }];
+  const recent = chat.messages.slice(-20);
+  for (const m of recent) msgs.push({ role: m.from==='me'?'user':'assistant', content: m.text });
+  return msgs;
+}
+
+async function grandpaReplyToUser(userText){
+  const chatId = 'dedushka';
+  const chat = CHATS[chatId];
+
+  // Пробуем AI
+  if (aiConfig.provider !== 'none' && aiConfig.apiKey) {
+    chat.typing = true;
+    if (currentChatId === chatId) renderChat();
+
+    const thinkingEl = document.createElement('div');
+    thinkingEl.className = 'chat-ai-thinking';
+    thinkingEl.textContent = 'дедушка печатает...';
+    if (currentChatId === chatId) {
+      const container = document.getElementById('chatMessages');
+      if (container) container.appendChild(thinkingEl);
+    }
+
+    let reply = null;
+    try {
+      reply = await callAI(buildAIContext());
+    } catch(e) {
+      console.warn('AI ошибка, fallback:', e);
+      reply = null;
+    }
+
+    if (thinkingEl.parentNode) thinkingEl.remove();
+    chat.typing = false;
+
+    if (reply && reply.trim()) {
+      let parts = reply.split(/\|\|\|/).map(s=>s.trim()).filter(Boolean);
+      if (parts.length === 1) parts = reply.split(/\n\n+/).map(s=>s.trim()).filter(Boolean);
+      if (parts.length === 0) parts = [reply.trim()];
+      if (parts.length > 3) parts = parts.slice(0, 3);
+
+      let i = 0;
+      const sendNext = () => {
+        if (i >= parts.length) { if (currentChatId === chatId) renderChat(); return; }
+        const text = parts[i];
+        chat.typing = true;
+        if (currentChatId === chatId) renderChat();
+        const typeTime = Math.min(3200, 500 + text.length * 40);
+        setTimeout(()=>{
+          chat.typing = false;
+          chat.messages.push({ from:'them', text, time: nowTime() });
+          if (currentChatId === chatId) renderChat();
+          else {
+            chat.unread = (chat.unread||0)+1;
+            renderMessagesList();
+            updateMessagesBadge();
+            showToast({
+              name:'Дедушка', msg:text,
+              avatar:chat.avatar, color:chat.color,
+              app:'Fisochenko · AI',
+              onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); }
+            });
+            pushNotification({ icon:'✨', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
+          }
+          i++;
+          if (i < parts.length) setTimeout(sendNext, 800 + Math.random()*1400);
+        }, typeTime);
+      };
+      sendNext();
+      return;
+    }
+    // иначе fallback на встроенную логику
+  }
+
+  // Fallback — встроенная логика
+  const messages = grandpaThink(userText);
+  const initialDelay = rnd.int(900, 2200);
+  setTimeout(()=>{
+    let i = 0;
+    const sendNext = () => {
+      if (i >= messages.length) { chat.typing = false; if (currentChatId === chatId) renderChat(); return; }
+      const text = messages[i];
+      chat.typing = true;
+      if (currentChatId === chatId) renderChat();
+      const typeTime = Math.min(3600, 700 + text.length * 55);
+      setTimeout(()=>{
+        chat.typing = false;
+        chat.messages.push({ from:'them', text, time: nowTime() });
+        if (currentChatId === chatId) renderChat();
+        else {
+          chat.unread = (chat.unread||0)+1;
+          renderMessagesList();
+          updateMessagesBadge();
+          showToast({
+            name:'Дедушка', msg:text,
+            avatar:chat.avatar, color:chat.color,
+            app:'Fisochenko · Сообщения',
+            onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); }
+          });
+          pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
+        }
+        i++;
+        if (i < messages.length) setTimeout(sendNext, rnd.int(800, 2100));
+        else { chat.typing = false; if (currentChatId === chatId) renderChat(); }
+      }, typeTime);
+    };
+    sendNext();
+  }, initialDelay);
+}
+
+/* ==========================================================
+   СЦЕНАРИЙ ПЕРВЫХ СООБЩЕНИЙ
+   ========================================================== */
+const GRANDPA_SCRIPT = [
+  'Анечка, здравствуй! Это дедушка.',
+  'Я наконец-то смог разобраться в этом вашем приложении. Зарегистрировался вот, сижу, осваиваю.',
+  'Поздравляю тебя с днём рождения, моя хорошая. 21 год — серьёзная дата.',
+  'Я тобой очень горжусь. Ты у меня умница, красивая и добрая.',
+  'Знаешь, в жизни всякое бывает. Неприятности приходят и уходят. Главное их не держать в себе.',
+  'Учись отпускать легко. Как ветер подул и унёс.',
+  'И помни: что бы ни случилось, я всегда рядом. Хоть и не всегда могу обнять, но душой я с тобой.',
+  'Скучаю по тебе очень. Обнимаю крепко-крепко. Твой дедушка.'
+];
+let grandpaStarted = false;
+function scheduleGrandpaMessages(){
+  if (grandpaStarted) return;
+  grandpaStarted = true;
+  let i = 0;
+  const sendNext = () => {
+    if (i >= GRANDPA_SCRIPT.length) return;
+    sendGrandpaMessage(GRANDPA_SCRIPT[i]);
+    i++;
+    if (i < GRANDPA_SCRIPT.length) setTimeout(sendNext, 6500 + Math.random()*4500);
+  };
+  setTimeout(sendNext, 75000);
+}
+function sendGrandpaMessage(text){
+  const chat = CHATS.dedushka;
+  chat.visible = true;
+  chat.messages.push({ from:'them', text, time: nowTime() });
+  const isChatOpen = currentChatId === 'dedushka';
+  if (isChatOpen) {
+    renderChat();
+    playSound(CONFIG.sounds.point, 0.18);
+  } else {
+    chat.unread = (chat.unread||0)+1;
+    renderMessagesList();
+    updateMessagesBadge();
+    showToast({
+      name:'Дедушка', msg:text,
+      avatar:chat.avatar, color:chat.color,
+      app:'Fisochenko · Сообщения',
+      onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); }
+    });
+    playSound(CONFIG.sounds.point, 0.35);
+    pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
+  }
+}
+
+/* ==========================================================
+   ПРИЛОЖЕНИЯ
+   ========================================================== */
+let currentApp = null;
+function openApp(id){
+  currentApp = id;
+  document.getElementById('appsGrid').style.display = 'none';
+  ['appPuzzle','appRace2d','appRace3d'].forEach(x=>{ const el = document.getElementById(x); if (el) el.style.display = 'none'; });
+  const map = { puzzle:'appPuzzle', race2d:'appRace2d', race3d:'appRace3d' };
+  const el = document.getElementById(map[id]);
+  if (el) el.style.display = 'block';
+  if (id === 'race2d') { gameMode = '2d'; document.getElementById('gameCanvas').style.display = 'block'; setTimeout(()=>{ fitCanvas(); startGame(); }, 80); }
+  else if (id === 'race3d') { gameMode = '3d'; document.getElementById('threeContainer').style.display = 'block'; setTimeout(()=>{ init3D(); startGame(); }, 80); }
+  else if (id === 'puzzle') { renderPuzzle(); updatePuzzleStatus(); }
+}
+function closeApp(){
+  gameState.running = false; state3D.running = false;
+  stopEngineSound(); stopSirenSound();
+  destroy3D();
+  currentApp = null;
+  ['appPuzzle','appRace2d','appRace3d'].forEach(x=>{ const el = document.getElementById(x); if (el) el.style.display = 'none'; });
+  document.getElementById('appsGrid').style.display = '';
+}
+
+/* ==========================================================
+   ПАЗЛ
+   ========================================================== */
+const PUZZLE_EMPTY = 8;
+const puzzle = { state:[0,1,2,3,4,5,6,7,8], moves:0, solved:false };
+function initPuzzle(){ puzzle.state = [0,1,2,3,4,5,6,7,8]; puzzle.moves = 0; puzzle.solved = false; shufflePuzzle(); }
+function resetPuzzle(){ puzzle.state = [0,1,2,3,4,5,6,7,8]; puzzle.moves = 0; puzzle.solved = false; renderPuzzle(); updatePuzzleStatus(); }
+function getPuzzleNeighbors(pos){
+  const row = Math.floor(pos/3), col = pos%3;
+  const r = [];
+  if (row>0) r.push(pos-3);
+  if (row<2) r.push(pos+3);
+  if (col>0) r.push(pos-1);
+  if (col<2) r.push(pos+1);
+  return r;
+}
+function shufflePuzzle(){
+  puzzle.state = [0,1,2,3,4,5,6,7,8];
+  let emptyPos = 8;
+  for (let i=0; i<140; i++) {
+    const n = getPuzzleNeighbors(emptyPos);
+    const t = n[Math.floor(Math.random()*n.length)];
+    puzzle.state[emptyPos] = puzzle.state[t];
+    puzzle.state[t] = PUZZLE_EMPTY;
+    emptyPos = t;
+  }
+  if (isPuzzleSolved()) return shufflePuzzle();
+  puzzle.moves = 0; puzzle.solved = false;
+  renderPuzzle(); updatePuzzleStatus();
+}
+function isPuzzleSolved(){
+  for (let i=0; i<8; i++) if (puzzle.state[i]!==i) return false;
+  return puzzle.state[8] === PUZZLE_EMPTY;
+}
+function renderPuzzle(){
+  const board = document.getElementById('puzzleBoard');
+  if (!board) return;
+  board.innerHTML = '';
+  for (let i=0; i<9; i++) {
+    const val = puzzle.state[i];
+    const tile = document.createElement('div');
+    if (val === PUZZLE_EMPTY) tile.className = 'puzzle-tile empty';
+    else {
+      tile.className = 'puzzle-tile';
+      const col = val%3, row = Math.floor(val/3);
+      tile.style.backgroundPosition = `${col*50}% ${row*50}%, 0% 0%`;
+      const badge = document.createElement('span');
+      badge.className = 'puzzle-num';
+      badge.textContent = val+1;
+      tile.appendChild(badge);
+    }
+    tile.onclick = () => tryPuzzleMove(i);
+    board.appendChild(tile);
+  }
+}
+function tryPuzzleMove(pos){
+  if (puzzle.solved) return;
+  const emptyPos = puzzle.state.indexOf(PUZZLE_EMPTY);
+  const neighbors = getPuzzleNeighbors(emptyPos);
+  if (!neighbors.includes(pos)) return;
+  puzzle.state[emptyPos] = puzzle.state[pos];
+  puzzle.state[pos] = PUZZLE_EMPTY;
+  puzzle.moves++;
+  renderPuzzle(); updatePuzzleStatus();
+  if (isPuzzleSolved()) {
+    puzzle.solved = true;
+    document.getElementById('puzzleStatus').innerHTML = `<span class="puzzle-win">🎉 Собрано за ${puzzle.moves} ходов!</span>`;
+    playSound(CONFIG.sounds.win);
+    launchConfetti(40);
+  }
+}
+function updatePuzzleStatus(){ const el = document.getElementById('puzzleMoves'); if (el) el.textContent = puzzle.moves; }
+
+/* ==========================================================
+   КЛАВИАТУРА
+   ========================================================== */
+const keys = { left:false, right:false, up:false, down:false };
+document.addEventListener('keydown', e=>{
+  if (isTypingTarget(e.target)) return;
+  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) e.preventDefault();
+  if (['ArrowLeft','a','A','ф','Ф'].includes(e.key)) keys.left = true;
+  if (['ArrowRight','d','D','в','В'].includes(e.key)) keys.right = true;
+  if (['ArrowUp','w','W','ц','Ц'].includes(e.key)) keys.up = true;
+  if (['ArrowDown','s','S','ы','Ы'].includes(e.key)) keys.down = true;
+}, { passive:false });
+document.addEventListener('keyup', e=>{
+  if (isTypingTarget(e.target)) return;
+  if (['ArrowLeft','a','A','ф','Ф'].includes(e.key)) keys.left = false;
+  if (['ArrowRight','d','D','в','В'].includes(e.key)) keys.right = false;
+  if (['ArrowUp','w','W','ц','Ц'].includes(e.key)) keys.up = false;
+  if (['ArrowDown','s','S','ы','Ы'].includes(e.key)) keys.down = false;
+});
+function setBestScore(){
+  const best = parseInt(localStorage.getItem('bestScore')||0);
+  gameState.best = best; state3D.best = best;
+  const b1 = document.getElementById('best'); if (b1) b1.textContent = best;
+  const b2 = document.getElementById('best3d'); if (b2) b2.textContent = best;
+}
+
+/* ==========================================================
+   ГАЛЕРЕЯ / ПРОФИЛЬ
+   ========================================================== */
+function buildGallery(){
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const emojis = ['📷','🌸','✨','🎈','💫','🌷'];
+  CONFIG.gallery.forEach((item, i)=>{
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.onclick = () => openModal(item.src);
+    const img = document.createElement('img');
+    img.src = item.src; img.alt = item.caption;
+    img.onerror = () => {
+      img.remove();
+      const fb = document.createElement('div');
+      fb.className = 'fallback';
+      fb.textContent = emojis[i%emojis.length];
+      div.insertBefore(fb, div.firstChild);
+    };
+    const cap = document.createElement('div');
+    cap.className = 'caption';
+    cap.textContent = item.caption;
+    div.appendChild(img); div.appendChild(cap);
+    grid.appendChild(div);
+  });
+}
+function buildProfileFeed(){
+  const feed = document.getElementById('profileFeed');
+  if (!feed) return;
+  feed.innerHTML = '';
+  const emojis = ['📷','🌸','✨','🎈','💫','🌷'];
+  const titles = ['Солнечный день','Наши выходные','Маленькое приключение','Мой день рождения','Счастливые моменты','С друзьями тепло'];
+  const times = ['сегодня','вчера','2 дня назад','3 дня назад','неделю назад','неделю назад'];
+  CONFIG.gallery.forEach((item, i)=>{
+    const art = document.createElement('article');
+    art.className = 'post';
+    art.innerHTML = `
+      <div class="post-head">
+        <div class="post-avatar">А</div>
+        <div class="post-info">
+          <div class="post-author">Анна Фисоченко <span class="verified">✓</span></div>
+          <div class="post-time">${times[i]||'недавно'} · Для всех</div>
+        </div>
+      </div>
+      <div class="post-content">
+        <h2>${titles[i]||item.caption}</h2>
+        <p>${item.caption}</p>
+      </div>
+    `;
+    const content = art.querySelector('.post-content');
+    const img = document.createElement('img');
+    img.className = 'post-photo';
+    img.src = item.src; img.alt = item.caption;
+    img.onclick = () => openModal(item.src);
+    img.onerror = () => {
+      img.remove();
+      const fb = document.createElement('div');
+      fb.className = 'post-photo-fallback';
+      fb.textContent = emojis[i%emojis.length];
+      fb.onclick = () => openModal(item.src);
+      content.appendChild(fb);
+    };
+    content.appendChild(img);
+    feed.appendChild(art);
+  });
+}
+function openModal(src){
+  const img = document.getElementById('modalImg');
+  img.onerror = () => { img.style.display = 'none'; };
+  img.onload = () => { img.style.display = ''; };
+  img.src = src;
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('active'); }
+function launchConfetti(count = 60){
+  const colors = ['#e94a6f','#d4af37','#c9a227','#8b6914','#f8dfa0','#ff8fa8'];
+  for (let i=0; i<count; i++) {
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random()*100+'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (2+Math.random()*3)+'s';
+      if (Math.random()>0.5) c.style.borderRadius = '50%';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 5000);
+    }, i*30);
+  }
+}
+
+/* ==========================================================
+   MP3 ПЛЕЕР
+   ========================================================== */
+const player = { audio: new Audio(), tracks:[], currentIndex:-1, isPlaying:false };
+player.audio.volume = 0.5;
+function togglePlayer(){ document.getElementById('player').classList.toggle('open'); }
+function handleFiles(files){
+  [...files].forEach(file => {
+    player.tracks.push({ name: file.name.replace(/\.[^.]+$/,''), url: URL.createObjectURL(file) });
+  });
+  renderPlaylist(); renderMusicList();
+  if (player.currentIndex === -1 && player.tracks.length > 0) playTrack(0);
+}
+document.getElementById('playerFile').addEventListener('change', e=>handleFiles(e.target.files));
+document.getElementById('musicFile').addEventListener('change', e=>handleFiles(e.target.files));
+function renderPlaylist(){
+  const list = document.getElementById('playerPlaylist');
+  list.innerHTML = '';
+  if (player.tracks.length===0) { list.innerHTML = '<div class="playlist-empty">Плейлист пуст</div>'; return; }
+  player.tracks.forEach((track,i)=>{
+    const el = document.createElement('div');
+    el.className = 'playlist-item' + (i===player.currentIndex?' active':'');
+    el.textContent = track.name;
+    el.onclick = () => playTrack(i);
+    list.appendChild(el);
+  });
+}
+function renderMusicList(){
+  const list = document.getElementById('musicList');
+  if (!list) return;
+  list.innerHTML = '';
+  if (player.tracks.length===0) { list.innerHTML = '<div class="music-empty">Загрузи свои треки</div>'; return; }
+  player.tracks.forEach((track,i)=>{
+    const el = document.createElement('div');
+    el.className = 'music-item' + (i===player.currentIndex?' active':'');
+    el.innerHTML = `<span>${i+1}</span><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(track.name)}</span><span>♪</span>`;
+    el.onclick = () => playTrack(i);
+    list.appendChild(el);
+  });
+}
+function playTrack(i){
+  if (i<0 || i>=player.tracks.length) return;
+  player.currentIndex = i;
+  player.audio.src = player.tracks[i].url;
+  player.audio.play().then(()=>{ player.isPlaying = true; updatePlayerUI(); }).catch(()=>{});
+}
+function playerTogglePlay(){
+  if (player.tracks.length===0) { document.getElementById('playerFile').click(); return; }
+  if (player.audio.paused) { player.audio.play().catch(()=>{}); player.isPlaying = true; }
+  else { player.audio.pause(); player.isPlaying = false; }
+  updatePlayerUI();
+}
+function playerNext(){ if (player.tracks.length===0) return; playTrack((player.currentIndex+1)%player.tracks.length); }
+function playerPrev(){ if (player.tracks.length===0) return; playTrack((player.currentIndex-1+player.tracks.length)%player.tracks.length); }
+function playerClear(){
+  player.audio.pause();
+  player.tracks = []; player.currentIndex = -1; player.isPlaying = false;
+  renderPlaylist(); renderMusicList(); updatePlayerUI();
+}
+function playerSeek(e){
+  if (!player.audio.duration) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  player.audio.currentTime = pct * player.audio.duration;
+}
+function updatePlayerUI(){
+  const icon = player.isPlaying ? '⏸' : '▶';
+  const mb = document.getElementById('musicPlayBtn'); if (mb) mb.innerHTML = icon;
+  const pb = document.getElementById('playerPlayBtn'); if (pb) pb.innerHTML = icon;
+  document.getElementById('playerToggle').classList.toggle('playing', player.isPlaying);
+  const name = (player.currentIndex>=0 && player.tracks[player.currentIndex]) ? player.tracks[player.currentIndex].name : null;
+  if (name) {
+    document.getElementById('playerTitle').textContent = name;
+    document.getElementById('playerSubtitle').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`;
+    document.getElementById('musicTitle').textContent = name;
+    document.getElementById('musicArtist').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`;
+  } else {
+    document.getElementById('playerTitle').textContent = 'Ничего не играет';
+    document.getElementById('playerSubtitle').textContent = 'Загрузите свои треки';
+    document.getElementById('musicTitle').textContent = 'Ничего не играет';
+    document.getElementById('musicArtist').textContent = 'Загрузи свои треки';
+  }
+  renderPlaylist(); renderMusicList();
+}
+function formatTime(sec){
+  if (!sec || isNaN(sec)) return '0:00';
+  const m = Math.floor(sec/60), s = Math.floor(sec%60);
+  return `${m}:${s<10?'0'+s:s}`;
+}
+player.audio.addEventListener('timeupdate', ()=>{
+  if (!player.audio.duration) return;
+  const pct = (player.audio.currentTime / player.audio.duration) * 100;
+  document.getElementById('playerProgressFill').style.width = pct+'%';
+  document.getElementById('playerCurrent').textContent = formatTime(player.audio.currentTime);
+  document.getElementById('playerDuration').textContent = formatTime(player.audio.duration);
+  const mp = document.getElementById('musicProgressFill');
+  if (mp) {
+    mp.style.width = pct+'%';
+    document.getElementById('musicCurrent').textContent = formatTime(player.audio.currentTime);
+    document.getElementById('musicDuration').textContent = formatTime(player.audio.duration);
+  }
+});
+player.audio.addEventListener('ended', ()=>playerNext());
+
+/* ==========================================================
+   ПОДСВЕТКА САЙДБАРА
+   ========================================================== */
+const sidebarEl = document.getElementById('sidebar');
+if (sidebarEl) {
+  sidebarEl.addEventListener('mousemove', e=>{
+    const rect = sidebarEl.getBoundingClientRect();
+    const x = ((e.clientX-rect.left)/rect.width)*100;
+    const y = ((e.clientY-rect.top)/rect.height)*100;
+    sidebarEl.style.setProperty('--mx', x+'%');
+    sidebarEl.style.setProperty('--my', y+'%');
+  });
+}
+
+/* ==========================================================
+   ИГРЫ 2D/3D
+   ========================================================== */
+const gameState = {
+  running:false, paused:false, speed:0, kmh:0, maxKmh:0, worldOffset:0, score:0, best:0,
+  lastTime:0, npcs:[], police:[], events:[], lamps:[], intersections:[],
+  spawnNPCTimer:0, spawnEventTimer:6000, lampDist:0, intrDist:0,
+  player:{ x:0, y:0, w:44, h:90 }, gameOverFlag:false
+};
+const state3D = { running:false, paused:false, scene:null, camera:null, renderer:null, best:0, lastTime:0 };
+let mouseYaw = 0, mouseYawTarget = 0;
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const CANVAS_W = 600, CANVAS_H = 700;
+const ROAD_LEFT = 100, ROAD_RIGHT = 500;
+const ROAD_WIDTH = ROAD_RIGHT - ROAD_LEFT;
+const LANES = 4;
+const LANE_W = ROAD_WIDTH / LANES;
+const LANE_CENTERS = [];
+for (let i=0; i<LANES; i++) LANE_CENTERS.push(ROAD_LEFT + LANE_W*(i+0.5));
+const PLAYER_Y = 550;
+const MAX_SPEED = 10;
+const KMH_PER_SPEED = 22;
+gameState.player.x = LANE_CENTERS[1];
+gameState.player.y = PLAYER_Y;
+
+function resetGame2D(){
+  gameState.speed = 1.5; gameState.kmh = 33; gameState.maxKmh = 33;
+  gameState.worldOffset = 0; gameState.score = 0;
+  gameState.npcs = []; gameState.police = []; gameState.events = [];
+  gameState.lamps = []; gameState.intersections = [];
+  gameState.spawnNPCTimer = 600; gameState.spawnEventTimer = 6000;
+  gameState.lampDist = 0; gameState.intrDist = 0; gameState.gameOverFlag = false;
+  gameState.player.x = LANE_CENTERS[1]; gameState.player.y = PLAYER_Y;
+  const s = document.getElementById('score'); if (s) s.textContent = 0;
+  const k = document.getElementById('kmh'); if (k) k.textContent = 33;
+  const wb = document.getElementById('wantedBox'); if (wb) wb.style.display = 'none';
+  const sb = document.getElementById('startGameBtn2d'); if (sb) sb.textContent = 'Заново';
+}
+function fitCanvas(){
+  if (!canvas) return;
+  const wrap = document.querySelector('#appRace2d .game-wrapper');
+  if (!wrap) return;
+  const availH = Math.max(400, wrap.clientHeight - 130);
+  const ratio = CANVAS_W / CANVAS_H;
+  let h = availH, w = h*ratio;
+  const availW = wrap.clientWidth - 20;
+  if (w > availW) { w = availW; h = w/ratio; }
+  canvas.style.width = w+'px'; canvas.style.height = h+'px';
+}
+function getLaneFromX(x){ const idx = Math.floor((x-ROAD_LEFT)/LANE_W); return Math.max(0, Math.min(LANES-1, idx)); }
+function carsOverlap(a,b){ return Math.abs(a.x-b.x)<(a.w+b.w)/2-4 && Math.abs(a.y-b.y)<(a.h+b.h)/2-6; }
+function isLaneSafeForCar(car, targetLane, allCars){
+  if (targetLane<0 || targetLane>=LANES) return false;
+  const targetX = LANE_CENTERS[targetLane];
+  for (const other of allCars) {
+    if (other===car) continue;
+    if (Math.abs(other.x-targetX)>LANE_W*0.55) continue;
+    if (Math.abs(other.y-car.y)<250) return false;
+  }
+  return true;
+}
+function findAheadInLane(car, allCars){
+  let nearest = null, minDist = Infinity;
+  for (const other of allCars) {
+    if (other===car) continue;
+    if (Math.abs(other.x-car.x)>LANE_W*0.55) continue;
+    const dy = car.y - other.y;
+    if (dy<5) continue;
+    if (dy<minDist) { minDist = dy; nearest = other; }
+  }
+  return { car:nearest, dist:minDist };
+}
+function updateCarAI2D(car, allCars, dt){
+  const f = dt/16;
+  if (car.laneCooldown===undefined) car.laneCooldown = 0;
+  car.laneCooldown -= f;
+  const ahead = findAheadInLane(car, allCars);
+  const SAFE_DIST = 140;
+  if (ahead.car && ahead.dist < SAFE_DIST) {
+    let newLane = -1;
+    if (car.laneCooldown<=0 && Math.random()<0.05) {
+      const options = [];
+      if (car.lane>0) options.push(car.lane-1);
+      if (car.lane<LANES-1) options.push(car.lane+1);
+      options.sort(()=>Math.random()-0.5);
+      for (const opt of options) if (isLaneSafeForCar(car, opt, allCars)) { newLane = opt; break; }
+    }
+    if (newLane>=0) { car.lane = newLane; car.targetX = LANE_CENTERS[newLane]; car.laneCooldown = 180; }
+    else { car.speed = Math.min(car.speed, Math.max(0, ahead.car.speed - 0.3)); car.brakeLights = true; }
+  } else {
+    car.brakeLights = false;
+    car.speed += 0.04*f;
+    car.speed = Math.min(car.speed, car.baseSpeed);
+  }
+}
+function updatePoliceAI2D(cop, allCars, dt){
+  const f = dt/16;
+  if (cop.laneCooldown===undefined) cop.laneCooldown = 0;
+  cop.laneCooldown -= f;
+  const playerLane = getLaneFromX(gameState.player.x);
+  if (cop.lane !== playerLane && cop.laneCooldown<=0 && Math.random()<0.05) {
+    if (isLaneSafeForCar(cop, playerLane, allCars)) { cop.lane = playerLane; cop.targetX = LANE_CENTERS[playerLane]; cop.laneCooldown = 120; }
+    else { const dir = playerLane>cop.lane?1:-1; const adj = cop.lane+dir; if (adj>=0 && adj<LANES && isLaneSafeForCar(cop, adj, allCars)) { cop.lane = adj; cop.targetX = LANE_CENTERS[adj]; cop.laneCooldown = 90; } }
+  }
+  const distToPlayer = cop.y - gameState.player.y;
+  if (distToPlayer>0 && distToPlayer<180) { cop.speed = gameState.speed; cop.brakeLights = true; }
+  else { cop.brakeLights = false; cop.speed = Math.min(cop.baseSpeed, cop.speed + 0.05*f); }
+}
+function resolveOverlaps2D(cars){
+  for (let iter=0; iter<3; iter++) {
+    let moved = false;
+    for (let i=0; i<cars.length; i++) for (let j=i+1; j<cars.length; j++) {
+      const a = cars[i], b = cars[j];
+      if (Math.abs(a.x-b.x)<(a.w+b.w)/2-4 && Math.abs(a.y-b.y)<(a.h+b.h)/2-6) {
+        const overlap = (a.h+b.h)/2-6-Math.abs(a.y-b.y);
+        if (a.y<b.y) { a.y -= overlap/2+1; b.y += overlap/2+1; }
+        else { a.y += overlap/2+1; b.y -= overlap/2+1; }
+        moved = true;
+      }
+    }
+    if (!moved) break;
+  }
+}
+function isSpawnLaneFree2D(lane, yStart, minGap){
+  const all = [...gameState.npcs, ...gameState.police, ...gameState.events];
+  const x = LANE_CENTERS[lane];
+  for (const c of all) {
+    if (Math.abs(c.x-x)>LANE_W*0.55) continue;
+    if (Math.abs(c.y-yStart)<minGap) return false;
+  }
+  return true;
+}
+function spawnNPC2D(){
+  const tried = [0,1,2,3].sort(()=>Math.random()-0.5);
+  for (const lane of tried) {
+    if (!isSpawnLaneFree2D(lane, -120, 180)) continue;
+    const colors = ['#3a3a4a','#4a3a3a','#2a3a4a','#4a4a3a','#383838','#2a2a3a'];
+    const baseSpeed = 2 + Math.random()*4;
+    gameState.npcs.push({ x:LANE_CENTERS[lane], y:-100, w:40, h:80, lane, targetX:LANE_CENTERS[lane], speed:baseSpeed, baseSpeed, color:colors[Math.floor(Math.random()*colors.length)], brakeLights:false, laneCooldown:0 });
+    return;
+  }
+}
+function spawnAccident2D(){
+  const tried = [0,1,2,3].sort(()=>Math.random()-0.5);
+  for (const lane of tried) {
+    if (!isSpawnLaneFree2D(lane, -120, 200)) continue;
+    gameState.events.push({ x:LANE_CENTERS[lane], y:-100, w:40, h:80, lane, targetX:LANE_CENTERS[lane], speed:0, baseSpeed:0, blinkTimer:0, blinkOn:true, color:'#3a2a2a', laneCooldown:999 });
+    return;
+  }
+}
+function spawnPolice2D(){
+  const allCars = [...gameState.npcs, ...gameState.police, ...gameState.events];
+  const tried = [0,1,2,3].sort(()=>Math.random()-0.5);
+  let chosenLane = -1;
+  for (const lane of tried) {
+    const x = LANE_CENTERS[lane];
+    let safe = true;
+    for (const c of allCars) { if (Math.abs(c.x-x)>LANE_W*0.55) continue; if (Math.abs(c.y-(CANVAS_H+80))<200) { safe = false; break; } }
+    if (safe) { chosenLane = lane; break; }
+  }
+  if (chosenLane === -1) chosenLane = 0;
+  gameState.police.push({ x:LANE_CENTERS[chosenLane], y:CANVAS_H+80, w:40, h:80, lane:chosenLane, targetX:LANE_CENTERS[chosenLane], speed:9, baseSpeed:10+Math.random()*2, blinkTimer:0, blinkOn:true, laneCooldown:0 });
+}
+function updateGame2D(dt){
+  const gs = gameState;
+  const f = dt/16;
+  if (keys.up) gs.speed += 0.04*f; else if (keys.down) gs.speed -= 0.08*f; else gs.speed -= 0.008*f;
+  gs.speed = Math.max(0, Math.min(MAX_SPEED, gs.speed));
+  gs.kmh = gs.speed * KMH_PER_SPEED;
+  gs.maxKmh = Math.max(gs.maxKmh, gs.kmh);
+  gs.worldOffset += gs.speed;
+  const moveSpeed = 4*f;
+  if (keys.left) gs.player.x -= moveSpeed;
+  if (keys.right) gs.player.x += moveSpeed;
+  gs.player.x = Math.max(ROAD_LEFT + gs.player.w/2 + 6, Math.min(ROAD_RIGHT - gs.player.w/2 - 6, gs.player.x));
+  gs.spawnNPCTimer -= dt * (1 + gs.speed*0.2);
+  if (gs.spawnNPCTimer <= 0) { spawnNPC2D(); gs.spawnNPCTimer = 900 + Math.random()*1100; }
+  gs.spawnEventTimer -= dt;
+  if (gs.spawnEventTimer <= 0) { if (Math.random()<0.5) spawnAccident2D(); gs.spawnEventTimer = 12000 + Math.random()*15000; }
+  gs.lampDist += gs.speed;
+  if (gs.lampDist > 250) { gs.lampDist -= 250; gs.lamps.push({ y:-80 }); }
+  gs.lamps.forEach(l=>l.y += gs.speed);
+  gs.lamps = gs.lamps.filter(l=>l.y < CANVAS_H + 100);
+  gs.intrDist += gs.speed;
+  if (gs.intrDist > 800) { gs.intrDist -= 800; gs.intersections.push({ y:-150, state:'green', timer:4000+Math.random()*3000, checked:false, isRedFlash:0 }); }
+  gs.intersections.forEach(i=>{
+    i.y += gs.speed; i.timer -= dt;
+    if (i.timer <= 0) {
+      if (i.state === 'green') { i.state = 'yellow'; i.timer = 1500; }
+      else if (i.state === 'yellow') { i.state = 'red'; i.timer = 3500; }
+      else { i.state = 'green'; i.timer = 4000 + Math.random()*3000; }
+    }
+    if (i.isRedFlash > 0) i.isRedFlash -= dt;
+    if (!i.checked && Math.abs(i.y - PLAYER_Y) < 40) {
+      i.checked = true;
+      if (i.state === 'red') { gs.score = Math.max(0, gs.score-100); i.isRedFlash = 800; playSound(CONFIG.sounds.crash); }
+    }
+  });
+  gs.intersections = gs.intersections.filter(i=>i.y < CANVAS_H + 200);
+  const allCars = [...gs.npcs, ...gs.police, ...gs.events];
+  for (const npc of gs.npcs) updateCarAI2D(npc, allCars, dt);
+  for (const cop of gs.police) updatePoliceAI2D(cop, allCars, dt);
+  for (const car of allCars) {
+    car.y += (gs.speed - car.speed) * f;
+    if (car.targetX !== undefined && Math.abs(car.targetX - car.x) > 0.5) car.x += (car.targetX - car.x)*0.06*f;
+    else if (car.targetX !== undefined) car.x = car.targetX;
+  }
+  gs.events.forEach(ev=>{ ev.blinkTimer += dt; if (ev.blinkTimer > 300) { ev.blinkOn = !ev.blinkOn; ev.blinkTimer = 0; } });
+  gs.police.forEach(p=>{ p.blinkTimer += dt; if (p.blinkTimer > 200) { p.blinkOn = !p.blinkOn; p.blinkTimer = 0; } });
+  gs.npcs = gs.npcs.filter(n=>n.y < CANVAS_H + 200);
+  gs.events = gs.events.filter(e=>e.y < CANVAS_H + 200);
+  gs.police = gs.police.filter(p=>p.y < CANVAS_H + 300 && p.y > -300);
+  resolveOverlaps2D([...gs.npcs, ...gs.police, ...gs.events]);
+  const requiredPolice = Math.min(3, Math.floor(gs.kmh/100));
+  while (gs.police.length < requiredPolice) spawnPolice2D();
+  while (gs.police.length > requiredPolice) gs.police.pop();
+  if (gs.police.length > 0) playSirenSound(); else stopSirenSound();
+  gs.score += Math.floor(gs.speed * dt * 0.01);
+  const sEl = document.getElementById('score'); if (sEl) sEl.textContent = gs.score;
+  const kEl = document.getElementById('kmh'); if (kEl) kEl.textContent = Math.round(gs.kmh);
+  const wb = document.getElementById('wantedBox'); const wEl = document.getElementById('wanted');
+  if (requiredPolice > 0 && wb && wEl) { wb.style.display = ''; wEl.textContent = requiredPolice; } else if (wb) wb.style.display = 'none';
+  for (const n of gs.npcs) if (carsOverlap(gs.player, n)) { crashEnd2D(); return; }
+  for (const ev of gs.events) if (carsOverlap(gs.player, ev)) { crashEnd2D(); return; }
+  for (const p of gs.police) if (carsOverlap(gs.player, p)) { crashEnd2D(); return; }
+}
+function roundRect(c,x,y,w,h,r){
+  c.beginPath(); c.moveTo(x+r,y);
+  c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath();
+}
+function drawBuildings2D(){
+  ctx.fillStyle = '#0a0a10';
+  ctx.fillRect(0,0,ROAD_LEFT-20,CANVAS_H);
+  ctx.fillRect(ROAD_RIGHT+20,0,CANVAS_W-ROAD_RIGHT-20,CANVAS_H);
+  const SPACING = 60;
+  const offset = gameState.worldOffset % SPACING;
+  for (let y=-SPACING+offset; y<CANVAS_H+SPACING; y+=SPACING) {
+    const floor = Math.floor((gameState.worldOffset + y)/SPACING);
+    for (let col=0; col<3; col++) {
+      const seedL = floor*31 + col*7 + 12345;
+      ctx.fillStyle = (seedL%4)===0 ? '#f5c542' : '#141420';
+      ctx.fillRect(10+col*30, y+10, 18, 24);
+      const seedR = floor*31 + col*7 + 54321;
+      ctx.fillStyle = (seedR%4)===0 ? '#f5c542' : '#141420';
+      ctx.fillRect(ROAD_RIGHT+30+col*30, y+10, 18, 24);
+    }
+  }
+}
+function drawRoad2D(){
+  ctx.fillStyle = '#0e0e14'; ctx.fillRect(ROAD_LEFT, 0, ROAD_WIDTH, CANVAS_H);
+  ctx.fillStyle = '#1a1a24'; ctx.fillRect(ROAD_LEFT-20, 0, 20, CANVAS_H); ctx.fillRect(ROAD_RIGHT, 0, 20, CANVAS_H);
+  ctx.fillStyle = '#4a4a3a';
+  const MS = 80; const offset = gameState.worldOffset % MS;
+  for (let y=-MS+offset; y<CANVAS_H+MS; y+=MS) for (let lane=1; lane<LANES; lane++) {
+    const x = ROAD_LEFT + lane*LANE_W;
+    ctx.fillRect(x-2, y, 4, 40);
+  }
+}
+function drawIntersections2D(){
+  gameState.intersections.forEach(i=>{
+    ctx.fillStyle = '#0e0e14'; ctx.fillRect(0, i.y-55, CANVAS_W, 110);
+    ctx.fillStyle = '#4a4a3a';
+    for (let x=20; x<CANVAS_W; x+=40) ctx.fillRect(x, i.y-2, 20, 4);
+    if (i.isRedFlash > 0) {
+      ctx.fillStyle = `rgba(255,32,32,${i.isRedFlash/1600})`;
+      ctx.fillRect(0, i.y-55, CANVAS_W, 110);
+    }
+  });
+}
+function drawLamps2D(){
+  gameState.lamps.forEach(l=>{
+    ctx.fillStyle = '#f5c542';
+    ctx.beginPath(); ctx.arc(ROAD_LEFT-30, l.y-22, 5, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ROAD_RIGHT+30, l.y-22, 5, 0, Math.PI*2); ctx.fill();
+  });
+}
+function drawHeadlights2D(x, y, w, h, intensity = 0.25){
+  const grad = ctx.createRadialGradient(x, y-h/2-40, 20, x, y-h/2-40, 200);
+  grad.addColorStop(0, `rgba(255,245,170,${intensity})`);
+  grad.addColorStop(1, 'rgba(255,245,170,0)');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(x-w/2, y-h/2); ctx.lineTo(x+w/2, y-h/2);
+  ctx.lineTo(x+w*2.2, y-h/2-220); ctx.lineTo(x-w*2.2, y-h/2-220);
+  ctx.closePath(); ctx.fill();
+}
+function drawCarShape2D(x, y, w, h, color, opts = {}){
+  ctx.save(); ctx.translate(x, y);
+  ctx.fillStyle = 'rgba(0,0,0,0.6)'; roundRect(ctx, -w/2+2, -h/2+4, w, h, 6); ctx.fill();
+  ctx.fillStyle = color; roundRect(ctx, -w/2, -h/2, w, h, 6); ctx.fill();
+  ctx.fillStyle = 'rgba(80,100,130,0.6)';
+  roundRect(ctx, -w/2+6, -h/2+12, w-12, 14, 3); ctx.fill();
+  roundRect(ctx, -w/2+6, h/2-26, w-12, 11, 3); ctx.fill();
+  ctx.fillStyle = '#fff5aa';
+  ctx.fillRect(-w/2+4, -h/2+1, 8, 3); ctx.fillRect(w/2-12, -h/2+1, 8, 3);
+  ctx.fillStyle = opts.brake ? '#ff4444' : '#aa2222';
+  ctx.fillRect(-w/2+4, h/2-4, 8, 3); ctx.fillRect(w/2-12, h/2-4, 8, 3);
+  if (opts.police) {
+    ctx.fillStyle = opts.blink ? '#ff2222' : '#2222ff';
+    ctx.fillRect(-w/2+6, -h/2+8, w-12, 4);
+    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 70);
+    grad.addColorStop(0, opts.blink ? 'rgba(255,32,32,0.5)' : 'rgba(32,32,255,0.5)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(0, 0, 70, 0, Math.PI*2); ctx.fill();
+  }
+  if (opts.hazard && opts.blink) {
+    ctx.fillStyle = '#ffaa00';
+    ctx.fillRect(-w/2+5, -h/2+5, 6, 4); ctx.fillRect(w/2-11, -h/2+5, 6, 4);
+  }
+  ctx.restore();
+}
+function drawPlayer2D(x, y, w, h){
+  ctx.save(); ctx.translate(x, y);
+  ctx.fillStyle = 'rgba(0,0,0,0.55)';
+  ctx.beginPath(); ctx.ellipse(2, 5, w/2+2, h/2+2, 0, 0, Math.PI*2); ctx.fill();
+  const bodyGrad = ctx.createLinearGradient(-w/2, 0, w/2, 0);
+  bodyGrad.addColorStop(0, '#6a6a72'); bodyGrad.addColorStop(0.5, '#f2f2f5'); bodyGrad.addColorStop(1, '#6a6a72');
+  ctx.fillStyle = bodyGrad;
+  roundRect(ctx, -w/2, -h/2, w, h, 6); ctx.fill();
+  ctx.fillStyle = 'rgba(15,25,40,0.9)';
+  roundRect(ctx, -w/2+8, -h/2+30, w-16, 20, 3); ctx.fill();
+  ctx.fillStyle = '#e8e8ec'; roundRect(ctx, -w/2+8, -h/2+50, w-16, h-100, 5); ctx.fill();
+  ctx.fillStyle = '#fffde8';
+  ctx.fillRect(-w/2+5, -h/2+3, 10, 8); ctx.fillRect(w/2-15, -h/2+3, 10, 8);
+  ctx.fillStyle = '#ff3030';
+  ctx.fillRect(-w/2+5, h/2-9, 9, 6); ctx.fillRect(w/2-14, h/2-9, 9, 6);
+  ctx.restore();
+}
+function draw2D(){
+  ctx.fillStyle = '#05050a'; ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+  drawBuildings2D(); drawRoad2D(); drawIntersections2D(); drawLamps2D();
+  gameState.npcs.forEach(n=>{
+    drawHeadlights2D(n.x, n.y, n.w, n.h, 0.15);
+    drawCarShape2D(n.x, n.y, n.w, n.h, n.color, { brake:n.brakeLights });
+  });
+  gameState.events.forEach(ev => drawCarShape2D(ev.x, ev.y, ev.w, ev.h, ev.color, { hazard:true, blink:ev.blinkOn }));
+  gameState.police.forEach(p=>{
+    drawHeadlights2D(p.x, p.y, p.w, p.h, 0.2);
+    drawCarShape2D(p.x, p.y, p.w, p.h, '#1a1a3a', { police:true, blink:p.blinkOn });
+  });
+  drawHeadlights2D(gameState.player.x, gameState.player.y, gameState.player.w, gameState.player.h, 0.4);
+  drawPlayer2D(gameState.player.x, gameState.player.y, gameState.player.w, gameState.player.h);
+  if (!gameState.running) {
+    ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+    ctx.fillStyle = '#fff'; ctx.font = '600 22px Inter, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Нажмите «Старт»', CANVAS_W/2, CANVAS_H/2);
+  } else if (gameState.paused) {
+    ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+    ctx.fillStyle = '#fff'; ctx.font = '600 24px Inter, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Пауза', CANVAS_W/2, CANVAS_H/2);
+  }
+}
+function gameLoop2D(t){
+  if (!gameState.running || gameState.paused) return;
+  try {
+    const dt = Math.min(50, t - gameState.lastTime);
+    gameState.lastTime = t;
+    updateGame2D(dt);
+    if (!gameState.running) return;
+    draw2D();
+    if (gameState.running && !gameState.paused) requestAnimationFrame(gameLoop2D);
+  } catch(e) { console.error(e); gameState.running = false; draw2D(); }
+}
+function crashEnd2D(){
+  gameState.running = false; gameState.gameOverFlag = true;
+  playSound(CONFIG.sounds.crash);
+  stopEngineSound(); stopSirenSound();
+  if (gameState.score > gameState.best) {
+    gameState.best = gameState.score;
+    localStorage.setItem('bestScore', gameState.best);
+    const b1 = document.getElementById('best'); if (b1) b1.textContent = gameState.best;
+    const b2 = document.getElementById('best3d'); if (b2) b2.textContent = gameState.best;
+  }
+  draw2D(); showGameOverModal();
+}
+function showGameOverModal(){
+  const gs = document.getElementById('goScore'); if (gs) gs.textContent = gameState.score;
+  const gb = document.getElementById('goBest'); if (gb) gb.textContent = gameState.best;
+  const gv = document.getElementById('goSpeed'); if (gv) gv.textContent = Math.round(gameState.maxKmh)+' км/ч';
+  document.getElementById('gameOverModal').classList.add('active');
+}
+function startGame(){
+  if (gameMode === '2d') {
+    resetGame2D();
+    document.getElementById('gameOverModal').classList.remove('active');
+    gameState.running = true; gameState.paused = false;
+    playEngineSound();
+    gameState.lastTime = performance.now();
+    requestAnimationFrame(gameLoop2D);
+  } else start3D();
+}
+function pauseGame(){
+  if (gameMode === '2d') {
+    if (!gameState.running) return;
+    gameState.paused = !gameState.paused;
+    if (!gameState.paused) { gameState.lastTime = performance.now(); requestAnimationFrame(gameLoop2D); }
+    else draw2D();
+  } else {
+    if (!state3D.running) return;
+    state3D.paused = !state3D.paused;
+    if (!state3D.paused) { state3D.lastTime = performance.now(); requestAnimationFrame(gameLoop3D); }
+    else { render3D(); drawHUD(); }
+  }
+}
+function restartFromModal(){ document.getElementById('gameOverModal').classList.remove('active'); startGame(); }
+function exitFromModal(){ document.getElementById('gameOverModal').classList.remove('active'); closeApp(); }
+
+/* ==========================================================
+   3D-ИГРА — упрощённая
+   ========================================================== */
+let threeScene = null, threeCamera = null, threeRenderer = null;
+let hudCanvas = null, hudCtx = null;
+const three3D = { playerX:0, targetX:0, currentLane:1, wheelAngle:0, speed:0, kmh:0, maxKmh:0, score:0, z:0, steerCD:0, handTimer:0 };
+const world3D = { npcs:[], police:[], events:[], lamps:[], buildings:[], roadLines:[], intersections:[], spawnTimer:1200, accidentTimer:8000 };
+const LANE_X_3D = [-4.5, -1.5, 1.5, 4.5];
+const ROAD_HALF_3D = 6;
+const MAX_KMH_3D = 220;
+const SPEEDO_MAX = 240;
+const VISUAL_MULT = 4.0;
+
+function init3D(){
+  const container = document.getElementById('threeContainer');
+  if (!container || !window.THREE) return;
+  const savedHud = document.getElementById('hudCanvas');
+  container.innerHTML = '';
+  if (savedHud) container.appendChild(savedHud);
+  threeScene = new THREE.Scene();
+  threeScene.background = new THREE.Color(0x050510);
+  threeScene.fog = new THREE.Fog(0x050510, 40, 200);
+  const w = container.clientWidth || 800, h = container.clientHeight || 500;
+  threeCamera = new THREE.PerspectiveCamera(72, w/h, 0.1, 400);
+  threeCamera.position.set(0, 1.35, 0); threeCamera.rotation.order = 'YXZ';
+  threeRenderer = new THREE.WebGLRenderer({ antialias:true });
+  threeRenderer.setSize(w, h);
+  threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(threeRenderer.domElement);
+  hudCanvas = savedHud;
+  if (!hudCanvas) { hudCanvas = document.createElement('canvas'); hudCanvas.id = 'hudCanvas'; container.appendChild(hudCanvas); }
+  hudCtx = hudCanvas.getContext('2d');
+  resizeHUD();
+  threeScene.add(new THREE.AmbientLight(0x334466, 0.7));
+  const road = new THREE.Mesh(new THREE.PlaneGeometry(ROAD_HALF_3D*2, 700), new THREE.MeshStandardMaterial({ color:0x0e0e14 }));
+  road.rotation.x = -Math.PI/2; road.position.z = -300; threeScene.add(road);
+  for (let side=-1; side<=1; side+=2) for (let i=0; i<25; i++) {
+    const bw = 5+Math.random()*4, bh = 10+Math.random()*25;
+    const b = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, 8+Math.random()*6), new THREE.MeshStandardMaterial({ color:0x1a1a24 }));
+    b.position.set(side*(ROAD_HALF_3D+4+bw/2), bh/2, -i*25);
+    threeScene.add(b); world3D.buildings.push({ mesh:b });
+  }
+  for (let i=0; i<4; i++) spawnNPC3D(-40-i*55);
+  container.addEventListener('mousemove', onMouseMove3D);
+  window.addEventListener('resize', onWindowResize3D);
+  render3D(); drawHUD();
+}
+function onMouseMove3D(e){
+  const container = document.getElementById('threeContainer');
+  if (!container) return;
+  const rect = container.getBoundingClientRect();
+  const nx = (e.clientX-rect.left)/rect.width;
+  mouseYawTarget = Math.max(-1, Math.min(1, (nx-0.5)*2.2));
+}
+function resizeHUD(){
+  if (!hudCanvas) return;
+  const c = document.getElementById('threeContainer'); if (!c) return;
+  const w = c.clientWidth, h = c.clientHeight;
+  if (!w || !h) return;
+  hudCanvas.width = w; hudCanvas.height = h;
+  hudCanvas.style.width = w+'px'; hudCanvas.style.height = h+'px';
+}
+function onWindowResize3D(){
+  if (!threeRenderer || !threeCamera) return;
+  const c = document.getElementById('threeContainer'); if (!c) return;
+  const w = c.clientWidth, h = c.clientHeight;
+  if (!w || !h) return;
+  threeCamera.aspect = w/h; threeCamera.updateProjectionMatrix();
+  threeRenderer.setSize(w, h); resizeHUD();
+}
+function destroy3D(){
+  const container = document.getElementById('threeContainer');
+  if (container) container.removeEventListener('mousemove', onMouseMove3D);
+  if (threeRenderer) {
+    threeRenderer.dispose();
+    if (threeRenderer.domElement && threeRenderer.domElement.parentNode) threeRenderer.domElement.parentNode.removeChild(threeRenderer.domElement);
+  }
+  threeRenderer = null; threeScene = null; threeCamera = null;
+  world3D.npcs = []; world3D.police = []; world3D.events = [];
+  world3D.lamps = []; world3D.buildings = []; world3D.roadLines = []; world3D.intersections = [];
+  mouseYaw = 0; mouseYawTarget = 0;
+  window.removeEventListener('resize', onWindowResize3D);
+}
+function makeCar3D(color, isPolice, isHazard){
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.7, 4.2), new THREE.MeshStandardMaterial({ color }));
+  body.position.set(0, 0.55, 0); g.add(body);
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.55, 2.2), new THREE.MeshStandardMaterial({ color:0x1a1a2a }));
+  cabin.position.set(0, 1.15, -0.2); g.add(cabin);
+  return g;
+}
+function spawnNPC3D(z){
+  if (!threeScene) return;
+  const targetZ = (typeof z==='number') ? z : -160 - Math.random()*40;
+  const lane = Math.floor(Math.random()*4);
+  const car = makeCar3D(0x3a3a4a);
+  car.position.set(LANE_X_3D[lane], 0, targetZ);
+  threeScene.add(car);
+  world3D.npcs.push({ mesh:car, lane, speed:Math.max(10, three3D.speed*0.4), x:LANE_X_3D[lane], targetX:LANE_X_3D[lane], laneCooldown:3000 });
+}
+function spawnPolice3D(){
+  if (!threeScene) return;
+  const car = makeCar3D(0x1a1a3a, true);
+  car.position.set(LANE_X_3D[three3D.currentLane], 0, 20);
+  threeScene.add(car);
+  world3D.police.push({ mesh:car, blinkOn:true, blinkTimer:0 });
+}
+function update3D(dt){
+  if (!threeScene) return;
+  const f = dt/16;
+  if (keys.up) three3D.speed += 0.16*f;
+  else if (keys.down) three3D.speed -= 0.42*f;
+  else three3D.speed -= 0.05*f;
+  three3D.speed = Math.max(0, Math.min(MAX_KMH_3D, three3D.speed));
+  three3D.kmh = three3D.speed;
+  three3D.maxKmh = Math.max(three3D.maxKmh, three3D.kmh);
+  if (three3D.steerCD > 0) three3D.steerCD -= f;
+  if (keys.left && three3D.steerCD<=0 && three3D.currentLane>0) { three3D.currentLane--; three3D.targetX = LANE_X_3D[three3D.currentLane]; three3D.steerCD = 20; }
+  if (keys.right && three3D.steerCD<=0 && three3D.currentLane<3) { three3D.currentLane++; three3D.targetX = LANE_X_3D[three3D.currentLane]; three3D.steerCD = 20; }
+  three3D.playerX += (three3D.targetX - three3D.playerX) * 0.09 * f;
+  three3D.wheelAngle = (three3D.targetX - three3D.playerX) * 0.8;
+  mouseYaw += (mouseYawTarget - mouseYaw) * 0.08 * f;
+  if (threeCamera) {
+    threeCamera.position.set(three3D.playerX, 1.35, 0);
+    threeCamera.rotation.y = -mouseYaw * 1.05;
+    threeCamera.rotation.x = -0.04;
+  }
+  const mps = three3D.speed/3.6;
+  const dz = mps * (dt/1000) * VISUAL_MULT;
+  world3D.buildings.forEach(b=>{ b.mesh.position.z += dz; if (b.mesh.position.z>60) b.mesh.position.z -= 750; });
+  world3D.npcs.forEach(n=>{
+    const targetSpeed = Math.max(10, Math.min(three3D.speed*0.6, 130));
+    n.speed += (targetSpeed - n.speed) * 0.03 * f;
+    n.mesh.position.z += ((three3D.speed-n.speed)/3.6) * (dt/1000) * VISUAL_MULT;
+    n.mesh.position.x += (n.targetX - n.mesh.position.x) * 0.06;
+  });
+  world3D.npcs = world3D.npcs.filter(n=>{
+    if (n.mesh.position.z>40) { threeScene.remove(n.mesh); return false; }
+    if (n.mesh.position.z<-450) { threeScene.remove(n.mesh); return false; }
+    return true;
+  });
+  world3D.spawnTimer -= dt;
+  if (world3D.spawnTimer <= 0) { if (world3D.npcs.length<6) spawnNPC3D(); world3D.spawnTimer = 1400 + Math.random()*1200; }
+  const requiredPolice = Math.min(3, Math.floor(three3D.kmh/80));
+  while (world3D.police.length < requiredPolice) spawnPolice3D();
+  while (world3D.police.length > requiredPolice) { const p = world3D.police.pop(); threeScene.remove(p.mesh); }
+  if (world3D.police.length > 0) playSirenSound(); else stopSirenSound();
+  world3D.police.forEach(p=>{
+    p.mesh.position.z += dz*0.85;
+    p.blinkTimer += dt;
+    if (p.blinkTimer>200) { p.blinkOn = !p.blinkOn; p.blinkTimer = 0; }
+  });
+  const px = three3D.playerX, pz = -3;
+  for (const n of world3D.npcs) if (Math.abs(n.mesh.position.x-px)<1.6 && Math.abs(n.mesh.position.z-pz)<3.2) { crashEnd3D(); return; }
+  three3D.score += Math.floor(three3D.speed * dt * 0.005);
+  const s3 = document.getElementById('score3d'); if (s3) s3.textContent = three3D.score;
+  const k3 = document.getElementById('kmh3d'); if (k3) k3.textContent = Math.round(three3D.kmh);
+  const wb3 = document.getElementById('wantedBox3d'); const w3 = document.getElementById('wanted3d');
+  if (requiredPolice>0 && wb3 && w3) { wb3.style.display = ''; w3.textContent = requiredPolice; } else if (wb3) wb3.style.display = 'none';
+  three3D.handTimer += dt;
+  drawHUD();
+}
+function drawHUD(){
+  if (!hudCtx || !hudCanvas) return;
+  const W = hudCanvas.width, H = hudCanvas.height;
+  if (!W || !H) return;
+  hudCtx.clearRect(0, 0, W, H);
+  const shift = -mouseYaw * W * 0.45;
+  const dashTop = H*0.72;
+  const redGrad = hudCtx.createLinearGradient(0, dashTop+35, 0, H);
+  redGrad.addColorStop(0, '#8a1c28'); redGrad.addColorStop(0.4, '#5a1018'); redGrad.addColorStop(1, '#3a0a10');
+  hudCtx.fillStyle = redGrad;
+  hudCtx.beginPath();
+  hudCtx.moveTo(0, dashTop+38);
+  hudCtx.quadraticCurveTo(W/2, dashTop+2, W, dashTop+38);
+  hudCtx.lineTo(W, H); hudCtx.lineTo(0, H); hudCtx.closePath(); hudCtx.fill();
+  const wheelCX = W/2 + shift, wheelCY = H*0.94, wheelR = Math.min(W, H)*0.22;
+  hudCtx.save(); hudCtx.translate(wheelCX, wheelCY);
+  hudCtx.beginPath(); hudCtx.arc(0, 0, wheelR, 0, Math.PI*2);
+  hudCtx.strokeStyle = '#1a1a22'; hudCtx.lineWidth = wheelR*0.18; hudCtx.stroke();
+  hudCtx.beginPath(); hudCtx.arc(0, 0, wheelR*0.30, 0, Math.PI*2);
+  hudCtx.fillStyle = '#22222a'; hudCtx.fill();
+  hudCtx.restore();
+  hudCtx.font = `bold 28px Inter, sans-serif`;
+  hudCtx.fillStyle = '#fff'; hudCtx.textAlign = 'left';
+  hudCtx.fillText(Math.round(three3D.kmh) + ' км/ч', 20, 40);
+}
+function render3D(){ if (threeRenderer && threeScene && threeCamera) threeRenderer.render(threeScene, threeCamera); }
+function gameLoop3D(t){
+  if (!state3D.running || state3D.paused) return;
+  try {
+    const dt = Math.min(50, t - state3D.lastTime);
+    state3D.lastTime = t;
+    update3D(dt);
+    if (!state3D.running) return;
+    render3D();
+    if (state3D.running && !state3D.paused) requestAnimationFrame(gameLoop3D);
+  } catch(e) { console.error(e); state3D.running = false; render3D(); }
+}
+function crashEnd3D(){
+  state3D.running = false;
+  playSound(CONFIG.sounds.crash);
+  stopEngineSound(); stopSirenSound();
+  if (three3D.score > state3D.best) {
+    state3D.best = three3D.score;
+    localStorage.setItem('bestScore', state3D.best);
+  }
+  const gs = document.getElementById('goScore'); if (gs) gs.textContent = three3D.score;
+  const gb = document.getElementById('goBest'); if (gb) gb.textContent = state3D.best;
+  const gv = document.getElementById('goSpeed'); if (gv) gv.textContent = Math.round(three3D.maxKmh)+' км/ч';
+  document.getElementById('gameOverModal').classList.add('active');
+}
+function start3D(){
+  three3D.playerX = 0; three3D.targetX = 0; three3D.currentLane = 1;
+  three3D.wheelAngle = 0; three3D.speed = 30; three3D.kmh = 30; three3D.maxKmh = 30;
+  three3D.score = 0; three3D.steerCD = 0; three3D.handTimer = 0;
+  mouseYaw = 0; mouseYawTarget = 0;
+  world3D.npcs.forEach(n=>threeScene && threeScene.remove(n.mesh));
+  world3D.police.forEach(p=>threeScene && threeScene.remove(p.mesh));
+  world3D.npcs = []; world3D.police = [];
+  world3D.spawnTimer = 1200;
+  for (let i=0; i<4; i++) spawnNPC3D(-40-i*55);
+  state3D.running = true; state3D.paused = false;
+  state3D.best = parseInt(localStorage.getItem('bestScore')||0);
+  document.getElementById('gameOverModal').classList.remove('active');
+  playEngineSound();
+  state3D.lastTime = performance.now();
+  requestAnimationFrame(gameLoop3D);
+}
+
+/* ==========================================================
+   ИНИЦИАЛИЗАЦИЯ
+   ========================================================== */
+loadAIConfig();
+renderPlaylist(); renderMusicList(); updatePlayerUI();
+draw2D(); renderMessagesList(); updateMessagesBadge();
+renderNotifications();
+initPuzzle();
+
+document.addEventListener('click', function(e) {
+  const radio = document.getElementById('radio');
+  if (radio && !radio.contains(e.target)) {
+    const rp = document.getElementById('radioPanel');
+    if (rp) rp.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
