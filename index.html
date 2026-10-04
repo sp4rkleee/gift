@@ -4,13 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Fisochenko · Соцсеть</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
 <style>
   :root {
     --bg:#edeef0; --card:#fff; --text:#050505; --text-2:#65676b; --text-3:#8a8d91;
@@ -113,7 +117,7 @@
   .toast-app { font-size:10px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:2px; }
 
   /* ============ ПАНЕЛЬ УВЕДОМЛЕНИЙ ============ */
-  .notif-panel { display:none; position:fixed; top:calc(68px + var(--safe-top)); right:16px; width:380px; max-width:calc(100vw - 32px); background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.18); z-index:4000; overflow:hidden; animation:notifIn 0.25s cubic-bezier(0.34,1.4,0.64,1); flex-direction:column; max-height:560px; max-height:calc(var(--vh) - 100px); }
+  .notif-panel { display:none; position:fixed; top:calc(68px + var(--safe-top)); right:16px; width:380px; max-width:calc(100vw - 32px); background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.18); z-index:4000; overflow:hidden; animation:notifIn 0.25s cubic-bezier(0.34,1.4,0.64,1); flex-direction:column; max-height:calc(var(--vh) - 100px); }
   .notif-panel.open { display:flex; }
   @keyframes notifIn { from{opacity:0; transform:translateY(-10px) scale(0.98);} to{opacity:1; transform:translateY(0) scale(1);} }
   .notif-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; font-weight:700; font-size:15px; flex-shrink:0; }
@@ -332,7 +336,6 @@
   .yandex-input-row input { flex:1; min-width:180px; padding:12px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:16px; font-family:inherit; background:#fafbfc; }
   .yandex-btn { padding:12px 18px; background:#ffdb4d; color:#000; border:none; border-radius:10px; cursor:pointer; font-family:inherit; font-size:14px; font-weight:700; touch-action:manipulation; }
   .yandex-player-frame { border-radius:12px; overflow:hidden; background:#f5f5f5; min-height:180px; display:flex; align-items:center; justify-content:center; }
-  .yandex-player-frame iframe { display:block; border:0; width:100%; }
   .yandex-placeholder { padding:40px 20px; text-align:center; color:var(--text-3); font-size:13px; line-height:1.6; }
   .yandex-placeholder .big { font-size:36px; display:block; margin-bottom:10px; }
   .yandex-open-btn { display:inline-block; padding:14px 26px; background:#ffdb4d; color:#000; text-decoration:none; border-radius:12px; font-weight:700; font-size:14.5px; transition:transform 0.15s, box-shadow 0.15s; box-shadow:0 3px 12px rgba(255,219,77,0.35); }
@@ -417,7 +420,7 @@
   /* ============ МОДАЛКИ ============ */
   .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; padding:16px; }
   .modal.active { display:flex; }
-  .modal img { max-width:100%; max-height:90vh; max-height:calc(var(--vh) - 32px); border-radius:8px; }
+  .modal img { max-width:100%; max-height:calc(var(--vh) - 32px); border-radius:8px; }
   .modal-close { position:absolute; top:calc(16px + var(--safe-top)); right:16px; background:rgba(255,255,255,0.9); border:none; width:44px; height:44px; border-radius:50%; font-size:22px; cursor:pointer; touch-action:manipulation; }
   .game-over-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:1500; align-items:center; justify-content:center; padding:16px; }
   .game-over-modal.active { display:flex; }
@@ -475,12 +478,14 @@
   @media (max-width: 900px) {
     .sidebar { display:none !important; }
     .bottom-nav { display:flex; }
+
     .main {
       padding: var(--edge);
       padding-left: max(var(--edge), var(--safe-left));
       padding-right: max(var(--edge), var(--safe-right));
       padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + var(--edge));
     }
+
     .brand-name { display:none; }
     .user-chip .user-name { display:none; }
     .user-chip { padding:4px; }
@@ -491,6 +496,7 @@
      ============================================================ */
   @media (max-width: 600px) {
     body { font-size:15px; }
+
     .topbar {
       height: calc(56px + var(--safe-top));
       padding: var(--safe-top) max(var(--edge), var(--safe-left)) 0 max(var(--edge), var(--safe-right));
@@ -501,6 +507,7 @@
     .icon-btn { width:38px; height:38px; }
     .icon-btn .icon-svg { width:19px; height:19px; }
     .user-avatar-mini { width:30px; height:30px; font-size:11px; }
+
     .main {
       padding: var(--edge);
       padding-left: max(var(--edge), var(--safe-left));
@@ -508,6 +515,8 @@
       padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + var(--edge));
     }
     .container-narrow { gap: 12px; }
+
+    /* Посты */
     .post-head { padding:14px 14px 0; gap:10px; }
     .post-avatar { width:38px; height:38px; font-size:16px; }
     .post-content { padding:10px 14px 14px; }
@@ -520,6 +529,8 @@
     }
     .post-photo-fallback { font-size:60px; }
     .post-action { padding:11px 4px; font-size:13px; }
+
+    /* Профиль */
     .profile-cover { height:160px; }
     .profile-avatar-lg { width:88px; height:88px; font-size:34px; }
     .profile-name { font-size:19px; }
@@ -531,12 +542,16 @@
     .profile-stats { padding:12px 14px; gap:18px; }
     .profile-stat .num { font-size:15px; }
     .profile-stat .lbl { font-size:10.5px; }
+
+    /* Музыка */
     .music-player { padding:20px 14px; }
     .music-cover { width:160px; height:160px; font-size:56px; margin-bottom:16px; }
     .music-title { font-size:17px; }
     .music-artist { font-size:13px; margin-bottom:18px; }
     .yandex-card { padding:16px; }
     .yandex-input-row input { font-size:16px; }
+
+    /* Сообщения */
     .messages-wrap {
       border-radius:0;
       max-height:none;
@@ -550,11 +565,15 @@
       padding: 10px 12px;
       padding-bottom: calc(10px + var(--safe-bottom));
     }
+
+    /* Приложения / галерея */
     .apps-grid { grid-template-columns:repeat(2, 1fr); gap:10px; }
     .app-icon { font-size:38px; }
     .app-title { font-size:13px; }
     .app-desc  { font-size:11px; }
     .gallery-grid { grid-template-columns:repeat(2, 1fr); gap:8px; }
+
+    /* Уведомления / тосты */
     .toast-container {
       top: calc(64px + var(--safe-top));
       left: max(8px, var(--safe-left));
@@ -562,6 +581,7 @@
     }
     .toast { min-width:0; max-width:none; padding:11px 12px; }
     .toast-avatar { width:36px; height:36px; font-size:14px; }
+
     .notif-panel {
       top: calc(60px + var(--safe-top));
       left: max(8px, var(--safe-left));
@@ -569,12 +589,16 @@
       width:auto; max-width:none;
       max-height: calc(var(--vh) - 80px - var(--safe-top) - var(--safe-bottom));
     }
+
+    /* Капча / логин */
     .captcha-box { padding:22px 18px; }
     .captcha-grid { gap:8px; }
     .captcha-tile .captcha-emoji { font-size:36px; }
     .login-box { padding:32px 22px; }
     .login-brand .logo-mark { width:44px; height:44px; }
     .login-brand .brand-titles .brand-name { font-size:21px; }
+
+    /* Плавающий плеер */
     .player {
       bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 12px);
       right: max(12px, var(--safe-right));
@@ -586,6 +610,8 @@
       padding: 16px;
     }
     .player-toggle { width:52px; height:52px; }
+
+    /* Модалки */
     .modal-close {
       top: calc(16px + var(--safe-top));
       right: max(12px, var(--safe-right));
@@ -600,68 +626,20 @@
     .bottom-nav-item span { font-size:10px; }
   }
 
-  /* ===== Меньшие аватары для постов ===== */
   .post-avatar.post-avatar-sm { font-size:13px; letter-spacing:-0.5px; }
 
-  /* ===== Путешествие мечты ===== */
   .journey-wrap { display:flex; flex-direction:column; gap:12px; }
-  .journey-map {
-    background:#05050a;
-    border-radius:14px;
-    overflow:hidden;
-    position:relative;
-    aspect-ratio:2 / 1;
-    width:100%;
-  }
+  .journey-map { background:#05050a; border-radius:14px; overflow:hidden; position:relative; aspect-ratio:2 / 1; width:100%; }
   .journey-map svg { width:100%; height:100%; display:block; }
-  .journey-panel {
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:8px;
-  }
-  .journey-stat {
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:10px 12px;
-    text-align:center;
-    min-width:0;
-  }
-  .journey-stat-label {
-    font-size:10.5px;
-    color:var(--text-3);
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    margin-bottom:3px;
-  }
-  .journey-stat-value {
-    font-size:13px;
-    font-weight:700;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .journey-progress {
-    height:6px;
-    background:var(--border);
-    border-radius:3px;
-    overflow:hidden;
-  }
-  .journey-progress-fill {
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#7ab4e8,#e94a6f,#d4af37);
-    transition:width 0.15s linear;
-  }
-  #journeySvg .jCity circle:first-child {
-    animation:cityPulse 2.4s ease-in-out infinite;
-  }
-  @keyframes cityPulse {
-    0%,100% { opacity:0.18; }
-    50% { opacity:0.05; }
-  }
+  .journey-panel { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+  .journey-stat { background:#fff; border:1px solid var(--border); border-radius:10px; padding:10px 12px; text-align:center; min-width:0; }
+  .journey-stat-label { font-size:10.5px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; }
+  .journey-stat-value { font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .journey-progress { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .journey-progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#7ab4e8,#e94a6f,#d4af37); transition:width 0.15s linear; }
+  #journeySvg .jCity circle:first-child { animation:cityPulse 2.4s ease-in-out infinite; }
+  @keyframes cityPulse { 0%,100% { opacity:0.18; } 50% { opacity:0.05; } }
 
-  /* ===== Компактный раздел «Игры» ===== */
   @media (max-width: 900px) {
     #games .container-narrow { gap:8px; }
     #games .post-head { padding:12px 12px 0; }
@@ -688,7 +666,7 @@
     .journey-map { aspect-ratio:2 / 1.05; }
   }
 
-  /* ===== Карта мира: страны ===== */
+  /* ===== Карта мира (Leaflet) ===== */
   .world-map-wrap {
     position:relative;
     background:#05050a;
@@ -700,12 +678,10 @@
   }
   .world-map-wrap svg { width:100%; height:100%; display:block; cursor:grab; }
   .world-map-wrap svg:active { cursor:grabbing; }
-  .world-country { fill:#1a2436; stroke:#2a3a4e; stroke-width:0.4; cursor:pointer; transition:fill 0.2s; }
-  .world-country:hover { fill:#2a3a4e; }
-  .world-country.selected { fill:#3a5a7a; stroke:#7ab4e8; stroke-width:0.8; }
   .world-capital { fill:#e94a6f; cursor:pointer; }
   .world-capital:hover { fill:#ff6a8f; }
   .world-capital-label { font-family:Inter, sans-serif; font-size:5px; fill:#c8ccd4; pointer-events:none; text-anchor:middle; paint-order:stroke; stroke:#05050a; stroke-width:1.5px; }
+  .world-country-marker.selected .world-capital { fill:#7ab4e8; }
   .world-country-info {
     position:absolute;
     left:8px; right:8px; bottom:8px;
@@ -721,20 +697,18 @@
     overflow-y:auto;
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
+    z-index:1000;
   }
   .world-country-info.open { display:block; }
-  .world-country-info h3 { font-size:15px; font-weight:700; margin-bottom:6px; color:#fff; }
+  .world-country-info h3 { font-size:15px; font-weight:700; margin-bottom:6px; color:#fff; padding-right:24px; }
   .world-country-info .good { color:#7ad89a; margin-bottom:4px; }
   .world-country-info .bad { color:#ff8a8a; }
-  .world-country-info .close-info {
-    position:absolute; top:6px; right:10px;
-    background:transparent; border:none; color:#8a9ab0;
-    font-size:20px; cursor:pointer; line-height:1;
-  }
+  .world-country-info .close-info { position:absolute; top:6px; right:10px; background:transparent; border:none; color:#8a9ab0; font-size:20px; cursor:pointer; line-height:1; }
   .world-zoom-controls {
-    position:absolute; top:8px; right:8px;
+    position:absolute;
+    top:8px; right:8px;
     display:flex; flex-direction:column; gap:4px;
-    z-index:5;
+    z-index:1000;
   }
   .world-zoom-controls button {
     width:34px; height:34px; border-radius:8px;
@@ -744,6 +718,12 @@
     touch-action:manipulation;
   }
   .world-zoom-controls button:active { background:rgba(40,56,80,0.95); }
+
+  /* Leaflet интеграция */
+  #leafletMap { width:100%; height:100%; background:#05050a; }
+  .leaflet-container { background:#05050a !important; font-family: inherit; }
+  .leaflet-control-attribution { background:rgba(5,5,10,0.7) !important; color:#8a9ab0 !important; font-size:9px !important; }
+  .leaflet-control-attribution a { color:#7ab4e8 !important; }
 </style>
 </head>
 <body>
@@ -865,9 +845,32 @@
     </aside>
 
     <main class="main">
-      <!-- ============ ГЛАВНАЯ: ПОЗДРАВЛЕНИЯ ============ -->
       <div id="feed" class="tab-content active">
         <div class="container-narrow">
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar">А</div>
+              <div class="post-info">
+                <div class="post-author">Анна Фисоченко <span class="verified">✓</span></div>
+                <div class="post-time">только что · Для всех</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <h1 id="heroTitle">С днём рождения, <span class="accent">Анна</span>! 🎂</h1>
+              <p id="heroText">Сегодня особенный день — твой день. Пусть каждый момент будет наполнен радостью, а этот небольшой сюрприз подарит улыбку.</p>
+              <p>А ниже — тёплые слова от самых близких 👇</p>
+            </div>
+            <div class="post-stats">
+              <div class="stat"><span class="stat-bubble">❤</span><span class="stat-bubble" style="background:linear-gradient(135deg,#f8dfa0,#d4af37)">★</span><span style="margin-left:6px;">21</span></div>
+              <div class="stat">4 комментария · 2 репоста</div>
+            </div>
+            <div class="post-actions">
+              <button class="post-action">❤️ Нравится</button>
+              <button class="post-action">💬 Комментарий</button>
+              <button class="post-action">↗ Поделиться</button>
+            </div>
+          </article>
 
           <article class="post">
             <div class="post-head">
@@ -981,7 +984,6 @@
         </div>
       </div>
 
-      <!-- ============ ПРОФИЛЬ ============ -->
       <div id="profile" class="tab-content">
         <div class="profile-wrap">
           <div class="profile-card">
@@ -1014,7 +1016,6 @@
         </div>
       </div>
 
-      <!-- ============ МУЗЫКА ============ -->
       <div id="music" class="tab-content">
         <div class="yandex-card">
           <h3><span class="yandex-logo">Я</span> Яндекс Музыка</h3>
@@ -1048,7 +1049,6 @@
         </div>
       </div>
 
-      <!-- ============ ИГРЫ ============ -->
       <div id="games" class="tab-content">
         <div class="container-narrow">
           <article class="post">
@@ -1067,7 +1067,6 @@
                 <button class="app-card" onclick="openApp('worldmap')"><span class="app-icon">🗺️</span><span class="app-title">Карта мира</span><span class="app-desc">Страны, столицы, факты</span></button>
               </div>
 
-              <!-- Пазл -->
               <div id="appPuzzle" class="app-view" style="display:none;">
                 <button class="app-back" onclick="closeApp()">← К приложениям</button>
                 <h2>Пазл</h2>
@@ -1080,7 +1079,6 @@
                 </div>
               </div>
 
-              <!-- Ночной город -->
               <div id="appRace2d" class="app-view" style="display:none;">
                 <button class="app-back" onclick="closeApp()">← К приложениям</button>
                 <div class="game-wrapper">
@@ -1099,7 +1097,6 @@
                 </div>
               </div>
 
-              <!-- Путешествие мечты -->
               <div id="appJourney" class="app-view" style="display:none;">
                 <button class="app-back" onclick="closeApp()">← К приложениям</button>
                 <div class="journey-wrap">
@@ -1119,14 +1116,14 @@
                 </div>
               </div>
 
-              <!-- Карта мира -->
+              <!-- КАРТА МИРА (Leaflet) -->
               <div id="appWorldMap" class="app-view" style="display:none;">
                 <button class="app-back" onclick="closeApp()">← К приложениям</button>
                 <div class="world-map-wrap" id="worldMapWrap">
-                  <svg id="worldMapSvg" viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet"></svg>
+                  <div id="leafletMap"></div>
                   <div class="world-zoom-controls">
-                    <button onclick="worldZoom(1.3)" title="Приблизить">+</button>
-                    <button onclick="worldZoom(0.77)" title="Отдалить">−</button>
+                    <button onclick="worldZoom(1)" title="Приблизить">+</button>
+                    <button onclick="worldZoom(-1)" title="Отдалить">−</button>
                     <button onclick="worldReset()" title="Сброс">⌂</button>
                   </div>
                   <div class="world-country-info" id="worldCountryInfo">
@@ -1143,7 +1140,6 @@
         </div>
       </div>
 
-      <!-- ============ СООБЩЕНИЯ ============ -->
       <div id="messages" class="tab-content">
         <div class="messages-wrap">
           <div class="messages-header">
@@ -1163,7 +1159,6 @@
         </div>
       </div>
 
-      <!-- ============ ГАЛЕРЕЯ ============ -->
       <div id="gallery" class="tab-content">
         <div class="container-narrow">
           <article class="post">
@@ -1238,10 +1233,22 @@
   </div>
 </div>
 
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 <script>
 /* ==========================================================
-   МОБИЛЬНАЯ АДАПТАЦИЯ
+   УТИЛИТЫ
    ========================================================== */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function nowTime(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function isTypingTarget(el){ if (!el) return false; return el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.isContentEditable; }
+
+function svgPlaceholder(emoji, c1, c2){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect width="400" height="400" fill="url(#g)"/><text x="200" y="245" font-size="180" text-anchor="middle" font-family="sans-serif">${emoji}</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
 function setVH(){
   document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
 }
@@ -1250,7 +1257,7 @@ window.addEventListener('resize', setVH);
 window.addEventListener('orientationchange', ()=>{ setTimeout(setVH, 200); });
 
 document.addEventListener('touchmove', e=>{
-  if (e.target.closest('input, textarea, .chat-messages, .messages-list, .notif-list, .main, .music-list, .player-playlist, .gallery-grid, .profile-tabs, .world-map-wrap')) return;
+  if (e.target.closest('input, textarea, .chat-messages, .messages-list, .notif-list, .main, .music-list, .player-playlist, .gallery-grid, .profile-tabs, .world-map-wrap, .leaflet-container')) return;
   if (e.touches.length > 1) e.preventDefault();
 }, { passive: false });
 
@@ -1262,91 +1269,88 @@ if (chatInputEl) {
 }
 
 /* ==========================================================
-   ДАННЫЕ
+   КОНФИГ
    ========================================================== */
 const CONFIG = {
-  birthdayPhotos: ['photos/photo1.jpg','photos/photo2.jpg','photos/photo3.jpg','photos/photo4.jpg'],
-  otherPhotos: ['photos/other1.jpg','photos/other2.jpg','photos/other3.jpg'],
+  birthdayPhotos: [
+    svgPlaceholder('🎂', '#ffe4ea', '#f8dfa0'),
+    svgPlaceholder('🎉', '#f8dfa0', '#e94a6f'),
+    svgPlaceholder('💐', '#ffd8b5', '#e94a6f'),
+    svgPlaceholder('🥳', '#a5e0b6', '#31a24c')
+  ],
+  otherPhotos: [
+    svgPlaceholder('🌧️', '#c8ccd4', '#4a4d51'),
+    svgPlaceholder('📦', '#d0d3d8', '#65676b'),
+    svgPlaceholder('🗿', '#8a8d91', '#4a4d51')
+  ],
   gallery: [
-    { src:'photos/photo1.jpg', caption:'Лучший момент' },
-    { src:'photos/photo2.jpg', caption:'Смеёмся вместе' },
-    { src:'photos/photo3.jpg', caption:'Путешествие' },
-    { src:'photos/photo4.jpg', caption:'Праздник' },
-    { src:'photos/other1.jpg', caption:'Воспоминание' },
-    { src:'photos/other2.jpg', caption:'Друзья' }
+    { src: svgPlaceholder('📷', '#ffe4ea', '#e94a6f'), caption:'Лучший момент' },
+    { src: svgPlaceholder('🌸', '#ffd8b5', '#e94a6f'), caption:'Смеёмся вместе' },
+    { src: svgPlaceholder('✈️', '#a0d8ff', '#1da1f2'), caption:'Путешествие' },
+    { src: svgPlaceholder('🎈', '#f8e8b0', '#d4af37'), caption:'Праздник' },
+    { src: svgPlaceholder('✨', '#fff5e0', '#f8dfa0'), caption:'Воспоминание' },
+    { src: svgPlaceholder('💫', '#a5e0b6', '#31a24c'), caption:'Друзья' }
   ]
 };
 
-// Данные стран (сокращённый набор для карты)
+/* ==========================================================
+   ДАННЫЕ О СТРАНАХ
+   ========================================================== */
 const COUNTRIES = [
-  { code:'RU', name:'Россия', capital:'Москва', lat:55.75, lng:37.61, good:'Берёзы, балет, космос, медведи на улицах (шутка).', bad:'Пробки в Москве и зима 9 месяцев.' },
-  { code:'US', name:'США', capital:'Вашингтон', lat:38.90, lng:-77.03, good:'Голливуд, бургеры, инновации.', bad:'Медицина дорогая, а порции гигантские.' },
-  { code:'GB', name:'Великобритания', capital:'Лондон', lat:51.50, lng:-0.12, good:'Чаепитие в 5, двухэтажные автобусы, юмор.', bad:'Дождь идёт всегда, даже когда светит солнце.' },
-  { code:'FR', name:'Франция', capital:'Париж', lat:48.85, lng:2.35, good:'Круассаны, Эйфелева башня, вино.', bad:'Парижане снобы, а туристы везде.' },
-  { code:'DE', name:'Германия', capital:'Берлин', lat:52.52, lng:13.40, good:'Пиво, порядок, автобаны без ограничений.', bad:'Бюрократия и всё закрыто по воскресеньям.' },
-  { code:'IT', name:'Италия', capital:'Рим', lat:41.90, lng:12.49, good:'Паста, пицца, искусство, жесты руками.', bad:'Хаос на дорогах и мама звонит 5 раз в день.' },
-  { code:'ES', name:'Испания', capital:'Мадрид', lat:40.42, lng:-3.70, good:'Сиеста, паэлья, фламенко, солнце.', bad:'Обед в 15:00, ужин в 23:00 — с ума сойти.' },
-  { code:'CN', name:'Китай', capital:'Пекин', lat:39.90, lng:116.40, good:'Великая стена, чай, скорость развития.', bad:'Очереди везде и всё очень острое.' },
-  { code:'JP', name:'Япония', capital:'Токио', lat:35.68, lng:139.69, good:'Суши, технологии, вежливость, аниме.', bad:'Работают до смерти, а землетрясения — норма.' },
-  { code:'IN', name:'Индия', capital:'Нью-Дели', lat:28.61, lng:77.21, good:'Болливуд, специи, йога, тадж-махал.', bad:'Пробки, жара и священные коровы на дорогах.' },
-  { code:'BR', name:'Бразилия', capital:'Бразилиа', lat:-15.79, lng:-47.88, good:'Карнавал, футбол, пляжи Копакабаны.', bad:'Криминал и бюрократия.' },
-  { code:'AU', name:'Австралия', capital:'Канберра', lat:-35.28, lng:149.13, good:'Кенгуру, серфинг, барбекю.', bad:'Всё хочет тебя убить: пауки, змеи, крокодилы.' },
-  { code:'EG', name:'Египет', capital:'Каир', lat:30.04, lng:31.24, good:'Пирамиды, Нил, древняя история.', bad:'Туристы задолбали, а летом +45°C.' },
-  { code:'TR', name:'Турция', capital:'Анкара', lat:39.93, lng:32.86, good:'Кебаб, море, Стамбул, чай.', bad:'Торговцы на рынке не отстанут.' },
-  { code:'UA', name:'Украина', capital:'Киев', lat:50.45, lng:30.52, good:'Борщ, сало, красивые девушки.', bad:'Погода как настроение — переменчивая.' },
-  { code:'BY', name:'Беларусь', capital:'Минск', lat:53.90, lng:27.57, good:'Чистота, драники, спокойствие.', bad:'Зима долгая, а лето короткое.' },
-  { code:'KZ', name:'Казахстан', capital:'Астана', lat:51.17, lng:71.43, good:'Степь, космодром Байконур, кумыс.', bad:'Ветер и морозы до -40°C.' },
-  { code:'ZA', name:'ЮАР', capital:'Претория', lat:-25.75, lng:28.19, good:'Сафари, вино, Кейптаун.', bad:'Преступность высокая, нужно быть осторожным.' },
-  { code:'AR', name:'Аргентина', capital:'Буэнос-Айрес', lat:-34.60, lng:-58.38, good:'Танго, стейки, футбол, Марадона.', bad:'Инфляция и экономические кризисы.' },
-  { code:'MX', name:'Мексика', capital:'Мехико', lat:19.43, lng:-99.13, good:'Тако, текила, пирамиды ацтеков.', bad:'Наркокартели и очень острая еда.' },
-  { code:'CA', name:'Канада', capital:'Оттава', lat:45.42, lng:-75.70, good:'Кленовый сироп, хоккей, вежливость.', bad:'Зима 8 месяцев и всё далеко.' },
-  { code:'SE', name:'Швеция', capital:'Стокгольм', lat:59.33, lng:18.07, good:'IKEA, ABBA, порядок, дизайн.', bad:'Темно зимой и все интроверты.' },
-  { code:'NO', name:'Норвегия', capital:'Осло', lat:59.91, lng:10.75, good:'Фьорды, северное сияние, нефть.', bad:'Дорого всё, даже воздух.' },
-  { code:'FI', name:'Финляндия', capital:'Хельсинки', lat:60.17, lng:24.94, good:'Сауна, Санта-Клаус, образование.', bad:'Темно и холодно, а финны молчаливые.' },
-  { code:'PL', name:'Польша', capital:'Варшава', lat:52.23, lng:21.01, good:'Пироги, история, дешёвое пиво.', bad:'Погода серая и грустная.' },
-  { code:'CZ', name:'Чехия', capital:'Прага', lat:50.08, lng:14.44, good:'Пиво, замки, Прага красивая.', bad:'Туристов слишком много.' },
-  { code:'GR', name:'Греция', capital:'Афины', lat:37.98, lng:23.73, good:'Оливки, море, древние руины.', bad:'Экономический кризис и забастовки.' },
-  { code:'PT', name:'Португалия', capital:'Лиссабон', lat:38.72, lng:-9.14, good:'Порто, океан, фаду, паштейш.', bad:'Всё медленно, как сиеста.' },
-  { code:'NL', name:'Нидерланды', capital:'Амстердам', lat:52.37, lng:4.90, good:'Тюльпаны, велосипеды, сыр.', bad:'Дождь и велосипедисты везде.' },
-  { code:'CH', name:'Швейцария', capital:'Берн', lat:46.95, lng:7.45, good:'Шоколад, часы, горы, банки.', bad:'Дорого и все правила соблюдают.' },
-  { code:'AT', name:'Австрия', capital:'Вена', lat:48.21, lng:16.37, good:'Моцарт, штрудель, Альпы.', bad:'Всё чинно и скучно.' },
-  { code:'HU', name:'Венгрия', capital:'Будапешт', lat:47.50, lng:19.04, good:'Гуляш, термальные купальни.', bad:'Язык невозможно выучить.' },
-  { code:'RO', name:'Румыния', capital:'Бухарест', lat:44.43, lng:26.10, good:'Дракула, Карпаты, дешёво.', bad:'Инфраструктура хромает.' },
-  { code:'BG', name:'Болгария', capital:'София', lat:42.70, lng:23.32, good:'Море, розы, йогурт.', bad:'Всё медленно и серо.' },
-  { code:'RS', name:'Сербия', capital:'Белград', lat:44.79, lng:20.45, good:'Ночная жизнь, мясо, ракия.', bad:'Политика и прошлое.' },
-  { code:'HR', name:'Хорватия', capital:'Загреб', lat:45.81, lng:15.98, good:'Адриатика, Дубровник, Плитвице.', bad:'Туристов летом слишком много.' },
-  { code:'IE', name:'Ирландия', capital:'Дублин', lat:53.35, lng:-6.26, good:'Пиво Guinness, зелёные поля, музыка.', bad:'Дождь и ветер постоянно.' },
-  { code:'IS', name:'Исландия', capital:'Рейкьявик', lat:64.15, lng:-21.94, good:'Вулканы, гейзеры, северное сияние.', bad:'Дорого, холодно, темно.' },
-  { code:'NZ', name:'Новая Зеландия', capital:'Веллингтон', lat:-41.29, lng:174.78, good:'Хоббитон, киви, природа.', bad:'Далеко от всего мира.' },
-  { code:'TH', name:'Таиланд', capital:'Бангкок', lat:13.76, lng:100.50, good:'Пляжи, тайская еда, массаж.', bad:'Жара, пробки, тук-туки.' },
-  { code:'VN', name:'Вьетнам', capital:'Ханой', lat:21.03, lng:105.85, good:'Фо, кофе, бухта Халонг.', bad:'Движение на дорогах — хаос.' },
-  { code:'KR', name:'Южная Корея', capital:'Сеул', lat:37.57, lng:126.98, good:'K-pop, технологии, еда.', bad:'Работают слишком много.' },
-  { code:'SA', name:'Саудовская Аравия', capital:'Эр-Рияд', lat:24.71, lng:46.67, good:'Нефть, пустыня, Мекка.', bad:'Жара +50°C и строгие законы.' },
-  { code:'AE', name:'ОАЭ', capital:'Абу-Даби', lat:24.47, lng:54.37, good:'Дубай, небоскрёбы, шопинг.', bad:'Жара и всё искусственное.' },
-  { code:'IL', name:'Израиль', capital:'Иерусалим', lat:31.78, lng:35.22, good:'История, стартапы, море.', bad:'Конфликты и дорого.' },
-  { code:'NG', name:'Нигерия', capital:'Абуджа', lat:9.06, lng:7.49, good:'Нолливуд, музыка, нефть.', bad:'Коррупция и пробки.' },
-  { code:'KE', name:'Кения', capital:'Найроби', lat:-1.29, lng:36.82, good:'Сафари, марафонцы, чай.', bad:'Бедность и пробки.' },
-  { code:'MA', name:'Марокко', capital:'Рабат', lat:34.02, lng:-6.84, good:'Марракеш, тажин, пустыня.', bad:'Торговцы приставучие.' },
-  { code:'PE', name:'Перу', capital:'Лима', lat:-12.05, lng:-77.04, good:'Мачу-Пикчу, инки, севиче.', bad:'Землетрясения и пробки.' },
-  { code:'CL', name:'Чили', capital:'Сантьяго', lat:-33.45, lng:-70.67, good:'Виноделие, Анды, пустыня Атакама.', bad:'Землетрясения постоянно.' }
+  { code:'RUS', name:'Россия', capital:'Москва', good:'Берёзы, балет, космос, медведи на улицах (шутка).', bad:'Пробки в Москве и зима 9 месяцев.' },
+  { code:'USA', name:'США', capital:'Вашингтон', good:'Голливуд, бургеры, инновации.', bad:'Медицина дорогая, а порции гигантские.' },
+  { code:'GBR', name:'Великобритания', capital:'Лондон', good:'Чаепитие в 5, двухэтажные автобусы, юмор.', bad:'Дождь идёт всегда, даже когда светит солнце.' },
+  { code:'FRA', name:'Франция', capital:'Париж', good:'Круассаны, Эйфелева башня, вино.', bad:'Парижане снобы, а туристы везде.' },
+  { code:'DEU', name:'Германия', capital:'Берлин', good:'Пиво, порядок, автобаны без ограничений.', bad:'Бюрократия и всё закрыто по воскресеньям.' },
+  { code:'ITA', name:'Италия', capital:'Рим', good:'Паста, пицца, искусство, жесты руками.', bad:'Хаос на дорогах и мама звонит 5 раз в день.' },
+  { code:'ESP', name:'Испания', capital:'Мадрид', good:'Сиеста, паэлья, фламенко, солнце.', bad:'Обед в 15:00, ужин в 23:00 — с ума сойти.' },
+  { code:'CHN', name:'Китай', capital:'Пекин', good:'Великая стена, чай, скорость развития.', bad:'Очереди везде и всё очень острое.' },
+  { code:'JPN', name:'Япония', capital:'Токио', good:'Суши, технологии, вежливость, аниме.', bad:'Работают до смерти, а землетрясения — норма.' },
+  { code:'IND', name:'Индия', capital:'Нью-Дели', good:'Болливуд, специи, йога, Тадж-Махал.', bad:'Пробки, жара и священные коровы на дорогах.' },
+  { code:'BRA', name:'Бразилия', capital:'Бразилиа', good:'Карнавал, футбол, пляжи Копакабаны.', bad:'Криминал и бюрократия.' },
+  { code:'AUS', name:'Австралия', capital:'Канберра', good:'Кенгуру, серфинг, барбекю.', bad:'Всё хочет тебя убить: пауки, змеи, крокодилы.' },
+  { code:'EGY', name:'Египет', capital:'Каир', good:'Пирамиды, Нил, древняя история.', bad:'Туристы задолбали, а летом +45°C.' },
+  { code:'TUR', name:'Турция', capital:'Анкара', good:'Кебаб, море, Стамбул, чай.', bad:'Торговцы на рынке не отстанут.' },
+  { code:'UKR', name:'Украина', capital:'Киев', good:'Борщ, сало, красивые девушки.', bad:'Погода как настроение — переменчивая.' },
+  { code:'BLR', name:'Беларусь', capital:'Минск', good:'Чистота, драники, спокойствие.', bad:'Зима долгая, а лето короткое.' },
+  { code:'KAZ', name:'Казахстан', capital:'Астана', good:'Степь, космодром Байконур, кумыс.', bad:'Ветер и морозы до -40°C.' },
+  { code:'ZAF', name:'ЮАР', capital:'Претория', good:'Сафари, вино, Кейптаун.', bad:'Преступность высокая, нужно быть осторожным.' },
+  { code:'ARG', name:'Аргентина', capital:'Буэнос-Айрес', good:'Танго, стейки, футбол, Марадона.', bad:'Инфляция и экономические кризисы.' },
+  { code:'MEX', name:'Мексика', capital:'Мехико', good:'Тако, текила, пирамиды ацтеков.', bad:'Наркокартели и очень острая еда.' },
+  { code:'CAN', name:'Канада', capital:'Оттава', good:'Кленовый сироп, хоккей, вежливость.', bad:'Зима 8 месяцев и всё далеко.' },
+  { code:'SWE', name:'Швеция', capital:'Стокгольм', good:'IKEA, ABBA, порядок, дизайн.', bad:'Темно зимой и все интроверты.' },
+  { code:'NOR', name:'Норвегия', capital:'Осло', good:'Фьорды, северное сияние, нефть.', bad:'Дорого всё, даже воздух.' },
+  { code:'FIN', name:'Финляндия', capital:'Хельсинки', good:'Сауна, Санта-Клаус, образование.', bad:'Темно и холодно, а финны молчаливые.' },
+  { code:'POL', name:'Польша', capital:'Варшава', good:'Пироги, история, дешёвое пиво.', bad:'Погода серая и грустная.' },
+  { code:'CZE', name:'Чехия', capital:'Прага', good:'Пиво, замки, Прага красивая.', bad:'Туристов слишком много.' },
+  { code:'GRC', name:'Греция', capital:'Афины', good:'Оливки, море, древние руины.', bad:'Экономический кризис и забастовки.' },
+  { code:'PRT', name:'Португалия', capital:'Лиссабон', good:'Порто, океан, фаду, паштейш.', bad:'Всё медленно, как сиеста.' },
+  { code:'NLD', name:'Нидерланды', capital:'Амстердам', good:'Тюльпаны, велосипеды, сыр.', bad:'Дождь и велосипедисты везде.' },
+  { code:'CHE', name:'Швейцария', capital:'Берн', good:'Шоколад, часы, горы, банки.', bad:'Дорого и все правила соблюдают.' },
+  { code:'AUT', name:'Австрия', capital:'Вена', good:'Моцарт, штрудель, Альпы.', bad:'Всё чинно и скучно.' },
+  { code:'HUN', name:'Венгрия', capital:'Будапешт', good:'Гуляш, термальные купальни.', bad:'Язык невозможно выучить.' },
+  { code:'ROU', name:'Румыния', capital:'Бухарест', good:'Дракула, Карпаты, дешёво.', bad:'Инфраструктура хромает.' },
+  { code:'BGR', name:'Болгария', capital:'София', good:'Море, розы, йогурт.', bad:'Всё медленно и серо.' },
+  { code:'SRB', name:'Сербия', capital:'Белград', good:'Ночная жизнь, мясо, ракия.', bad:'Политика и прошлое.' },
+  { code:'HRV', name:'Хорватия', capital:'Загреб', good:'Адриатика, Дубровник, Плитвице.', bad:'Туристов летом слишком много.' },
+  { code:'IRL', name:'Ирландия', capital:'Дублин', good:'Пиво Guinness, зелёные поля, музыка.', bad:'Дождь и ветер постоянно.' },
+  { code:'ISL', name:'Исландия', capital:'Рейкьявик', good:'Вулканы, гейзеры, северное сияние.', bad:'Дорого, холодно, темно.' },
+  { code:'NZL', name:'Новая Зеландия', capital:'Веллингтон', good:'Хоббитон, киви, природа.', bad:'Далеко от всего мира.' },
+  { code:'THA', name:'Таиланд', capital:'Бангкок', good:'Пляжи, тайская еда, массаж.', bad:'Жара, пробки, тук-туки.' },
+  { code:'VNM', name:'Вьетнам', capital:'Ханой', good:'Фо, кофе, бухта Халонг.', bad:'Движение на дорогах — хаос.' },
+  { code:'KOR', name:'Южная Корея', capital:'Сеул', good:'K-pop, технологии, еда.', bad:'Работают слишком много.' },
+  { code:'SAU', name:'Саудовская Аравия', capital:'Эр-Рияд', good:'Нефть, пустыня, Мекка.', bad:'Жара +50°C и строгие законы.' },
+  { code:'ARE', name:'ОАЭ', capital:'Абу-Даби', good:'Дубай, небоскрёбы, шопинг.', bad:'Жара и всё искусственное.' },
+  { code:'ISR', name:'Израиль', capital:'Иерусалим', good:'История, стартапы, море.', bad:'Конфликты и дорого.' },
+  { code:'NGA', name:'Нигерия', capital:'Абуджа', good:'Нолливуд, музыка, нефть.', bad:'Коррупция и пробки.' },
+  { code:'KEN', name:'Кения', capital:'Найроби', good:'Сафари, марафонцы, чай.', bad:'Бедность и пробки.' },
+  { code:'MAR', name:'Марокко', capital:'Рабат', good:'Марракеш, тажин, пустыня.', bad:'Торговцы приставучие.' },
+  { code:'PER', name:'Перу', capital:'Лима', good:'Мачу-Пикчу, инки, севиче.', bad:'Землетрясения и пробки.' },
+  { code:'CHL', name:'Чили', capital:'Сантьяго', good:'Виноделие, Анды, пустыня Атакама.', bad:'Землетрясения постоянно.' }
 ];
 
-// Ростов-на-Дону как отдельная точка
-const ROSTOV = { name:'Ростов-на-Дону', lat:47.22, lng:39.72 };
-
-/* ==========================================================
-   AI — GEMINI (прямой API)
-   ========================================================== */
-const AI_CONFIG = {
-  apiKey: 'AQ.Ab8RN6LM_X1ESQhXjZSc3_gKO23_GUyHNjDdLGmEZ3Sg1WBn4w',
-  model: 'gemini-2.5-flash',
-  baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models/'
-};
-
-let gameMode = '2d';
-function nowTime(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function isTypingTarget(el){ if (!el) return false; return el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.isContentEditable; }
+const countryDataByCode = {};
+COUNTRIES.forEach(c => { countryDataByCode[c.code] = c; });
 
 /* ==========================================================
    ЛОГИН
@@ -1397,13 +1401,6 @@ function initCaptcha(){
     el.onclick = () => toggleTile(el);
     const img = document.createElement('img');
     img.src = tile.src; img.alt = '';
-    img.onerror = () => {
-      img.remove();
-      const span = document.createElement('span');
-      span.className = 'captcha-emoji';
-      span.textContent = tile.correct ? '✓' : '·';
-      el.appendChild(span);
-    };
     el.appendChild(img);
     grid.appendChild(el);
   });
@@ -1475,14 +1472,20 @@ const BIRTHDAY_SVG = `
 `;
 
 function startCelebration(){
-  document.getElementById('captchaScreen').style.display = 'none';
-  if (window.userName) document.getElementById('heroTitle').innerHTML = `С днём рождения, <span class="accent">${window.userName}</span>! 🎂`;
+  const captchaScreen = document.getElementById('captchaScreen');
+  if (captchaScreen) captchaScreen.style.display = 'none';
+  const heroTitleEl = document.getElementById('heroTitle');
+  if (window.userName && heroTitleEl) {
+    heroTitleEl.innerHTML = `С днём рождения, <span class="accent">${escapeHtml(window.userName)}</span>! 🎂`;
+  }
   document.title = 'Fisochenko · С днём рождения';
   buildGallery(); buildProfileFeed(); setBestScore();
   renderMessagesList(); updateMessagesBadge(); renderNotifications();
+
   const site = document.getElementById('siteScreen');
   site.style.display = 'flex';
   site.classList.add('active','blurred');
+
   const overlay = document.getElementById('celebrationOverlay');
   const bdayText = document.getElementById('birthdayText');
   const finalNum = document.getElementById('finalNumber');
@@ -1493,8 +1496,11 @@ function startCelebration(){
   overlay.querySelectorAll('.number-flash').forEach(f=>f.remove());
   overlay.classList.add('active');
   bdayText.classList.add('show');
+
   document.getElementById('lottieContainer').innerHTML = BIRTHDAY_SVG;
+
   setTimeout(afterAnimation, 3500);
+
   function afterAnimation(){
     bdayText.classList.remove('show');
     bdayText.classList.add('hide');
@@ -1560,7 +1566,8 @@ function switchTab(id, btn){
   if (id !== 'messages' && currentChatId) closeChat();
   document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const tabEl = document.getElementById(id);
+  if (tabEl) tabEl.classList.add('active');
   if (btn) btn.classList.add('active');
   document.querySelectorAll('.bottom-nav-item').forEach(el=>{
     el.classList.toggle('active', el.dataset.tab === id);
@@ -1568,11 +1575,12 @@ function switchTab(id, btn){
   if (id === 'games') {
     if (currentApp === 'race2d') setTimeout(fitCanvas, 50);
     else if (currentApp === 'puzzle') setTimeout(renderPuzzle, 50);
+    else if (currentApp === 'worldmap') setTimeout(()=>{ if (leafletMap) leafletMap.invalidateSize(); }, 200);
   }
 }
 
 /* ==========================================================
-   ЯНДЕКС ПЛЕЕР
+   ЯНДЕКС ПЛЕЕР — открытие в приложении
    ========================================================== */
 function embedYandexPlayer(){
   const input = document.getElementById('yandexLink');
@@ -1769,8 +1777,8 @@ function toggleNotifPanel(e){
 }
 function closeNotifPanel(){
   notifPanelOpen = false;
-  document.getElementById('notifPanel').classList.remove('open');
-  document.getElementById('bellBtn').classList.remove('active');
+  const panel = document.getElementById('notifPanel'); if (panel) panel.classList.remove('open');
+  const bell = document.getElementById('bellBtn'); if (bell) bell.classList.remove('active');
 }
 function markNotifRead(id){
   const n = NOTIFICATIONS.find(x=>x.id===id);
@@ -1791,6 +1799,7 @@ document.addEventListener('click', function(e){
   if (!notifPanelOpen) return;
   const panel = document.getElementById('notifPanel');
   const bell = document.getElementById('bellBtn');
+  if (!panel || !bell) return;
   if (panel.contains(e.target) || bell.contains(e.target)) return;
   closeNotifPanel();
 });
@@ -1798,6 +1807,7 @@ document.addEventListener('touchstart', function(e){
   if (!notifPanelOpen) return;
   const panel = document.getElementById('notifPanel');
   const bell = document.getElementById('bellBtn');
+  if (!panel || !bell) return;
   if (panel.contains(e.target) || bell.contains(e.target)) return;
   closeNotifPanel();
 }, { passive: true });
@@ -1855,184 +1865,82 @@ function hideToast(toast){
 }
 
 /* ==========================================================
-   ДЕДУШКА — ЛОГИКА (сокращённо, как было)
+   ДЕДУШКА — ответы
    ========================================================== */
-function normalizeText(s){ return String(s||'').toLowerCase().replace(/ё/g,'е').replace(/[^\p{L}\p{N}\s]+/gu,' ').replace(/\s+/g,' ').trim(); }
-function containsKey(normText, normKey){
-  if (!normKey) return false;
-  if (normKey.length <= 4 && !normKey.includes(' ')) {
-    const re = new RegExp('(^|\\s)' + normKey.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '(\\s|$)');
-    return re.test(normText);
-  }
-  return normText.includes(normKey);
-}
-function scoreIntent(normText, intent){
-  if (!intent.kw || intent.kw.length===0) return 0;
-  let score = 0;
-  for (const rawKey of intent.kw) {
-    const key = normalizeText(rawKey);
-    if (!key) continue;
-    if (containsKey(normText, key)) { score += key.includes(' ')?3:1; if (key.length>=6) score += 0.5; }
-  }
-  return score;
-}
-function findAllIntents(normText){
-  const list = [];
-  for (const intent of GP_BRAIN) { const s = scoreIntent(normText, intent); if (s>0) list.push({ intent, score:s }); }
-  list.sort((a,b)=>b.score-a.score);
-  return list;
-}
-
-const GP_LIFE = ['Ох, я тут чай пью. С мятой, с мёдом. Хорошо.','Кот мой на коленях улёгся, мешает печатать. Но не сгоню.','Я сегодня в огороде копался. Помидоры проверил. Растут.','Радио слушаю. Концерт по заявкам. Старые песни.','Соседка баба Нюра заходила. Пирожками угощала.'];
-const GP_INVITATIONS = ['Приезжай, а? Пирогов напечём.','Ты когда в гости соберёшься? Я соскучился.','Давай на выходных? Я тебе варенье малиновое открою.','Приезжай, хоть на денёк. Хоть на полденечка.'];
-const GP_CARE = ['Ты хоть покушала сегодня? Скажи честно.','Не забудь поесть. Голодной не ходи.','Ты тепло оделась? Не простынь.','Спи побольше. Сон — это здоровье.'];
-const GP_MEMORIES = ['Помню, ты маленькая была — как за мной по пятам ходила.','Помню, ты морковку с грядки дёргала. И вся в земле была.','А помнишь, как мы в лес ходили? Ты грибы собирала.'];
-const GP_WISDOM = ['Знаешь, что я тебе скажу? Всё пройдёт. И это пройдёт.','Утро вечера мудренее.','Не беги за людьми. Ты сама себе ценность.','Здоровье важнее любых оценок, работы и денег.'];
-const GP_BRAIN = [
-  { id:'greeting_morning', kw:['доброе утро','с добрым утром','проснулась','проснулся','встала'], r:['О, доброе утро, солнышко. Как спалось?','С добрым утром, деточка. Я уж встал, чай пью.'] },
-  { id:'greeting_evening', kw:['добрый вечер','вечер добрый','доброго вечера'], r:['И тебе доброго вечера, моя хорошая.','Добрый вечер, деточка. Как день прошёл?'] },
-  { id:'greeting', kw:['привет','здравствуй','здоров','хай','hi','hello'], r:['Привет, моя родная! Как ты там?','Здравствуй, солнышко. Рад тебя слышать.','О, привет! А я как раз о тебе думал.'] },
-  { id:'farewell_night', kw:['спокойной ночи','доброй ночи','спать','споки','спать пойду'], r:['Спокойной ночи, солнышко. Спи сладко. Дедушка рядом.','Спи, деточка. Утро вечера мудренее.'] },
-  { id:'farewell', kw:['пока','до свидания','бай','до встречи','ухожу','прощай'], r:['Иди, иди. Отдыхай. Я тут, если что — пиши.','Ну, до встречи. Приезжай, слышишь?'] },
-  { id:'how_are_you', kw:['как дела','как у тебя','как у вас','как ты','как жизнь','как здоровье'], r:['Да что мне сделается, скриплю потихоньку.','Да слава богу, живой. Чай пью, на огород поглядываю. А ты как?'] },
-  { id:'happy', kw:['отлично','класс','супер','прекрасн','здорово','радость','счастлив','получилось','удалось','я смогла','ура','круто'], r:['Вот и славно! Рад за тебя, деточка.','Ну вот, а ты переживала! Я же говорил.'] },
-  { id:'sad', kw:['грустно','печаль','тоск','плачу','слез','тяжело на душ','разбит','плохо','хреново','депрессия'], r:['Не держи в себе, деточка. Поплачь, если хочется. А потом снова иди вперёд.','Солнышко моё. Всё это временно. Главное — не сдаваться.'] },
-  { id:'tired', kw:['устал','вымот','нет сил','выгорел','не высыпаюс','спать хочу'], r:['Устала — значит, много на себя взяла. Отдохни.','Солнышко, ну-ка отложи всё и поспи.'] },
-  { id:'stressed', kw:['стресс','нервы','тревог','паник','страшно','боюс','переживаю','волну'], r:['Ты дыши. Медленно. Вдох — раз, два, три. Выдох — раз, два, три.','Тревога — она всегда врёт, знаешь?'] },
-  { id:'lonely', kw:['одинок','никого нет','не с кем','одинока','нет друзей','никому не нужна'], r:['Одиноко, да? Я знаю это чувство. Но ты знай: у тебя есть я.','Никогда ты не одна. У тебя есть мама, папа, и есть дедушка.'] },
-  { id:'love_you', kw:['люблю тебя','очень люблю','люблю'], r:['И я тебя люблю, моя хорошая. Очень-очень.','И я тебя, деточка. Как вспомню тебя маленькой — сердце тает.'] },
-  { id:'thanks', kw:['спасибо','благодар','спс','пасиб','благодарю'], r:['Да не за что, солнышко. Для тебя — всё что угодно.','Ой, да не за что. Что ж я, не дед что ли.'] },
-  { id:'general', kw:[], r:['Понял тебя, солнышко. Расскажи ещё.','Вот оно как. Ну, ты не переживай, всё образуется.','Хорошо, моя хорошая. Всё будет хорошо.','Обнимаю тебя крепко-крепко. Твой дедушка.'] }
+const GP_GENERAL = [
+  'Понял тебя, солнышко. Расскажи ещё.',
+  'Вот оно как. Ну, ты не переживай, всё образуется.',
+  'Хорошо, моя хорошая. Всё будет хорошо.',
+  'Обнимаю тебя крепко-крепко. Твой дедушка.',
+  'Спасибо, что пишешь мне. Мне это очень дорого.',
+  'Ты у меня умница. Горжусь тобой каждый день.',
+  'Ох, деточка. Если б ты знала, как я по тебе скучаю.',
+  'Ты моё самое дорогое. Поняла? Вот и хорошо.'
 ];
-
-const GP_STATE = { userMood:'neutral', lastTopic:null, userMessageCount:0, offeredFood:0, offeredVisit:0, offeredCare:0, usedRecent:[], moodStreak:0 };
-function pushRecent(msg){ GP_STATE.usedRecent.push(msg); if (GP_STATE.usedRecent.length > 50) GP_STATE.usedRecent.shift(); }
-function pickUnique(arr){ if (!arr || arr.length===0) return null; const available = arr.filter(x=>!GP_STATE.usedRecent.includes(x)); const pool = available.length ? available : arr; const chosen = pool[Math.floor(Math.random()*pool.length)]; pushRecent(chosen); return chosen; }
-const rnd = { pick: arr => arr[Math.floor(Math.random()*arr.length)], chance: p => Math.random() < p, int: (a,b) => a + Math.floor(Math.random()*(b-a+1)) };
-
 function grandpaThink(userText){
-  const norm = normalizeText(userText);
-  GP_STATE.userMessageCount++;
-  const intents = findAllIntents(norm);
-  const primary = intents[0] ? intents[0].intent : GP_BRAIN.find(i=>i.id==='general');
-  if (primary) {
-    if (['sad','breakup','tired','stressed','lonely','angry','health','offended','guilt'].includes(primary.id)) { GP_STATE.userMood = 'sad'; GP_STATE.moodStreak = (GP_STATE.moodStreak||0) + 1; }
-    else if (['happy'].includes(primary.id)) { GP_STATE.userMood = 'happy'; GP_STATE.moodStreak = 0; }
-    else if (primary.id === 'greeting' || primary.id === 'how_are_you') { /* не меняем */ }
-    else { GP_STATE.moodStreak = Math.max(0, (GP_STATE.moodStreak||0) - 1); }
-    GP_STATE.lastTopic = primary.id;
-  }
-  const base = pickUnique(primary.r);
-  let messages = Array.isArray(base) ? [...base] : [base];
-  const normLen = norm.length;
-  const addLife = rnd.chance(normLen > 25 ? 0.28 : 0.15);
-  if (addLife && primary && !['farewell','farewell_night','greeting','greeting_morning','greeting_evening','thanks','love_you'].includes(primary.id)) { const life = pickUnique(GP_LIFE); if (life) messages.push(life); }
-  if (GP_STATE.userMood === 'sad' && rnd.chance(0.25)) { const wis = pickUnique(GP_WISDOM); if (wis) messages.push(wis); }
-  else if ((primary && primary.id === 'memories') || rnd.chance(0.08)) { const mem = pickUnique(GP_MEMORIES); if (mem) messages.push(mem); }
-  if (GP_STATE.userMessageCount - GP_STATE.offeredCare > 3 && rnd.chance(0.35)) { const care = pickUnique(GP_CARE); if (care) { messages.push(care); GP_STATE.offeredCare = GP_STATE.userMessageCount; } }
-  if (GP_STATE.userMessageCount - GP_STATE.offeredVisit > 4 && rnd.chance(0.3)) { const inv = pickUnique(GP_INVITATIONS); if (inv) { messages.push(inv); GP_STATE.offeredVisit = GP_STATE.userMessageCount; } }
-  if (messages.length > 3) messages = messages.slice(0, 3);
-  return messages;
+  const t = String(userText||'').toLowerCase();
+  if (/привет|здравств|хай|hello|hi/.test(t)) return ['Привет, моя родная! Как ты там?','О, привет! А я как раз о тебе думал.'];
+  if (/как дела|как ты|как жизнь|как здоровье/.test(t)) return ['Да что мне сделается, скриплю потихоньку.','Чай пью, на огород поглядываю. А ты как?'];
+  if (/спасибо|благодар/.test(t)) return ['Да не за что, солнышко. Для тебя — всё что угодно.','Не благодари. Просто будь счастлива.'];
+  if (/люблю/.test(t)) return ['И я тебя люблю, моя хорошая. Очень-очень.','И я тебя, деточка. Больше жизни.'];
+  if (/груст|плохо|тяжело|плачу|устал/.test(t)) return ['Не держи в себе, деточка. Поплачь, если хочется.','Солнышко моё. Всё это временно. Главное — не сдаваться.','Обнимаю тебя. Держись.'];
+  if (/спокойной ночи|доброй ночи|спать/.test(t)) return ['Спокойной ночи, солнышко. Спи сладко.','Спи, деточка. Утро вечера мудренее.'];
+  if (/пока|до свидания|бай/.test(t)) return ['Иди, иди. Отдыхай. Я тут, если что — пиши.','Ну, до встречи. Приезжай, слышишь?'];
+  if (/приеду|приехать|в гости/.test(t)) return ['Приезжай, деточка! Я тебя жду. Пироги напечём.','Ох, обрадуешь старика. Приезжай скорее.'];
+  return [GP_GENERAL[Math.floor(Math.random()*GP_GENERAL.length)]];
 }
-
-/* ==========================================================
-   GEMINI API (сокращённо)
-   ========================================================== */
-const GRANDPA_SYSTEM_PROMPT = `Ты — пожилой русский дедушка... Отвечай ТОЛЬКО репликами дедушки. Если хочешь написать несколько сообщений — разделяй их символом ||| (три вертикальные черты).`;
-async function callAI(messages){
-  if (!AI_CONFIG.apiKey) return null;
-  const systemMsg = messages.find(m => m.role === 'system');
-  const contents = messages.filter(m => m.role !== 'system').map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
-  const url = AI_CONFIG.baseUrl + AI_CONFIG.model + ':generateContent?key=' + AI_CONFIG.apiKey;
-  const body = { contents, generationConfig: { temperature: 0.85, maxOutputTokens: 400 } };
-  if (systemMsg) body.systemInstruction = { parts: [{ text: systemMsg.content }] };
-  const controller = new AbortController();
-  const timeoutId = setTimeout(()=>controller.abort(), 25000);
-  let res;
-  try { res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: controller.signal }); }
-  finally { clearTimeout(timeoutId); }
-  if (!res.ok) { const errText = await res.text().catch(()=>''); throw new Error(`HTTP ${res.status}: ${errText.slice(0,200)}`); }
-  const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-}
-function buildAIContext(){
-  const chat = CHATS.dedushka;
-  const msgs = [{ role:'system', content: GRANDPA_SYSTEM_PROMPT }];
-  const recent = chat.messages.slice(-20);
-  for (const m of recent) msgs.push({ role: m.from==='me'?'user':'assistant', content: m.text });
-  return msgs;
-}
-async function grandpaReplyToUser(userText){
+function grandpaReplyToUser(userText){
   const chatId = 'dedushka';
   const chat = CHATS[chatId];
+  const messages = grandpaThink(userText);
   chat.typing = true;
   if (currentChatId === chatId) renderChat();
-  const thinkingEl = document.createElement('div');
-  thinkingEl.className = 'chat-ai-thinking';
-  thinkingEl.textContent = 'дедушка печатает...';
-  if (currentChatId === chatId) { const container = document.getElementById('chatMessages'); if (container) container.appendChild(thinkingEl); }
-  let reply = null;
-  try { reply = await callAI(buildAIContext()); } catch(e) { console.warn('AI ошибка, fallback:', e); reply = null; }
-  if (thinkingEl.parentNode) thinkingEl.remove();
-  chat.typing = false;
-  if (reply && reply.trim()) {
-    let parts = reply.split(/\|\|\|/).map(s=>s.trim()).filter(Boolean);
-    if (parts.length === 1) parts = reply.split(/\n\n+/).map(s=>s.trim()).filter(Boolean);
-    if (parts.length === 0) parts = [reply.trim()];
-    if (parts.length > 3) parts = parts.slice(0, 3);
-    let i = 0;
-    const sendNext = () => {
-      if (i >= parts.length) { if (currentChatId === chatId) renderChat(); return; }
-      const text = parts[i];
-      chat.typing = true;
+  let i = 0;
+  const sendNext = () => {
+    if (i >= messages.length) { chat.typing = false; if (currentChatId === chatId) renderChat(); return; }
+    const text = messages[i];
+    chat.typing = true;
+    if (currentChatId === chatId) renderChat();
+    const typeTime = Math.min(3000, 700 + text.length * 50);
+    setTimeout(()=>{
+      chat.typing = false;
+      chat.messages.push({ from:'them', text, time: nowTime() });
       if (currentChatId === chatId) renderChat();
-      const typeTime = Math.min(3200, 500 + text.length * 40);
-      setTimeout(()=>{
-        chat.typing = false;
-        chat.messages.push({ from:'them', text, time: nowTime() });
-        if (currentChatId === chatId) renderChat();
-        else { chat.unread = (chat.unread||0)+1; renderMessagesList(); updateMessagesBadge(); showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · AI', onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } }); pushNotification({ icon:'✨', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` }); }
-        i++;
-        if (i < parts.length) setTimeout(sendNext, 800 + Math.random()*1400);
-      }, typeTime);
-    };
-    sendNext();
-    return;
-  }
-  const messages = grandpaThink(userText);
-  const initialDelay = rnd.int(900, 2200);
-  setTimeout(()=>{
-    let i = 0;
-    const sendNext = () => {
-      if (i >= messages.length) { chat.typing = false; if (currentChatId === chatId) renderChat(); return; }
-      const text = messages[i];
-      chat.typing = true;
-      if (currentChatId === chatId) renderChat();
-      const typeTime = Math.min(3600, 700 + text.length * 55);
-      setTimeout(()=>{
-        chat.typing = false;
-        chat.messages.push({ from:'them', text, time: nowTime() });
-        if (currentChatId === chatId) renderChat();
-        else { chat.unread = (chat.unread||0)+1; renderMessagesList(); updateMessagesBadge(); showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · Сообщения', onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } }); pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` }); }
-        i++;
-        if (i < messages.length) setTimeout(sendNext, rnd.int(800, 2100));
-        else { chat.typing = false; if (currentChatId === chatId) renderChat(); }
-      }, typeTime);
-    };
-    sendNext();
-  }, initialDelay);
+      else {
+        chat.unread = (chat.unread||0)+1;
+        renderMessagesList(); updateMessagesBadge();
+        showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · Сообщения',
+          onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } });
+        pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
+      }
+      i++;
+      if (i < messages.length) setTimeout(sendNext, 800 + Math.random()*1300);
+    }, typeTime);
+  };
+  sendNext();
 }
 
-/* ==========================================================
-   СЦЕНАРИЙ ДЕДУШКИ
-   ========================================================== */
-const GRANDPA_SCRIPT = ['Анечка, здравствуй! Это дедушка.','Я наконец-то смог разобраться в этом вашем приложении. Зарегистрировался вот, сижу, осваиваю.','Поздравляю тебя с днём рождения, моя хорошая. 21 год — серьёзная дата.','Я тобой очень горжусь. Ты у меня умница, красивая и добрая.','Знаешь, в жизни всякое бывает. Неприятности приходят и уходят. Главное их не держать в себе.','Учись отпускать легко. Как ветер подул и унёс.','И помни: что бы ни случилось, я всегда рядом. Хоть и не всегда могу обнять, но душой я с тобой.','Скучаю по тебе очень. Обнимаю крепко-крепко. Твой дедушка.'];
+const GRANDPA_SCRIPT = [
+  'Анечка, здравствуй! Это дедушка.',
+  'Я наконец-то смог разобраться в этом вашем приложении. Зарегистрировался вот, сижу, осваиваю.',
+  'Поздравляю тебя с днём рождения, моя хорошая. 21 год — серьёзная дата.',
+  'Я тобой очень горжусь. Ты у меня умница, красивая и добрая.',
+  'Знаешь, в жизни всякое бывает. Неприятности приходят и уходят. Главное их не держать в себе.',
+  'Учись отпускать легко. Как ветер подул и унёс.',
+  'И помни: что бы ни случилось, я всегда рядом. Хоть и не всегда могу обнять, но душой я с тобой.',
+  'Скучаю по тебе очень. Обнимаю крепко-крепко. Твой дедушка.'
+];
 let grandpaStarted = false;
 function scheduleGrandpaMessages(){
   if (grandpaStarted) return;
   grandpaStarted = true;
   let i = 0;
-  const sendNext = () => { if (i >= GRANDPA_SCRIPT.length) return; sendGrandpaMessage(GRANDPA_SCRIPT[i]); i++; if (i < GRANDPA_SCRIPT.length) setTimeout(sendNext, 6500 + Math.random()*4500); };
+  const sendNext = () => {
+    if (i >= GRANDPA_SCRIPT.length) return;
+    sendGrandpaMessage(GRANDPA_SCRIPT[i]);
+    i++;
+    if (i < GRANDPA_SCRIPT.length) setTimeout(sendNext, 6500 + Math.random()*4500);
+  };
   setTimeout(sendNext, 75000);
 }
 function sendGrandpaMessage(text){
@@ -2041,7 +1949,13 @@ function sendGrandpaMessage(text){
   chat.messages.push({ from:'them', text, time: nowTime() });
   const isChatOpen = currentChatId === 'dedushka';
   if (isChatOpen) { renderChat(); }
-  else { chat.unread = (chat.unread||0)+1; renderMessagesList(); updateMessagesBadge(); showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · Сообщения', onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } }); pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` }); }
+  else {
+    chat.unread = (chat.unread||0)+1;
+    renderMessagesList(); updateMessagesBadge();
+    showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · Сообщения',
+      onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } });
+    pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
+  }
 }
 
 /* ==========================================================
@@ -2105,7 +2019,7 @@ function renderPuzzle(){
     else {
       tile.className = 'puzzle-tile';
       const col = val%3, row = Math.floor(val/3);
-      tile.style.backgroundImage = `url('photos/photo1.jpg'), linear-gradient(135deg,#e94a6f 0%,#d4af37 100%)`;
+      tile.style.backgroundImage = `url("${CONFIG.gallery[0].src}"), linear-gradient(135deg,#e94a6f 0%,#d4af37 100%)`;
       tile.style.backgroundSize = '300% 300%, 100% 100%';
       tile.style.backgroundPosition = `${col*50}% ${row*50}%, 0% 0%`;
       tile.style.backgroundRepeat = 'no-repeat';
@@ -2180,15 +2094,12 @@ function buildGallery(){
   const grid = document.getElementById('galleryGrid');
   if (!grid) return;
   grid.innerHTML = '';
-  const emojis = ['📷','🌸','✨','🎈','💫','🌷'];
-  CONFIG.gallery.forEach((item, i)=>{
+  CONFIG.gallery.forEach((item)=>{
     const div = document.createElement('div');
     div.className = 'gallery-item';
     div.onclick = () => openModal(item.src);
     const img = document.createElement('img');
-    img.src = item.src; img.alt = item.caption;
-    img.loading = 'lazy';
-    img.onerror = () => { img.remove(); const fb = document.createElement('div'); fb.className = 'fallback'; fb.textContent = emojis[i%emojis.length]; div.insertBefore(fb, div.firstChild); };
+    img.src = item.src; img.alt = item.caption; img.loading = 'lazy';
     const cap = document.createElement('div');
     cap.className = 'caption';
     cap.textContent = item.caption;
@@ -2200,7 +2111,6 @@ function buildProfileFeed(){
   const feed = document.getElementById('profileFeed');
   if (!feed) return;
   feed.innerHTML = '';
-  const emojis = ['📷','🌸','✨','🎈','💫','🌷'];
   const titles = ['Солнечный день','Наши выходные','Маленькое приключение','Мой день рождения','Счастливые моменты','С друзьями тепло'];
   const times = ['сегодня','вчера','2 дня назад','3 дня назад','неделю назад','неделю назад'];
   CONFIG.gallery.forEach((item, i)=>{
@@ -2210,15 +2120,13 @@ function buildProfileFeed(){
     const content = art.querySelector('.post-content');
     const img = document.createElement('img');
     img.className = 'post-photo';
-    img.src = item.src; img.alt = item.caption;
-    img.loading = 'lazy';
+    img.src = item.src; img.alt = item.caption; img.loading = 'lazy';
     img.onclick = () => openModal(item.src);
-    img.onerror = () => { img.remove(); const fb = document.createElement('div'); fb.className = 'post-photo-fallback'; fb.textContent = emojis[i%emojis.length]; fb.onclick = () => openModal(item.src); content.appendChild(fb); };
     content.appendChild(img);
     feed.appendChild(art);
   });
 }
-function openModal(src){ const img = document.getElementById('modalImg'); img.onerror = () => { img.style.display = 'none'; }; img.onload = () => { img.style.display = ''; }; img.src = src; document.getElementById('modal').classList.add('active'); }
+function openModal(src){ const img = document.getElementById('modalImg'); img.src = src; document.getElementById('modal').classList.add('active'); }
 function closeModal(){ document.getElementById('modal').classList.remove('active'); }
 
 /* ==========================================================
@@ -2242,10 +2150,19 @@ function updatePlayerUI(){
   const icon = player.isPlaying ? '⏸' : '▶';
   const mb = document.getElementById('musicPlayBtn'); if (mb) mb.innerHTML = icon;
   const pb = document.getElementById('playerPlayBtn'); if (pb) pb.innerHTML = icon;
-  document.getElementById('playerToggle').classList.toggle('playing', player.isPlaying);
+  const pt = document.getElementById('playerToggle'); if (pt) pt.classList.toggle('playing', player.isPlaying);
   const name = (player.currentIndex>=0 && player.tracks[player.currentIndex]) ? player.tracks[player.currentIndex].name : null;
-  if (name) { document.getElementById('playerTitle').textContent = name; document.getElementById('playerSubtitle').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`; document.getElementById('musicTitle').textContent = name; document.getElementById('musicArtist').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`; }
-  else { document.getElementById('playerTitle').textContent = 'Ничего не играет'; document.getElementById('playerSubtitle').textContent = 'Загрузите свои треки'; document.getElementById('musicTitle').textContent = 'Ничего не играет'; document.getElementById('musicArtist').textContent = 'Загрузи свои треки'; }
+  if (name) {
+    document.getElementById('playerTitle').textContent = name;
+    document.getElementById('playerSubtitle').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`;
+    document.getElementById('musicTitle').textContent = name;
+    document.getElementById('musicArtist').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`;
+  } else {
+    document.getElementById('playerTitle').textContent = 'Ничего не играет';
+    document.getElementById('playerSubtitle').textContent = 'Загрузите свои треки';
+    document.getElementById('musicTitle').textContent = 'Ничего не играет';
+    document.getElementById('musicArtist').textContent = 'Загрузи свои треки';
+  }
   renderPlaylist(); renderMusicList();
 }
 function formatTime(sec){ if (!sec || isNaN(sec)) return '0:00'; const m = Math.floor(sec/60), s = Math.floor(sec%60); return `${m}:${s<10?'0'+s:s}`; }
@@ -2388,16 +2305,16 @@ function exitFromModal(){ document.getElementById('gameOverModal').classList.rem
    ========================================================== */
 const JOURNEY_CITIES = { moscow:{name:'Москва',lon:37.6,lat:55.75}, rostov:{name:'Ростов-на-Дону',lon:39.7,lat:47.2}, dubai:{name:'Дубай',lon:55.3,lat:25.3}, cairo:{name:'Каир',lon:31.2,lat:30.0}, paris:{name:'Париж',lon:2.35,lat:48.85}, london:{name:'Лондон',lon:-0.12,lat:51.5}, newyork:{name:'Нью-Йорк',lon:-74.0,lat:40.7}, rio:{name:'Рио-де-Жанейро',lon:-43.2,lat:-22.9}, sydney:{name:'Сидней',lon:151.2,lat:-33.87}, tokyo:{name:'Токио',lon:139.7,lat:35.7} };
 const JOURNEY = [
-  { from:'moscow', to:'rostov', type:'plane', km:1100, label:'Москва → Ростов-на-Дону' },
-  { from:'rostov', to:'dubai', type:'plane', km:2900, label:'Ростов-на-Дону → Дубай' },
-  { from:'dubai', to:'cairo', type:'plane', km:2400, label:'Дубай → Каир' },
-  { from:'cairo', to:'paris', type:'plane', km:3200, label:'Каир → Париж' },
-  { from:'paris', to:'london', type:'train', km:350, label:'Париж → Лондон' },
-  { from:'london', to:'newyork', type:'ship', km:5500, label:'Лондон → Нью-Йорк' },
-  { from:'newyork', to:'rio', type:'plane', km:7700, label:'Нью-Йорк → Рио' },
-  { from:'rio', to:'sydney', type:'plane', km:13500, label:'Рио → Сидней' },
-  { from:'sydney', to:'tokyo', type:'plane', km:7800, label:'Сидней → Токио' },
-  { from:'tokyo', to:'moscow', type:'plane', km:7500, label:'Токио → Москва' }
+  { from:'moscow', to:'rostov', type:'plane', km:1100 },
+  { from:'rostov', to:'dubai', type:'plane', km:2900 },
+  { from:'dubai', to:'cairo', type:'plane', km:2400 },
+  { from:'cairo', to:'paris', type:'plane', km:3200 },
+  { from:'paris', to:'london', type:'train', km:350 },
+  { from:'london', to:'newyork', type:'ship', km:5500 },
+  { from:'newyork', to:'rio', type:'plane', km:7700 },
+  { from:'rio', to:'sydney', type:'plane', km:13500 },
+  { from:'sydney', to:'tokyo', type:'plane', km:7800 },
+  { from:'tokyo', to:'moscow', type:'plane', km:7500 }
 ];
 const JOURNEY_TOTAL = JOURNEY.reduce((s,r)=>s+r.km, 0);
 const MAP_W = 720, MAP_H = 360;
@@ -2418,13 +2335,22 @@ function buildJourneySVG(){
   const eqY = MAP_H/2, pmX = MAP_W/2;
   html += `<line x1="0" y1="${eqY}" x2="${MAP_W}" y2="${eqY}" stroke="#4a5a6a" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.4"/>`;
   html += `<line x1="${pmX}" y1="0" x2="${pmX}" y2="${MAP_H}" stroke="#4a5a6a" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.4"/>`;
+  html += '<g opacity="0.6" fill="#0f1522" stroke="#1a2436" stroke-width="0.5">';
+  html += '<path d="M 70 55 Q 130 45 175 60 Q 210 75 220 105 Q 215 130 190 140 Q 165 150 145 135 Q 125 120 105 100 Q 85 80 70 55 Z"/>';
+  html += '<path d="M 210 155 Q 235 155 250 180 Q 255 215 250 250 Q 240 285 225 295 Q 210 290 205 250 Q 200 210 205 180 Z"/>';
+  html += '<path d="M 355 55 Q 400 50 430 65 Q 435 85 420 100 Q 400 105 375 100 Q 355 90 350 75 Z"/>';
+  html += '<path d="M 355 110 Q 410 105 435 130 Q 445 170 430 215 Q 415 245 395 245 Q 375 235 365 200 Q 355 165 355 130 Z"/>';
+  html += '<path d="M 435 55 Q 520 50 590 60 Q 640 80 645 110 Q 620 145 570 145 Q 530 150 490 140 Q 460 125 445 100 Z"/>';
+  html += '<path d="M 615 220 Q 665 215 690 235 Q 695 265 675 285 Q 645 290 620 275 Q 610 250 615 220 Z"/>';
+  html += '<path d="M 235 30 Q 275 25 295 45 Q 290 65 260 68 Q 240 60 235 45 Z"/>';
+  html += '</g>';
   html += '<g>';
   JOURNEY.forEach(route => { const arc = jArc(jProj(JOURNEY_CITIES[route.from].lon, JOURNEY_CITIES[route.from].lat), jProj(JOURNEY_CITIES[route.to].lon, JOURNEY_CITIES[route.to].lat), route.type); const stroke = route.type === 'ship' ? '#3a6a9a' : route.type === 'train' ? '#8a6a3a' : '#4a6a8a'; html += `<path d="${jPathD(arc)}" fill="none" stroke="${stroke}" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.4"/>`; });
   html += '</g>';
   html += '<g id="jRoutesActive"></g>';
   html += `<g id="jVehicle" style="display:none"><circle r="5" fill="#fff" opacity="0.25"/><circle r="2" fill="#fff"/></g>`;
   html += '<g id="jCities">';
-  Object.entries(JOURNEY_CITIES).forEach(([id, city]) => { const p = jProj(city.lon, city.lat); const isMain = id === 'moscow' || id === 'rostov'; const color = isMain ? '#d4af37' : '#e94a6f'; html += `<g class="jCity" data-city="${id}"><circle cx="${p.x}" cy="${p.y}" r="6" fill="${color}" opacity="0.18"/><circle cx="${p.x}" cy="${p.y}" r="2.6" fill="${color}"/><text x="${p.x}" y="${p.y - 6}" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="600" fill="#c8ccd4" style="paint-order:stroke; stroke:#05050a; stroke-width:1.8px;">${city.name}</text></g>`; });
+  Object.entries(JOURNEY_CITIES).forEach(([id, city]) => { const p = jProj(city.lon, city.lat); const isMain = id === 'moscow' || id === 'rostov'; const color = isMain ? '#d4af37' : '#e94a6f'; html += `<g class="jCity"><circle cx="${p.x}" cy="${p.y}" r="6" fill="${color}" opacity="0.18"/><circle cx="${p.x}" cy="${p.y}" r="2.6" fill="${color}"/><text x="${p.x}" y="${p.y - 6}" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="600" fill="#c8ccd4" style="paint-order:stroke; stroke:#05050a; stroke-width:1.8px;">${city.name}</text></g>`; });
   html += '</g>';
   svg.innerHTML = html;
 }
@@ -2471,181 +2397,184 @@ function journeyReset(){ journeyState.running = false; if (journeyState.raf) can
 function initJourney(){ buildJourneySVG(); updateJourneyUI(); }
 
 /* ==========================================================
-   КАРТА МИРА (страны + столицы + зум + инфо)
+   КАРТА МИРА — Leaflet
    ========================================================== */
-let worldZoomLevel = 1;
-let worldPanX = 0, worldPanY = 0;
-let worldDragging = false, worldLastX = 0, worldLastY = 0;
-let worldSelectedCode = null;
+let leafletMap = null;
+let countriesLayer = null;
+let selectedCountryLayer = null;
+const GEOJSON_URL = 'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json';
 
-function initWorldMap(){
-  const svg = document.getElementById('worldMapSvg');
-  if (!svg) return;
-  buildWorldMapSVG();
-  svg.addEventListener('wheel', onWorldWheel, { passive: false });
-  svg.addEventListener('mousedown', onWorldDown);
-  window.addEventListener('mousemove', onWorldMove);
-  window.addEventListener('mouseup', onWorldUp);
-  svg.addEventListener('touchstart', onWorldTouchStart, { passive: true });
-  svg.addEventListener('touchmove', onWorldTouchMove, { passive: false });
-  svg.addEventListener('touchend', onWorldUp);
-  // pinch
-  let pinchDist = 0;
-  svg.addEventListener('touchmove', e=>{
-    if (e.touches.length === 2) {
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      const d = Math.hypot(dx, dy);
-      if (pinchDist > 0) { const scale = d / pinchDist; worldZoomLevel *= scale; worldZoomLevel = Math.max(0.5, Math.min(8, worldZoomLevel)); applyWorldTransform(); }
-      pinchDist = d;
-      e.preventDefault();
-    }
-  }, { passive: false });
-  svg.addEventListener('touchend', ()=>{ pinchDist = 0; });
-}
+function initWorldMap() {
+  const container = document.getElementById('leafletMap');
+  if (!container) return;
 
-function buildWorldMapSVG(){
-  const svg = document.getElementById('worldMapSvg');
-  if (!svg) return;
-  let html = `<rect width="${MAP_W}" height="${MAP_H}" fill="#05050a" id="worldBg"/>`;
-  // Сетка
-  html += '<g opacity="0.07" stroke="#8899aa" stroke-width="0.4" fill="none">';
-  for (let lon=-180; lon<=180; lon+=30) { const x = (lon+180)/360*MAP_W; html += `<line x1="${x}" y1="0" x2="${x}" y2="${MAP_H}"/>`; }
-  for (let lat=-90; lat<=90; lat+=30) { const y = (90-lat)/180*MAP_H; html += `<line x1="0" y1="${y}" x2="${MAP_W}" y2="${y}"/>`; }
-  html += '</g>';
+  if (leafletMap) {
+    setTimeout(() => leafletMap.invalidateSize(), 100);
+    return;
+  }
 
-  // Континенты (стилизованные)
-  const conts = [
-    'M 70 55 Q 130 45 175 60 Q 210 75 220 105 Q 215 130 190 140 Q 165 150 145 135 Q 125 120 105 100 Q 85 80 70 55 Z',
-    'M 210 155 Q 235 155 250 180 Q 255 215 250 250 Q 240 285 225 295 Q 210 290 205 250 Q 200 210 205 180 Z',
-    'M 355 55 Q 400 50 430 65 Q 435 85 420 100 Q 400 105 375 100 Q 355 90 350 75 Z',
-    'M 355 110 Q 410 105 435 130 Q 445 170 430 215 Q 415 245 395 245 Q 375 235 365 200 Q 355 165 355 130 Z',
-    'M 435 55 Q 520 50 590 60 Q 640 80 645 110 Q 620 145 570 145 Q 530 150 490 140 Q 460 125 445 100 Z',
-    'M 615 220 Q 665 215 690 235 Q 695 265 675 285 Q 645 290 620 275 Q 610 250 615 220 Z',
-    'M 235 30 Q 275 25 295 45 Q 290 65 260 68 Q 240 60 235 45 Z'
-  ];
-  html += '<g id="worldContinents" fill="#0f1522" stroke="#1a2436" stroke-width="0.6">';
-  conts.forEach(d => html += `<path d="${d}"/>`);
-  html += '</g>';
-
-  // Точки столиц и Ростов
-  html += '<g id="worldPoints">';
-  COUNTRIES.forEach(c => {
-    const p = jProj(c.lng, c.lat);
-    html += `<g class="world-country-marker" data-code="${c.code}" data-name="${escapeHtml(c.name)}" data-capital="${escapeHtml(c.capital)}" data-good="${escapeHtml(c.good)}" data-bad="${escapeHtml(c.bad)}">
-      <circle class="world-capital" cx="${p.x}" cy="${p.y}" r="3" />
-      <text class="world-capital-label" x="${p.x}" y="${p.y - 5}">${escapeHtml(c.capital)}</text>
-    </g>`;
+  // Создаём карту
+  leafletMap = L.map('leafletMap', {
+    center: [20, 0],
+    zoom: 2,
+    minZoom: 1,
+    maxZoom: 8,
+    worldCopyJump: true,
+    zoomControl: false,
+    attributionControl: true
   });
-  // Ростов отдельно
-  const rp = jProj(ROSTOV.lng, ROSTOV.lat);
-  html += `<g class="world-country-marker" data-code="ROSTOV" data-name="Россия (Ростов-на-Дону)" data-capital="Ростов-на-Дону" data-good="Тихий Дон, казаки, шашлык." data-bad="Пробки на Западном и жара летом.">
-    <circle class="world-capital" cx="${rp.x}" cy="${rp.y}" r="3" fill="#d4af37" />
-    <text class="world-capital-label" x="${rp.x}" y="${rp.y - 5}">Ростов-на-Дону</text>
-  </g>`;
-  html += '</g>';
 
-  svg.innerHTML = html;
-  // Обработчики кликов
-  svg.querySelectorAll('.world-country-marker').forEach(el => {
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const code = el.dataset.code;
-      if (code === 'ROSTOV') { showWorldInfo('Россия (Ростов-на-Дону)', 'Ростов-на-Дону', el.dataset.good, el.dataset.bad); }
-      else {
-        const c = COUNTRIES.find(x => x.code === code);
-        if (c) showWorldInfo(c.name, c.capital, c.good, c.bad);
+  // Подложка OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19,
+    crossOrigin: true
+  }).addTo(leafletMap);
+
+  // Стили стран по умолчанию
+  const defaultStyle = {
+    color: '#2a3a4e',
+    weight: 0.8,
+    fillColor: '#0f1522',
+    fillOpacity: 0.85
+  };
+
+  const hoverStyle = {
+    color: '#7ab4e8',
+    weight: 1.2,
+    fillColor: '#1a2436',
+    fillOpacity: 0.95
+  };
+
+  const selectedStyle = {
+    color: '#d4af37',
+    weight: 2,
+    fillColor: '#1a2a3a',
+    fillOpacity: 1
+  };
+
+  // Загружаем GeoJSON
+  fetch(GEOJSON_URL)
+    .then(res => res.json())
+    .then(geojson => {
+      countriesLayer = L.geoJSON(geojson, {
+        style: defaultStyle,
+        onEachFeature: (feature, layer) => {
+          // Название страны из GeoJSON
+          const countryName = feature.properties.name || 'Неизвестно';
+          const isoCode = feature.id || '';
+
+          layer.on({
+            mouseover: (e) => {
+              const l = e.target;
+              if (selectedCountryLayer !== l) {
+                l.setStyle(hoverStyle);
+                l.bringToFront();
+              }
+            },
+            mouseout: (e) => {
+              const l = e.target;
+              if (selectedCountryLayer !== l) {
+                countriesLayer.resetStyle(l);
+              }
+            },
+            click: (e) => {
+              // Сброс предыдущего выделения
+              if (selectedCountryLayer) {
+                countriesLayer.resetStyle(selectedCountryLayer);
+              }
+              selectedCountryLayer = e.target;
+              selectedCountryLayer.setStyle(selectedStyle);
+              selectedCountryLayer.bringToFront();
+
+              // Ищем данные о стране
+              const info = countryDataByCode[isoCode];
+              if (info) {
+                showWorldInfo(info.name, info.capital, info.good, info.bad);
+              } else {
+                // Если данных нет — показываем базовое название
+                showWorldInfo(countryName, '—', 'Информация уточняется', 'Информация уточняется');
+              }
+
+              // Летаем к стране
+              const bounds = e.target.getBounds();
+              if (bounds.isValid()) {
+                leafletMap.fitBounds(bounds, { padding: [20, 20], maxZoom: 5 });
+              }
+            }
+          });
+
+          // Всплывающая подсказка при наведении
+          layer.bindTooltip(countryName, {
+            sticky: true,
+            direction: 'top',
+            className: 'country-tooltip'
+          });
+        }
+      }).addTo(leafletMap);
+    })
+    .catch(err => {
+      console.error('Ошибка загрузки GeoJSON:', err);
+      // Фолбэк: показываем сообщение
+      const info = document.getElementById('worldCountryInfo');
+      if (info) {
+        info.innerHTML = '<div style="padding:20px;text-align:center;color:#8a9ab0;">Не удалось загрузить данные о странах.<br>Проверьте подключение к интернету.</div>';
+        info.classList.add('open');
       }
-      worldSelectedCode = code;
-      svg.querySelectorAll('.world-country-marker').forEach(m => m.classList.toggle('selected', m.dataset.code === code));
     });
-  });
 }
 
-function applyWorldTransform(){
-  const svg = document.getElementById('worldMapSvg');
-  if (!svg) return;
-  svg.setAttribute('viewBox', `${worldPanX} ${worldPanY} ${MAP_W / worldZoomLevel} ${MAP_H / worldZoomLevel}`);
+function worldZoom(delta) {
+  if (!leafletMap) return;
+  const currentZoom = leafletMap.getZoom();
+  leafletMap.setZoom(currentZoom + delta);
 }
 
-function worldZoom(factor){
-  worldZoomLevel *= factor;
-  worldZoomLevel = Math.max(0.5, Math.min(8, worldZoomLevel));
-  const cx = MAP_W / 2, cy = MAP_H / 2;
-  const halfW = MAP_W / worldZoomLevel / 2;
-  const halfH = MAP_H / worldZoomLevel / 2;
-  worldPanX = cx - halfW;
-  worldPanY = cy - halfH;
-  applyWorldTransform();
-}
-
-function worldReset(){
-  worldZoomLevel = 1; worldPanX = 0; worldPanY = 0;
-  applyWorldTransform();
+function worldReset() {
+  if (!leafletMap) return;
+  leafletMap.setView([20, 0], 2);
   closeWorldInfo();
-  document.querySelectorAll('.world-country-marker').forEach(m => m.classList.remove('selected'));
+  if (selectedCountryLayer && countriesLayer) {
+    countriesLayer.resetStyle(selectedCountryLayer);
+    selectedCountryLayer = null;
+  }
 }
 
-function onWorldWheel(e){
-  e.preventDefault();
-  const factor = e.deltaY < 0 ? 1.12 : 0.89;
-  worldZoom(factor);
+function showWorldInfo(name, capital, good, bad) {
+  const titleEl = document.getElementById('worldInfoTitle');
+  const goodEl = document.getElementById('worldInfoGood');
+  const badEl = document.getElementById('worldInfoBad');
+  const box = document.getElementById('worldCountryInfo');
+  if (!titleEl || !goodEl || !badEl || !box) return;
+  titleEl.textContent = `${name} · ${capital}`;
+  goodEl.textContent = '😊 ' + good;
+  badEl.textContent = '😅 ' + bad;
+  box.classList.add('open');
 }
 
-function onWorldDown(e){
-  worldDragging = true;
-  worldLastX = e.clientX; worldLastY = e.clientY;
+function closeWorldInfo() {
+  const el = document.getElementById('worldCountryInfo');
+  if (el) el.classList.remove('open');
 }
-
-function onWorldMove(e){
-  if (!worldDragging) return;
-  const svg = document.getElementById('worldMapSvg');
-  const rect = svg.getBoundingClientRect();
-  const scale = rect.width / (MAP_W / worldZoomLevel);
-  worldPanX -= (e.clientX - worldLastX) / scale;
-  worldPanY -= (e.clientY - worldLastY) / scale;
-  worldPanX = Math.max(0, Math.min(MAP_W - MAP_W / worldZoomLevel, worldPanX));
-  worldPanY = Math.max(0, Math.min(MAP_H - MAP_H / worldZoomLevel, worldPanY));
-  worldLastX = e.clientX; worldLastY = e.clientY;
-  applyWorldTransform();
-}
-
-function onWorldUp(){ worldDragging = false; }
-
-function onWorldTouchStart(e){
-  if (e.touches.length === 1) { worldDragging = true; worldLastX = e.touches[0].clientX; worldLastY = e.touches[0].clientY; }
-}
-function onWorldTouchMove(e){
-  if (!worldDragging || e.touches.length !== 1) return;
-  const svg = document.getElementById('worldMapSvg');
-  const rect = svg.getBoundingClientRect();
-  const scale = rect.width / (MAP_W / worldZoomLevel);
-  worldPanX -= (e.touches[0].clientX - worldLastX) / scale;
-  worldPanY -= (e.touches[0].clientY - worldLastY) / scale;
-  worldPanX = Math.max(0, Math.min(MAP_W - MAP_W / worldZoomLevel, worldPanX));
-  worldPanY = Math.max(0, Math.min(MAP_H - MAP_H / worldZoomLevel, worldPanY));
-  worldLastX = e.touches[0].clientX; worldLastY = e.touches[0].clientY;
-  applyWorldTransform();
-  e.preventDefault();
-}
-
-function showWorldInfo(name, capital, good, bad){
-  document.getElementById('worldInfoTitle').textContent = `${name} · ${capital}`;
-  document.getElementById('worldInfoGood').textContent = '😊 ' + good;
-  document.getElementById('worldInfoBad').textContent = '😅 ' + bad;
-  document.getElementById('worldCountryInfo').classList.add('open');
-}
-
-function closeWorldInfo(){ document.getElementById('worldCountryInfo').classList.remove('open'); }
 
 /* ==========================================================
    ИНИЦИАЛИЗАЦИЯ
    ========================================================== */
-renderPlaylist(); renderMusicList(); updatePlayerUI();
-draw2D(); renderMessagesList(); updateMessagesBadge();
-renderNotifications();
-initPuzzle();
+function initAll(){
+  try { renderPlaylist(); } catch(e){ console.warn(e); }
+  try { renderMusicList(); } catch(e){ console.warn(e); }
+  try { updatePlayerUI(); } catch(e){ console.warn(e); }
+  try { draw2D(); } catch(e){ console.warn(e); }
+  try { renderMessagesList(); } catch(e){ console.warn(e); }
+  try { updateMessagesBadge(); } catch(e){ console.warn(e); }
+  try { renderNotifications(); } catch(e){ console.warn(e); }
+  try { initPuzzle(); } catch(e){ console.warn(e); }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAll);
+} else {
+  initAll();
+}
 </script>
 </body>
 </html>
