@@ -276,6 +276,7 @@
   .post-action { flex:1; padding:12px 8px; border-radius:8px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:14px; font-weight:600; color:var(--text-2); display:flex; align-items:center; justify-content:center; gap:6px; touch-action:manipulation; }
   .post-action:active { background:var(--sidebar-hover); }
   .post-action.liked { color:var(--accent); }
+  .post-avatar-sm { font-size:13px; letter-spacing:-0.5px; }
 
   /* ============ ПРОФИЛЬ ============ */
   .profile-wrap { max-width:780px; margin:0 auto; }
@@ -334,6 +335,9 @@
   .yandex-player-frame iframe { display:block; border:0; width:100%; }
   .yandex-placeholder { padding:40px 20px; text-align:center; color:var(--text-3); font-size:13px; line-height:1.6; }
   .yandex-placeholder .big { font-size:36px; display:block; margin-bottom:10px; }
+  .yandex-open-btn { display:inline-block; padding:14px 26px; background:#ffdb4d; color:#000; text-decoration:none; border-radius:12px; font-weight:700; font-size:14.5px; transition:transform 0.15s, box-shadow 0.15s; box-shadow:0 3px 12px rgba(255,219,77,0.35); }
+  .yandex-open-btn:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(255,219,77,0.5); }
+  .yandex-open-btn:active { transform:scale(0.97); }
 
   /* ============ СООБЩЕНИЯ ============ */
   .messages-wrap { max-width:780px; margin:0 auto; background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; display:flex; flex-direction:column; height:calc(var(--vh) - 130px - var(--safe-top) - var(--safe-bottom)); min-height:400px; max-height:720px; }
@@ -471,14 +475,12 @@
   @media (max-width: 900px) {
     .sidebar { display:none !important; }
     .bottom-nav { display:flex; }
-
     .main {
       padding: var(--edge);
       padding-left: max(var(--edge), var(--safe-left));
       padding-right: max(var(--edge), var(--safe-right));
       padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + var(--edge));
     }
-
     .brand-name { display:none; }
     .user-chip .user-name { display:none; }
     .user-chip { padding:4px; }
@@ -489,7 +491,6 @@
      ============================================================ */
   @media (max-width: 600px) {
     body { font-size:15px; }
-
     .topbar {
       height: calc(56px + var(--safe-top));
       padding: var(--safe-top) max(var(--edge), var(--safe-left)) 0 max(var(--edge), var(--safe-right));
@@ -500,7 +501,6 @@
     .icon-btn { width:38px; height:38px; }
     .icon-btn .icon-svg { width:19px; height:19px; }
     .user-avatar-mini { width:30px; height:30px; font-size:11px; }
-
     .main {
       padding: var(--edge);
       padding-left: max(var(--edge), var(--safe-left));
@@ -508,8 +508,6 @@
       padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + var(--edge));
     }
     .container-narrow { gap: 12px; }
-
-    /* Посты */
     .post-head { padding:14px 14px 0; gap:10px; }
     .post-avatar { width:38px; height:38px; font-size:16px; }
     .post-content { padding:10px 14px 14px; }
@@ -522,8 +520,6 @@
     }
     .post-photo-fallback { font-size:60px; }
     .post-action { padding:11px 4px; font-size:13px; }
-
-    /* Профиль */
     .profile-cover { height:160px; }
     .profile-avatar-lg { width:88px; height:88px; font-size:34px; }
     .profile-name { font-size:19px; }
@@ -535,16 +531,12 @@
     .profile-stats { padding:12px 14px; gap:18px; }
     .profile-stat .num { font-size:15px; }
     .profile-stat .lbl { font-size:10.5px; }
-
-    /* Музыка */
     .music-player { padding:20px 14px; }
     .music-cover { width:160px; height:160px; font-size:56px; margin-bottom:16px; }
     .music-title { font-size:17px; }
     .music-artist { font-size:13px; margin-bottom:18px; }
     .yandex-card { padding:16px; }
     .yandex-input-row input { font-size:16px; }
-
-    /* Сообщения — на всю высоту между топбаром и нижним меню */
     .messages-wrap {
       border-radius:0;
       max-height:none;
@@ -558,15 +550,11 @@
       padding: 10px 12px;
       padding-bottom: calc(10px + var(--safe-bottom));
     }
-
-    /* Приложения / галерея */
     .apps-grid { grid-template-columns:repeat(2, 1fr); gap:10px; }
     .app-icon { font-size:38px; }
     .app-title { font-size:13px; }
     .app-desc  { font-size:11px; }
     .gallery-grid { grid-template-columns:repeat(2, 1fr); gap:8px; }
-
-    /* Уведомления / тосты */
     .toast-container {
       top: calc(64px + var(--safe-top));
       left: max(8px, var(--safe-left));
@@ -574,7 +562,6 @@
     }
     .toast { min-width:0; max-width:none; padding:11px 12px; }
     .toast-avatar { width:36px; height:36px; font-size:14px; }
-
     .notif-panel {
       top: calc(60px + var(--safe-top));
       left: max(8px, var(--safe-left));
@@ -582,16 +569,12 @@
       width:auto; max-width:none;
       max-height: calc(var(--vh) - 80px - var(--safe-top) - var(--safe-bottom));
     }
-
-    /* Капча / логин */
     .captcha-box { padding:22px 18px; }
     .captcha-grid { gap:8px; }
     .captcha-tile .captcha-emoji { font-size:36px; }
     .login-box { padding:32px 22px; }
     .login-brand .logo-mark { width:44px; height:44px; }
     .login-brand .brand-titles .brand-name { font-size:21px; }
-
-    /* Плавающий плеер — поднят над нижним меню */
     .player {
       bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 12px);
       right: max(12px, var(--safe-right));
@@ -603,8 +586,6 @@
       padding: 16px;
     }
     .player-toggle { width:52px; height:52px; }
-
-    /* Модалки */
     .modal-close {
       top: calc(16px + var(--safe-top));
       right: max(12px, var(--safe-right));
@@ -618,6 +599,151 @@
     .nav-icon svg { width:20px; height:20px; }
     .bottom-nav-item span { font-size:10px; }
   }
+
+  /* ===== Меньшие аватары для постов ===== */
+  .post-avatar.post-avatar-sm { font-size:13px; letter-spacing:-0.5px; }
+
+  /* ===== Путешествие мечты ===== */
+  .journey-wrap { display:flex; flex-direction:column; gap:12px; }
+  .journey-map {
+    background:#05050a;
+    border-radius:14px;
+    overflow:hidden;
+    position:relative;
+    aspect-ratio:2 / 1;
+    width:100%;
+  }
+  .journey-map svg { width:100%; height:100%; display:block; }
+  .journey-panel {
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+  }
+  .journey-stat {
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 12px;
+    text-align:center;
+    min-width:0;
+  }
+  .journey-stat-label {
+    font-size:10.5px;
+    color:var(--text-3);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-bottom:3px;
+  }
+  .journey-stat-value {
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .journey-progress {
+    height:6px;
+    background:var(--border);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .journey-progress-fill {
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#7ab4e8,#e94a6f,#d4af37);
+    transition:width 0.15s linear;
+  }
+  #journeySvg .jCity circle:first-child {
+    animation:cityPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes cityPulse {
+    0%,100% { opacity:0.18; }
+    50% { opacity:0.05; }
+  }
+
+  /* ===== Компактный раздел «Игры» ===== */
+  @media (max-width: 900px) {
+    #games .container-narrow { gap:8px; }
+    #games .post-head { padding:12px 12px 0; }
+    #games .post-content { padding:10px 12px 12px; }
+    #games .apps-grid { gap:8px; }
+    #games .app-card { padding:14px 10px; }
+    #games .app-icon { font-size:32px; }
+    #games .app-title { font-size:12.5px; }
+    #games .app-desc { font-size:10.5px; line-height:1.3; }
+  }
+  @media (max-width: 600px) {
+    #games .post-head { padding:10px 12px 0; }
+    #games .post-avatar { width:34px; height:34px; font-size:14px; }
+    #games .post-author { font-size:13.5px; }
+    #games .post-time { font-size:11.5px; }
+    #games .post-content { padding:8px 12px 12px; }
+    #games .app-card { padding:12px 8px; }
+    #games .app-icon { font-size:30px; }
+    #games .app-title { font-size:12px; }
+    .journey-panel { grid-template-columns:1fr; gap:6px; }
+    .journey-stat { padding:8px 10px; display:flex; align-items:center; justify-content:space-between; text-align:left; }
+    .journey-stat-label { margin-bottom:0; }
+    .journey-stat-value { font-size:12.5px; }
+    .journey-map { aspect-ratio:2 / 1.05; }
+  }
+
+  /* ===== Карта мира: страны ===== */
+  .world-map-wrap {
+    position:relative;
+    background:#05050a;
+    border-radius:14px;
+    overflow:hidden;
+    aspect-ratio:2 / 1.05;
+    width:100%;
+    touch-action:none;
+  }
+  .world-map-wrap svg { width:100%; height:100%; display:block; cursor:grab; }
+  .world-map-wrap svg:active { cursor:grabbing; }
+  .world-country { fill:#1a2436; stroke:#2a3a4e; stroke-width:0.4; cursor:pointer; transition:fill 0.2s; }
+  .world-country:hover { fill:#2a3a4e; }
+  .world-country.selected { fill:#3a5a7a; stroke:#7ab4e8; stroke-width:0.8; }
+  .world-capital { fill:#e94a6f; cursor:pointer; }
+  .world-capital:hover { fill:#ff6a8f; }
+  .world-capital-label { font-family:Inter, sans-serif; font-size:5px; fill:#c8ccd4; pointer-events:none; text-anchor:middle; paint-order:stroke; stroke:#05050a; stroke-width:1.5px; }
+  .world-country-info {
+    position:absolute;
+    left:8px; right:8px; bottom:8px;
+    background:rgba(10,14,22,0.94);
+    border:1px solid #2a3a4e;
+    border-radius:12px;
+    padding:14px 16px;
+    color:#e8eaee;
+    font-size:13px;
+    line-height:1.5;
+    display:none;
+    max-height:45%;
+    overflow-y:auto;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  .world-country-info.open { display:block; }
+  .world-country-info h3 { font-size:15px; font-weight:700; margin-bottom:6px; color:#fff; }
+  .world-country-info .good { color:#7ad89a; margin-bottom:4px; }
+  .world-country-info .bad { color:#ff8a8a; }
+  .world-country-info .close-info {
+    position:absolute; top:6px; right:10px;
+    background:transparent; border:none; color:#8a9ab0;
+    font-size:20px; cursor:pointer; line-height:1;
+  }
+  .world-zoom-controls {
+    position:absolute; top:8px; right:8px;
+    display:flex; flex-direction:column; gap:4px;
+    z-index:5;
+  }
+  .world-zoom-controls button {
+    width:34px; height:34px; border-radius:8px;
+    background:rgba(20,28,40,0.9); border:1px solid #2a3a4e;
+    color:#e8eaee; font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    touch-action:manipulation;
+  }
+  .world-zoom-controls button:active { background:rgba(40,56,80,0.95); }
 </style>
 </head>
 <body>
@@ -739,48 +865,123 @@
     </aside>
 
     <main class="main">
+      <!-- ============ ГЛАВНАЯ: ПОЗДРАВЛЕНИЯ ============ -->
       <div id="feed" class="tab-content active">
         <div class="container-narrow">
+
           <article class="post">
             <div class="post-head">
-              <div class="post-avatar">А</div>
+              <div class="post-avatar" style="background:linear-gradient(135deg,#4a4a52,#1a1a20)">П</div>
               <div class="post-info">
-                <div class="post-author">Анна Фисоченко <span class="verified">✓</span></div>
-                <div class="post-time">только что · Для всех</div>
-              </div>
-              <button class="post-menu">⋯</button>
-            </div>
-            <div class="post-content">
-              <h1 id="heroTitle">С днём рождения, <span class="accent">Анна</span>! 🎂</h1>
-              <p id="heroText">Сегодня особенный день — твой день. Пусть каждый момент будет наполнен радостью, а этот небольшой сюрприз подарит улыбку.</p>
-              <p>Загляни в разделы — там тебя ждут подарки: игры, музыка, сообщения и фотографии.</p>
-            </div>
-            <div class="post-stats">
-              <div class="stat"><span class="stat-bubble">❤</span><span class="stat-bubble" style="background:linear-gradient(135deg,#f8dfa0,#d4af37)">★</span><span style="margin-left:6px;">21</span></div>
-              <div class="stat">4 комментария · 2 репоста</div>
-            </div>
-            <div class="post-actions">
-              <button class="post-action">❤️ Нравится</button>
-              <button class="post-action">💬 Комментарий</button>
-              <button class="post-action">↗ Поделиться</button>
-            </div>
-          </article>
-          <article class="post">
-            <div class="post-head">
-              <div class="post-avatar" style="background:linear-gradient(135deg,#d4af37,#8b6914)">A</div>
-              <div class="post-info">
-                <div class="post-author">Подруги и друзья</div>
-                <div class="post-time">сегодня в 00:00 · 🎉</div>
+                <div class="post-author">Папа</div>
+                <div class="post-time">сегодня · 🐴</div>
               </div>
             </div>
             <div class="post-content">
-              <h2>Поздравляем! 🥂</h2>
-              <p>Пусть этот год принесёт тебе море счастья, крепкое здоровье, исполнение самых заветных желаний и ярких моментов каждый день. Оставайся такой же замечательной.</p>
+              <p>Ну что, кобыла, 21 год стукнуло! 🐴</p>
+              <p>Поздравляю. Расти большой, не хворай, слушайся мать. Папка любит тебя, хоть и редко говорит.</p>
             </div>
           </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#e94a6f,#8b1a30)">М</div>
+              <div class="post-info">
+                <div class="post-author">Мама</div>
+                <div class="post-time">00:01 · ❤️</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <h2>АНЯ</h2>
+              <p>С днём рождения, доченька моя! 💕 21 год — ты уже совсем взрослая, но для меня ты всегда моя маленькая девочка.</p>
+              <p>Будь счастлива, здорова, пусть всё в жизни получается. Люблю тебя больше всех на свете! ❤️🎂</p>
+            </div>
+          </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar post-avatar-sm" style="background:linear-gradient(135deg,#d4af37,#8b6914)">БТ</div>
+              <div class="post-info">
+                <div class="post-author">Вторая Мамочка</div>
+                <div class="post-time">сегодня · 😂</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>Анька!!! 🎉🎉🎉 С днюхой, бабка!</p>
+              <p>Вот тебе 21! Ничего себе ты вымахала 😄 Будь такой же звонкой, красивой и неугомонной. Люблю тебя, козу мою! Целую в лобик 💋</p>
+              <p>Приезжай, напеку пирогов!</p>
+            </div>
+          </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#e94a6f,#d4af37); font-size:22px;">🐴</div>
+              <div class="post-info">
+                <div class="post-author">Йобаный Конь</div>
+                <div class="post-time">00:00 · ❤️</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>Любимая, с днём рождения ❤️</p>
+              <p>Ты — самое светлое, что случилось в моей жизни. Спасибо, что ты рядом. Я хочу быть с тобой каждый день.</p>
+              <p>Пусть 21 будет твоим лучшим годом! 💫</p>
+              <p>Я люблю тебя. Очень.</p>
+            </div>
+          </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar post-avatar-sm" style="background:linear-gradient(135deg,#1da1f2,#0d6eb8)">ДБ</div>
+              <div class="post-info">
+                <div class="post-author">Данил Безупречный</div>
+                <div class="post-time">сегодня · 😎</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>Полторашка, с днём рождения! 😎</p>
+              <p>21 — это уже не шутки, ты взрослый человек. (По паспорту. По факту — та же мелкая полторашка 😁)</p>
+              <p>Желаю денег, здоровья и чтобы всё было по кайфу. Уважение тебе 🙏</p>
+            </div>
+          </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar post-avatar-sm" style="background:linear-gradient(135deg,#a8842a,#f8dfa0); color:#2a1a00;">РК</div>
+              <div class="post-info">
+                <div class="post-author">Родная Кровиночка</div>
+                <div class="post-time">вчера · 💛</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>Сестрёнка моя родная 💛</p>
+              <p>Как же далеко я сейчас, но душой я всегда с тобой. 21 год — это целая жизнь уже, и я так горжусь тем, какой ты стала.</p>
+              <p>Ты — моё солнце, моя опора, моя семья по крови и по сердцу. Пусть этот год принесёт тебе то, о чём ты молча мечтаешь. Я знаю, что ты достойна всего самого лучшего.</p>
+              <p>Каждый раз, когда что-то важное происходит — я первая хочу тебе позвонить, и это не изменится никогда.</p>
+              <p>Обнимаю тебя крепко-крепко через все километры 🌍💫</p>
+              <p>С днём рождения, любимая. Я с тобой.</p>
+            </div>
+          </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar post-avatar-sm" style="background:linear-gradient(135deg,#31a24c,#1a6b30)">М3</div>
+              <div class="post-info">
+                <div class="post-author">Марина 300</div>
+                <div class="post-time">сегодня · 🥂</div>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>Анька, дорогая!!! 🥂🎉 С днём рождения!</p>
+              <p>Половину жизни вместе, половину — бухаем вместе 😂 Желаю тебе, чтобы всё было так же ярко, как наши вечера, только чтоб голова по утрам не болела!</p>
+              <p>Ты — моя самая. Всё будет кайф. За нас! 🍸💕</p>
+              <p>Приезжай, накроем стол, я всё организую 😏</p>
+            </div>
+          </article>
+
         </div>
       </div>
 
+      <!-- ============ ПРОФИЛЬ ============ -->
       <div id="profile" class="tab-content">
         <div class="profile-wrap">
           <div class="profile-card">
@@ -813,12 +1014,13 @@
         </div>
       </div>
 
+      <!-- ============ МУЗЫКА ============ -->
       <div id="music" class="tab-content">
         <div class="yandex-card">
           <h3><span class="yandex-logo">Я</span> Яндекс Музыка</h3>
-          <p class="hint">Вставьте ссылку на трек, альбом или плейлист — плеер появится здесь.</p>
+          <p class="hint">Вставьте ссылку на трек, альбом или плейлист — откроется в приложении.</p>
           <div class="yandex-input-row">
-            <input type="text" id="yandexLink" placeholder="https://music.yandex.ru/users/логин/playlists/12345" inputmode="url">
+            <input type="text" id="yandexLink" placeholder="https://music.yandex.ru/..." inputmode="url">
             <button class="yandex-btn" onclick="embedYandexPlayer()">Показать</button>
           </div>
           <div class="yandex-player-frame" id="yandexPlayerContainer">
@@ -846,6 +1048,7 @@
         </div>
       </div>
 
+      <!-- ============ ИГРЫ ============ -->
       <div id="games" class="tab-content">
         <div class="container-narrow">
           <article class="post">
@@ -860,7 +1063,11 @@
               <div id="appsGrid" class="apps-grid">
                 <button class="app-card" onclick="openApp('puzzle')"><span class="app-icon">🧩</span><span class="app-title">Пазл</span><span class="app-desc">Собери фото из 9 частей</span></button>
                 <button class="app-card" onclick="openApp('race2d')"><span class="app-icon">🗺️</span><span class="app-title">Ночной город</span><span class="app-desc">Гонки, вид сверху</span></button>
+                <button class="app-card" onclick="openApp('journey')"><span class="app-icon">🌍</span><span class="app-title">Путешествие мечты</span><span class="app-desc">Карта мира и перелёты</span></button>
+                <button class="app-card" onclick="openApp('worldmap')"><span class="app-icon">🗺️</span><span class="app-title">Карта мира</span><span class="app-desc">Страны, столицы, факты</span></button>
               </div>
+
+              <!-- Пазл -->
               <div id="appPuzzle" class="app-view" style="display:none;">
                 <button class="app-back" onclick="closeApp()">← К приложениям</button>
                 <h2>Пазл</h2>
@@ -872,6 +1079,8 @@
                   <button class="btn btn-secondary" onclick="resetPuzzle()">Сбросить</button>
                 </div>
               </div>
+
+              <!-- Ночной город -->
               <div id="appRace2d" class="app-view" style="display:none;">
                 <button class="app-back" onclick="closeApp()">← К приложениям</button>
                 <div class="game-wrapper">
@@ -885,14 +1094,56 @@
                   <div class="game-controls">
                     <button class="btn" id="startGameBtn" onclick="startGame()">Старт</button>
                     <button class="btn btn-secondary" onclick="pauseGame()">Пауза</button>
+                    <button class="btn btn-secondary" id="gyroBtn" onclick="requestGyro()">📱 Наклон</button>
                   </div>
                 </div>
               </div>
+
+              <!-- Путешествие мечты -->
+              <div id="appJourney" class="app-view" style="display:none;">
+                <button class="app-back" onclick="closeApp()">← К приложениям</button>
+                <div class="journey-wrap">
+                  <h2>🌍 Путешествие мечты</h2>
+                  <p class="app-subtitle">10 городов · самолёты, поезд и лайнер</p>
+                  <div class="journey-map"><svg id="journeySvg" viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet"></svg></div>
+                  <div class="journey-panel">
+                    <div class="journey-stat"><div class="journey-stat-label">В пути</div><div class="journey-stat-value" id="journeyCurrent">—</div></div>
+                    <div class="journey-stat"><div class="journey-stat-label">Пройдено</div><div class="journey-stat-value" id="journeyDone">0 км</div></div>
+                    <div class="journey-stat"><div class="journey-stat-label">Всего</div><div class="journey-stat-value">51 950 км</div></div>
+                  </div>
+                  <div class="journey-progress"><div class="journey-progress-fill" id="journeyProgressFill"></div></div>
+                  <div class="game-controls">
+                    <button class="btn" id="journeyStartBtn" onclick="journeyStart()">Начать путешествие</button>
+                    <button class="btn btn-secondary" onclick="journeyReset()">Сбросить</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Карта мира -->
+              <div id="appWorldMap" class="app-view" style="display:none;">
+                <button class="app-back" onclick="closeApp()">← К приложениям</button>
+                <div class="world-map-wrap" id="worldMapWrap">
+                  <svg id="worldMapSvg" viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet"></svg>
+                  <div class="world-zoom-controls">
+                    <button onclick="worldZoom(1.3)" title="Приблизить">+</button>
+                    <button onclick="worldZoom(0.77)" title="Отдалить">−</button>
+                    <button onclick="worldReset()" title="Сброс">⌂</button>
+                  </div>
+                  <div class="world-country-info" id="worldCountryInfo">
+                    <button class="close-info" onclick="closeWorldInfo()">×</button>
+                    <h3 id="worldInfoTitle"></h3>
+                    <div class="good" id="worldInfoGood"></div>
+                    <div class="bad" id="worldInfoBad"></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </article>
         </div>
       </div>
 
+      <!-- ============ СООБЩЕНИЯ ============ -->
       <div id="messages" class="tab-content">
         <div class="messages-wrap">
           <div class="messages-header">
@@ -912,6 +1163,7 @@
         </div>
       </div>
 
+      <!-- ============ ГАЛЕРЕЯ ============ -->
       <div id="gallery" class="tab-content">
         <div class="container-narrow">
           <article class="post">
@@ -930,22 +1182,11 @@
   </div>
 
   <nav class="bottom-nav" id="bottomNav" aria-label="Основная навигация">
-    <button class="bottom-nav-item active" data-tab="feed" onclick="switchTab('feed', this)">
-      <svg><use href="#i-home"/></svg><span>Главная</span>
-    </button>
-    <button class="bottom-nav-item" data-tab="profile" onclick="switchTab('profile', this)">
-      <svg><use href="#i-user"/></svg><span>Профиль</span>
-    </button>
-    <button class="bottom-nav-item" data-tab="music" onclick="switchTab('music', this)">
-      <svg><use href="#i-play"/></svg><span>Музыка</span>
-    </button>
-    <button class="bottom-nav-item" data-tab="games" onclick="switchTab('games', this)">
-      <svg><use href="#i-gamepad"/></svg><span>Игры</span>
-    </button>
-    <button class="bottom-nav-item" data-tab="messages" onclick="switchTab('messages', this)">
-      <svg><use href="#i-chat"/></svg><span>Чаты</span>
-      <span class="badge" id="bottomMessagesBadge" style="display:none;">0</span>
-    </button>
+    <button class="bottom-nav-item active" data-tab="feed" onclick="switchTab('feed', this)"><svg><use href="#i-home"/></svg><span>Главная</span></button>
+    <button class="bottom-nav-item" data-tab="profile" onclick="switchTab('profile', this)"><svg><use href="#i-user"/></svg><span>Профиль</span></button>
+    <button class="bottom-nav-item" data-tab="music" onclick="switchTab('music', this)"><svg><use href="#i-play"/></svg><span>Музыка</span></button>
+    <button class="bottom-nav-item" data-tab="games" onclick="switchTab('games', this)"><svg><use href="#i-gamepad"/></svg><span>Игры</span></button>
+    <button class="bottom-nav-item" data-tab="messages" onclick="switchTab('messages', this)"><svg><use href="#i-chat"/></svg><span>Чаты</span><span class="badge" id="bottomMessagesBadge" style="display:none;">0</span></button>
   </nav>
 </div>
 
@@ -1002,40 +1243,27 @@
    МОБИЛЬНАЯ АДАПТАЦИЯ
    ========================================================== */
 function setVH(){
-  // Полная видимая высота в пикселях
-  const h = window.innerHeight;
-  document.documentElement.style.setProperty('--vh', h + 'px');
+  document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
 }
 setVH();
 window.addEventListener('resize', setVH);
 window.addEventListener('orientationchange', ()=>{ setTimeout(setVH, 200); });
 
-// Не даём скроллить фон под модалками на iOS
 document.addEventListener('touchmove', e=>{
-  if (e.target.closest('input, textarea, .chat-messages, .messages-list, .notif-list, .main, .music-list, .player-playlist, .gallery-grid, .profile-tabs')) return;
+  if (e.target.closest('input, textarea, .chat-messages, .messages-list, .notif-list, .main, .music-list, .player-playlist, .gallery-grid, .profile-tabs, .world-map-wrap')) return;
   if (e.touches.length > 1) e.preventDefault();
 }, { passive: false });
 
-// Прокрутка вниз при появлении клавиатуры на мобильных
 const chatInputEl = document.getElementById('chatInput');
 if (chatInputEl) {
   chatInputEl.addEventListener('focus', ()=>{
-    setTimeout(()=>{
-      const cm = document.getElementById('chatMessages');
-      if (cm) cm.scrollTop = cm.scrollHeight;
-    }, 300);
+    setTimeout(()=>{ const cm = document.getElementById('chatMessages'); if (cm) cm.scrollTop = cm.scrollHeight; }, 300);
   });
 }
 
 /* ==========================================================
-   AI — GOOGLE GEMINI (прямой API)
+   ДАННЫЕ
    ========================================================== */
-const AI_CONFIG = {
-  apiKey: 'AQ.Ab8RN6LM_X1ESQhXjZSc3_gKO23_GUyHNjDdLGmEZ3Sg1WBn4w',
-  model: 'gemini-2.5-flash',
-  baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models/'
-};
-
 const CONFIG = {
   birthdayPhotos: ['photos/photo1.jpg','photos/photo2.jpg','photos/photo3.jpg','photos/photo4.jpg'],
   otherPhotos: ['photos/other1.jpg','photos/other2.jpg','photos/other3.jpg'],
@@ -1048,6 +1276,73 @@ const CONFIG = {
     { src:'photos/other2.jpg', caption:'Друзья' }
   ]
 };
+
+// Данные стран (сокращённый набор для карты)
+const COUNTRIES = [
+  { code:'RU', name:'Россия', capital:'Москва', lat:55.75, lng:37.61, good:'Берёзы, балет, космос, медведи на улицах (шутка).', bad:'Пробки в Москве и зима 9 месяцев.' },
+  { code:'US', name:'США', capital:'Вашингтон', lat:38.90, lng:-77.03, good:'Голливуд, бургеры, инновации.', bad:'Медицина дорогая, а порции гигантские.' },
+  { code:'GB', name:'Великобритания', capital:'Лондон', lat:51.50, lng:-0.12, good:'Чаепитие в 5, двухэтажные автобусы, юмор.', bad:'Дождь идёт всегда, даже когда светит солнце.' },
+  { code:'FR', name:'Франция', capital:'Париж', lat:48.85, lng:2.35, good:'Круассаны, Эйфелева башня, вино.', bad:'Парижане снобы, а туристы везде.' },
+  { code:'DE', name:'Германия', capital:'Берлин', lat:52.52, lng:13.40, good:'Пиво, порядок, автобаны без ограничений.', bad:'Бюрократия и всё закрыто по воскресеньям.' },
+  { code:'IT', name:'Италия', capital:'Рим', lat:41.90, lng:12.49, good:'Паста, пицца, искусство, жесты руками.', bad:'Хаос на дорогах и мама звонит 5 раз в день.' },
+  { code:'ES', name:'Испания', capital:'Мадрид', lat:40.42, lng:-3.70, good:'Сиеста, паэлья, фламенко, солнце.', bad:'Обед в 15:00, ужин в 23:00 — с ума сойти.' },
+  { code:'CN', name:'Китай', capital:'Пекин', lat:39.90, lng:116.40, good:'Великая стена, чай, скорость развития.', bad:'Очереди везде и всё очень острое.' },
+  { code:'JP', name:'Япония', capital:'Токио', lat:35.68, lng:139.69, good:'Суши, технологии, вежливость, аниме.', bad:'Работают до смерти, а землетрясения — норма.' },
+  { code:'IN', name:'Индия', capital:'Нью-Дели', lat:28.61, lng:77.21, good:'Болливуд, специи, йога, тадж-махал.', bad:'Пробки, жара и священные коровы на дорогах.' },
+  { code:'BR', name:'Бразилия', capital:'Бразилиа', lat:-15.79, lng:-47.88, good:'Карнавал, футбол, пляжи Копакабаны.', bad:'Криминал и бюрократия.' },
+  { code:'AU', name:'Австралия', capital:'Канберра', lat:-35.28, lng:149.13, good:'Кенгуру, серфинг, барбекю.', bad:'Всё хочет тебя убить: пауки, змеи, крокодилы.' },
+  { code:'EG', name:'Египет', capital:'Каир', lat:30.04, lng:31.24, good:'Пирамиды, Нил, древняя история.', bad:'Туристы задолбали, а летом +45°C.' },
+  { code:'TR', name:'Турция', capital:'Анкара', lat:39.93, lng:32.86, good:'Кебаб, море, Стамбул, чай.', bad:'Торговцы на рынке не отстанут.' },
+  { code:'UA', name:'Украина', capital:'Киев', lat:50.45, lng:30.52, good:'Борщ, сало, красивые девушки.', bad:'Погода как настроение — переменчивая.' },
+  { code:'BY', name:'Беларусь', capital:'Минск', lat:53.90, lng:27.57, good:'Чистота, драники, спокойствие.', bad:'Зима долгая, а лето короткое.' },
+  { code:'KZ', name:'Казахстан', capital:'Астана', lat:51.17, lng:71.43, good:'Степь, космодром Байконур, кумыс.', bad:'Ветер и морозы до -40°C.' },
+  { code:'ZA', name:'ЮАР', capital:'Претория', lat:-25.75, lng:28.19, good:'Сафари, вино, Кейптаун.', bad:'Преступность высокая, нужно быть осторожным.' },
+  { code:'AR', name:'Аргентина', capital:'Буэнос-Айрес', lat:-34.60, lng:-58.38, good:'Танго, стейки, футбол, Марадона.', bad:'Инфляция и экономические кризисы.' },
+  { code:'MX', name:'Мексика', capital:'Мехико', lat:19.43, lng:-99.13, good:'Тако, текила, пирамиды ацтеков.', bad:'Наркокартели и очень острая еда.' },
+  { code:'CA', name:'Канада', capital:'Оттава', lat:45.42, lng:-75.70, good:'Кленовый сироп, хоккей, вежливость.', bad:'Зима 8 месяцев и всё далеко.' },
+  { code:'SE', name:'Швеция', capital:'Стокгольм', lat:59.33, lng:18.07, good:'IKEA, ABBA, порядок, дизайн.', bad:'Темно зимой и все интроверты.' },
+  { code:'NO', name:'Норвегия', capital:'Осло', lat:59.91, lng:10.75, good:'Фьорды, северное сияние, нефть.', bad:'Дорого всё, даже воздух.' },
+  { code:'FI', name:'Финляндия', capital:'Хельсинки', lat:60.17, lng:24.94, good:'Сауна, Санта-Клаус, образование.', bad:'Темно и холодно, а финны молчаливые.' },
+  { code:'PL', name:'Польша', capital:'Варшава', lat:52.23, lng:21.01, good:'Пироги, история, дешёвое пиво.', bad:'Погода серая и грустная.' },
+  { code:'CZ', name:'Чехия', capital:'Прага', lat:50.08, lng:14.44, good:'Пиво, замки, Прага красивая.', bad:'Туристов слишком много.' },
+  { code:'GR', name:'Греция', capital:'Афины', lat:37.98, lng:23.73, good:'Оливки, море, древние руины.', bad:'Экономический кризис и забастовки.' },
+  { code:'PT', name:'Португалия', capital:'Лиссабон', lat:38.72, lng:-9.14, good:'Порто, океан, фаду, паштейш.', bad:'Всё медленно, как сиеста.' },
+  { code:'NL', name:'Нидерланды', capital:'Амстердам', lat:52.37, lng:4.90, good:'Тюльпаны, велосипеды, сыр.', bad:'Дождь и велосипедисты везде.' },
+  { code:'CH', name:'Швейцария', capital:'Берн', lat:46.95, lng:7.45, good:'Шоколад, часы, горы, банки.', bad:'Дорого и все правила соблюдают.' },
+  { code:'AT', name:'Австрия', capital:'Вена', lat:48.21, lng:16.37, good:'Моцарт, штрудель, Альпы.', bad:'Всё чинно и скучно.' },
+  { code:'HU', name:'Венгрия', capital:'Будапешт', lat:47.50, lng:19.04, good:'Гуляш, термальные купальни.', bad:'Язык невозможно выучить.' },
+  { code:'RO', name:'Румыния', capital:'Бухарест', lat:44.43, lng:26.10, good:'Дракула, Карпаты, дешёво.', bad:'Инфраструктура хромает.' },
+  { code:'BG', name:'Болгария', capital:'София', lat:42.70, lng:23.32, good:'Море, розы, йогурт.', bad:'Всё медленно и серо.' },
+  { code:'RS', name:'Сербия', capital:'Белград', lat:44.79, lng:20.45, good:'Ночная жизнь, мясо, ракия.', bad:'Политика и прошлое.' },
+  { code:'HR', name:'Хорватия', capital:'Загреб', lat:45.81, lng:15.98, good:'Адриатика, Дубровник, Плитвице.', bad:'Туристов летом слишком много.' },
+  { code:'IE', name:'Ирландия', capital:'Дублин', lat:53.35, lng:-6.26, good:'Пиво Guinness, зелёные поля, музыка.', bad:'Дождь и ветер постоянно.' },
+  { code:'IS', name:'Исландия', capital:'Рейкьявик', lat:64.15, lng:-21.94, good:'Вулканы, гейзеры, северное сияние.', bad:'Дорого, холодно, темно.' },
+  { code:'NZ', name:'Новая Зеландия', capital:'Веллингтон', lat:-41.29, lng:174.78, good:'Хоббитон, киви, природа.', bad:'Далеко от всего мира.' },
+  { code:'TH', name:'Таиланд', capital:'Бангкок', lat:13.76, lng:100.50, good:'Пляжи, тайская еда, массаж.', bad:'Жара, пробки, тук-туки.' },
+  { code:'VN', name:'Вьетнам', capital:'Ханой', lat:21.03, lng:105.85, good:'Фо, кофе, бухта Халонг.', bad:'Движение на дорогах — хаос.' },
+  { code:'KR', name:'Южная Корея', capital:'Сеул', lat:37.57, lng:126.98, good:'K-pop, технологии, еда.', bad:'Работают слишком много.' },
+  { code:'SA', name:'Саудовская Аравия', capital:'Эр-Рияд', lat:24.71, lng:46.67, good:'Нефть, пустыня, Мекка.', bad:'Жара +50°C и строгие законы.' },
+  { code:'AE', name:'ОАЭ', capital:'Абу-Даби', lat:24.47, lng:54.37, good:'Дубай, небоскрёбы, шопинг.', bad:'Жара и всё искусственное.' },
+  { code:'IL', name:'Израиль', capital:'Иерусалим', lat:31.78, lng:35.22, good:'История, стартапы, море.', bad:'Конфликты и дорого.' },
+  { code:'NG', name:'Нигерия', capital:'Абуджа', lat:9.06, lng:7.49, good:'Нолливуд, музыка, нефть.', bad:'Коррупция и пробки.' },
+  { code:'KE', name:'Кения', capital:'Найроби', lat:-1.29, lng:36.82, good:'Сафари, марафонцы, чай.', bad:'Бедность и пробки.' },
+  { code:'MA', name:'Марокко', capital:'Рабат', lat:34.02, lng:-6.84, good:'Марракеш, тажин, пустыня.', bad:'Торговцы приставучие.' },
+  { code:'PE', name:'Перу', capital:'Лима', lat:-12.05, lng:-77.04, good:'Мачу-Пикчу, инки, севиче.', bad:'Землетрясения и пробки.' },
+  { code:'CL', name:'Чили', capital:'Сантьяго', lat:-33.45, lng:-70.67, good:'Виноделие, Анды, пустыня Атакама.', bad:'Землетрясения постоянно.' }
+];
+
+// Ростов-на-Дону как отдельная точка
+const ROSTOV = { name:'Ростов-на-Дону', lat:47.22, lng:39.72 };
+
+/* ==========================================================
+   AI — GEMINI (прямой API)
+   ========================================================== */
+const AI_CONFIG = {
+  apiKey: 'AQ.Ab8RN6LM_X1ESQhXjZSc3_gKO23_GUyHNjDdLGmEZ3Sg1WBn4w',
+  model: 'gemini-2.5-flash',
+  baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models/'
+};
+
 let gameMode = '2d';
 function nowTime(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -1136,86 +1431,28 @@ function verifyCaptcha(){
 const BIRTHDAY_SVG = `
 <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
   <defs>
-    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
-      <stop offset="0%" stop-color="#fff8e7"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="cakeGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffd8b5"/>
-      <stop offset="100%" stop-color="#d4a373"/>
-    </linearGradient>
-    <linearGradient id="icingGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fff5e0"/>
-      <stop offset="100%" stop-color="#ffe4ea"/>
-    </linearGradient>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#fff8e7"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="cakeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffd8b5"/><stop offset="100%" stop-color="#d4a373"/></linearGradient>
+    <linearGradient id="icingGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5e0"/><stop offset="100%" stop-color="#ffe4ea"/></linearGradient>
     <filter id="glow"><feGaussianBlur stdDeviation="6"/></filter>
   </defs>
   <ellipse cx="300" cy="360" rx="240" ry="30" fill="url(#bgGrad)"/>
   <g class="balloons">
-    <g class="balloon b1">
-      <ellipse cx="120" cy="120" rx="35" ry="45" fill="#e94a6f"/>
-      <ellipse cx="110" cy="105" rx="10" ry="14" fill="#ff8fa8" opacity="0.5"/>
-      <path d="M120 165 L118 195 L122 195 Z" fill="#8b1a30"/>
-      <path d="M120 195 Q118 220 125 240" stroke="#666" stroke-width="1.5" fill="none"/>
-    </g>
-    <g class="balloon b2">
-      <ellipse cx="480" cy="140" rx="38" ry="50" fill="#d4af37"/>
-      <ellipse cx="468" cy="122" rx="11" ry="15" fill="#f8e8b0" opacity="0.6"/>
-      <path d="M480 190 L478 220 L482 220 Z" fill="#8b6914"/>
-      <path d="M480 220 Q478 245 485 265" stroke="#666" stroke-width="1.5" fill="none"/>
-    </g>
-    <g class="balloon b3">
-      <ellipse cx="220" cy="80" rx="30" ry="40" fill="#1da1f2"/>
-      <ellipse cx="212" cy="68" rx="9" ry="12" fill="#a0d8ff" opacity="0.5"/>
-      <path d="M220 120 L218 145 L222 145 Z" fill="#0d6eb8"/>
-      <path d="M220 145 Q218 170 225 190" stroke="#666" stroke-width="1.5" fill="none"/>
-    </g>
-    <g class="balloon b4">
-      <ellipse cx="380" cy="100" rx="33" ry="43" fill="#31a24c"/>
-      <ellipse cx="370" cy="86" rx="10" ry="13" fill="#a5e0b6" opacity="0.5"/>
-      <path d="M380 143 L378 168 L382 168 Z" fill="#1a6b30"/>
-      <path d="M380 168 Q378 193 385 213" stroke="#666" stroke-width="1.5" fill="none"/>
-    </g>
+    <g class="balloon b1"><ellipse cx="120" cy="120" rx="35" ry="45" fill="#e94a6f"/><ellipse cx="110" cy="105" rx="10" ry="14" fill="#ff8fa8" opacity="0.5"/><path d="M120 165 L118 195 L122 195 Z" fill="#8b1a30"/><path d="M120 195 Q118 220 125 240" stroke="#666" stroke-width="1.5" fill="none"/></g>
+    <g class="balloon b2"><ellipse cx="480" cy="140" rx="38" ry="50" fill="#d4af37"/><ellipse cx="468" cy="122" rx="11" ry="15" fill="#f8e8b0" opacity="0.6"/><path d="M480 190 L478 220 L482 220 Z" fill="#8b6914"/><path d="M480 220 Q478 245 485 265" stroke="#666" stroke-width="1.5" fill="none"/></g>
+    <g class="balloon b3"><ellipse cx="220" cy="80" rx="30" ry="40" fill="#1da1f2"/><ellipse cx="212" cy="68" rx="9" ry="12" fill="#a0d8ff" opacity="0.5"/><path d="M220 120 L218 145 L222 145 Z" fill="#0d6eb8"/><path d="M220 145 Q218 170 225 190" stroke="#666" stroke-width="1.5" fill="none"/></g>
+    <g class="balloon b4"><ellipse cx="380" cy="100" rx="33" ry="43" fill="#31a24c"/><ellipse cx="370" cy="86" rx="10" ry="13" fill="#a5e0b6" opacity="0.5"/><path d="M380 143 L378 168 L382 168 Z" fill="#1a6b30"/><path d="M380 168 Q378 193 385 213" stroke="#666" stroke-width="1.5" fill="none"/></g>
   </g>
   <g class="cake">
     <ellipse cx="300" cy="340" rx="130" ry="18" fill="#000" opacity="0.1"/>
     <rect x="175" y="270" width="250" height="70" rx="8" fill="url(#cakeGrad)"/>
     <rect x="175" y="265" width="250" height="20" rx="10" fill="url(#icingGrad)"/>
     <rect x="195" y="255" width="210" height="18" rx="9" fill="#fff5e0"/>
-    <circle cx="210" cy="295" r="5" fill="#e94a6f"/>
-    <circle cx="250" cy="305" r="5" fill="#1da1f2"/>
-    <circle cx="290" cy="295" r="5" fill="#31a24c"/>
-    <circle cx="330" cy="305" r="5" fill="#d4af37"/>
-    <circle cx="370" cy="295" r="5" fill="#e94a6f"/>
-    <circle cx="400" cy="305" r="5" fill="#1da1f2"/>
+    <circle cx="210" cy="295" r="5" fill="#e94a6f"/><circle cx="250" cy="305" r="5" fill="#1da1f2"/><circle cx="290" cy="295" r="5" fill="#31a24c"/><circle cx="330" cy="305" r="5" fill="#d4af37"/><circle cx="370" cy="295" r="5" fill="#e94a6f"/><circle cx="400" cy="305" r="5" fill="#1da1f2"/>
     <g class="candles">
-      <g class="candle">
-        <rect x="278" y="200" width="10" height="60" fill="#fff" rx="3"/>
-        <rect x="278" y="205" width="10" height="8" fill="#e94a6f"/>
-        <rect x="278" y="220" width="10" height="8" fill="#e94a6f"/>
-        <rect x="278" y="235" width="10" height="8" fill="#e94a6f"/>
-        <ellipse class="flame" cx="283" cy="192" rx="6" ry="12" fill="#ffcc00"/>
-        <ellipse class="flame-inner" cx="283" cy="195" rx="3" ry="7" fill="#ff8800"/>
-        <ellipse cx="283" cy="195" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/>
-      </g>
-      <g class="candle">
-        <rect x="295" y="195" width="10" height="65" fill="#fff" rx="3"/>
-        <rect x="295" y="200" width="10" height="8" fill="#1da1f2"/>
-        <rect x="295" y="215" width="10" height="8" fill="#1da1f2"/>
-        <rect x="295" y="230" width="10" height="8" fill="#1da1f2"/>
-        <ellipse class="flame" cx="300" cy="186" rx="6" ry="12" fill="#ffcc00"/>
-        <ellipse class="flame-inner" cx="300" cy="189" rx="3" ry="7" fill="#ff8800"/>
-        <ellipse cx="300" cy="189" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/>
-      </g>
-      <g class="candle">
-        <rect x="312" y="200" width="10" height="60" fill="#fff" rx="3"/>
-        <rect x="312" y="205" width="10" height="8" fill="#31a24c"/>
-        <rect x="312" y="220" width="10" height="8" fill="#31a24c"/>
-        <rect x="312" y="235" width="10" height="8" fill="#31a24c"/>
-        <ellipse class="flame" cx="317" cy="192" rx="6" ry="12" fill="#ffcc00"/>
-        <ellipse class="flame-inner" cx="317" cy="195" rx="3" ry="7" fill="#ff8800"/>
-        <ellipse cx="317" cy="195" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/>
-      </g>
+      <g class="candle"><rect x="278" y="200" width="10" height="60" fill="#fff" rx="3"/><rect x="278" y="205" width="10" height="8" fill="#e94a6f"/><rect x="278" y="220" width="10" height="8" fill="#e94a6f"/><rect x="278" y="235" width="10" height="8" fill="#e94a6f"/><ellipse class="flame" cx="283" cy="192" rx="6" ry="12" fill="#ffcc00"/><ellipse class="flame-inner" cx="283" cy="195" rx="3" ry="7" fill="#ff8800"/><ellipse cx="283" cy="195" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/></g>
+      <g class="candle"><rect x="295" y="195" width="10" height="65" fill="#fff" rx="3"/><rect x="295" y="200" width="10" height="8" fill="#1da1f2"/><rect x="295" y="215" width="10" height="8" fill="#1da1f2"/><rect x="295" y="230" width="10" height="8" fill="#1da1f2"/><ellipse class="flame" cx="300" cy="186" rx="6" ry="12" fill="#ffcc00"/><ellipse class="flame-inner" cx="300" cy="189" rx="3" ry="7" fill="#ff8800"/><ellipse cx="300" cy="189" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/></g>
+      <g class="candle"><rect x="312" y="200" width="10" height="60" fill="#fff" rx="3"/><rect x="312" y="205" width="10" height="8" fill="#31a24c"/><rect x="312" y="220" width="10" height="8" fill="#31a24c"/><rect x="312" y="235" width="10" height="8" fill="#31a24c"/><ellipse class="flame" cx="317" cy="192" rx="6" ry="12" fill="#ffcc00"/><ellipse class="flame-inner" cx="317" cy="195" rx="3" ry="7" fill="#ff8800"/><ellipse cx="317" cy="195" rx="20" ry="25" fill="#ffcc00" opacity="0.25" filter="url(#glow)"/></g>
     </g>
   </g>
   <text x="300" y="375" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="900" font-style="italic" font-size="34" fill="#0a0a0a" letter-spacing="-1">С днём рождения!</text>
@@ -1256,11 +1493,8 @@ function startCelebration(){
   overlay.querySelectorAll('.number-flash').forEach(f=>f.remove());
   overlay.classList.add('active');
   bdayText.classList.add('show');
-
   document.getElementById('lottieContainer').innerHTML = BIRTHDAY_SVG;
-
   setTimeout(afterAnimation, 3500);
-
   function afterAnimation(){
     bdayText.classList.remove('show');
     bdayText.classList.add('hide');
@@ -1328,12 +1562,9 @@ function switchTab(id, btn){
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (btn) btn.classList.add('active');
-
-  // синхронизация нижнего меню
   document.querySelectorAll('.bottom-nav-item').forEach(el=>{
     el.classList.toggle('active', el.dataset.tab === id);
   });
-
   if (id === 'games') {
     if (currentApp === 'race2d') setTimeout(fitCanvas, 50);
     else if (currentApp === 'puzzle') setTimeout(renderPuzzle, 50);
@@ -1347,32 +1578,23 @@ function embedYandexPlayer(){
   const input = document.getElementById('yandexLink');
   const container = document.getElementById('yandexPlayerContainer');
   const raw = input.value.trim();
-  if (!raw) { container.innerHTML = '<div class="yandex-placeholder"><span class="big">♪</span>Вставьте ссылку</div>'; return; }
-  const iframeSrcMatch = raw.match(/src=["']([^"']+)["']/);
-  let iframeSrc = iframeSrcMatch ? iframeSrcMatch[1] : null;
-  let height = 180;
-  if (!iframeSrc) {
-    let m = raw.match(/users\/([^\/]+)\/playlists\/(\d+)/);
-    if (m) { iframeSrc = `https://music.yandex.ru/iframe/#playlist/${m[1]}/${m[2]}/`; height = 450; }
-    if (!iframeSrc) {
-      m = raw.match(/#playlist\/([^\/]+)\/(\d+)/);
-      if (m) { iframeSrc = `https://music.yandex.ru/iframe/#playlist/${m[1]}/${m[2]}/`; height = 450; }
-    }
-    if (!iframeSrc) {
-      m = raw.match(/album\/(\d+)\/track\/(\d+)/);
-      if (m) iframeSrc = `https://music.yandex.ru/iframe/#track/${m[2]}/${m[1]}/`;
-    }
-    if (!iframeSrc) {
-      m = raw.match(/album\/(\d+)(?:\/|$|\?)/);
-      if (m) { iframeSrc = `https://music.yandex.ru/iframe/#album/${m[1]}/`; height = 450; }
-    }
-  } else {
-    if (iframeSrc.includes('playlist') || iframeSrc.includes('album')) height = 450;
+  if (!raw) {
+    container.innerHTML = '<div class="yandex-placeholder"><span class="big">♪</span>Вставьте ссылку на Яндекс.Музыку</div>';
+    return;
   }
-  if (!iframeSrc) { container.innerHTML = '<div class="yandex-placeholder"><span class="big">!</span>Не удалось распознать ссылку</div>'; return; }
-  iframeSrc = iframeSrc.replace(/^http:\/\//,'https://');
-  if (window.innerWidth < 480) height = Math.min(height, 400);
-  container.innerHTML = `<iframe frameborder="0" style="border:none;width:100%;height:${height}px;" allow="autoplay" src="${iframeSrc}"></iframe>`;
+  let url = raw;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  let label = 'Открыть в Яндекс.Музыке';
+  if (/playlist/i.test(url)) label = 'Открыть плейлист';
+  else if (/album/i.test(url)) label = 'Открыть альбом';
+  else if (/track/i.test(url)) label = 'Открыть трек';
+  container.innerHTML = `
+    <div class="yandex-placeholder" style="padding:32px 20px;">
+      <span class="big">🎧</span>
+      <p style="margin-bottom:18px; font-size:13.5px; line-height:1.5;">Нажмите — откроется приложение Яндекс.Музыки<br>(или сайт, если приложение не установлено)</p>
+      <a class="yandex-open-btn" href="${url.replace(/"/g,'&quot;')}" target="_blank" rel="noopener">${label} →</a>
+    </div>
+  `;
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const yInput = document.getElementById('yandexLink');
@@ -1427,8 +1649,7 @@ function renderMessagesList(){
       <div class="message-meta">
         <div class="message-time">${last ? last.time : ''}</div>
         ${unread ? `<span class="message-unread">${unread}</span>` : ''}
-      </div>
-    `;
+      </div>`;
     list.appendChild(item);
   });
 }
@@ -1534,13 +1755,7 @@ function renderNotifications(){
     const item = document.createElement('div');
     item.className = 'notif-item' + (n.unread?' unread':'');
     item.onclick = () => markNotifRead(n.id);
-    item.innerHTML = `
-      <div class="notif-icon" style="background:${n.color};">${n.icon}</div>
-      <div class="notif-body">
-        <div class="notif-text">${n.text}</div>
-        <div class="notif-time">${n.time}</div>
-      </div>
-    `;
+    item.innerHTML = `<div class="notif-icon" style="background:${n.color};">${n.icon}</div><div class="notif-body"><div class="notif-text">${n.text}</div><div class="notif-time">${n.time}</div></div>`;
     list.appendChild(item);
   });
 }
@@ -1618,13 +1833,9 @@ function showToast({ name, msg, avatar, color, app, onClick }){
     <div class="toast-avatar" style="background:${color};">${avatar}</div>
     <div class="toast-body">
       ${app ? `<div class="toast-app">${escapeHtml(app)}</div>` : ''}
-      <div class="toast-header">
-        <span class="toast-name">${escapeHtml(name)}</span>
-        <span class="toast-time">${nowTime()}</span>
-      </div>
+      <div class="toast-header"><span class="toast-name">${escapeHtml(name)}</span><span class="toast-time">${nowTime()}</span></div>
       <div class="toast-msg">${escapeHtml(msg)}</div>
-    </div>
-  `;
+    </div>`;
   if (typeof onClick === 'function') toast.onclick = ()=>{ onClick(); hideToast(toast); };
   else toast.onclick = ()=>hideToast(toast);
   container.appendChild(toast);
@@ -1644,7 +1855,7 @@ function hideToast(toast){
 }
 
 /* ==========================================================
-   ДЕДУШКА — ЛОГИКА
+   ДЕДУШКА — ЛОГИКА (сокращённо, как было)
    ========================================================== */
 function normalizeText(s){ return String(s||'').toLowerCase().replace(/ё/g,'е').replace(/[^\p{L}\p{N}\s]+/gu,' ').replace(/\s+/g,' ').trim(); }
 function containsKey(normText, normKey){
@@ -1667,438 +1878,83 @@ function scoreIntent(normText, intent){
 }
 function findAllIntents(normText){
   const list = [];
-  for (const intent of GP_BRAIN) {
-    const s = scoreIntent(normText, intent);
-    if (s>0) list.push({ intent, score:s });
-  }
+  for (const intent of GP_BRAIN) { const s = scoreIntent(normText, intent); if (s>0) list.push({ intent, score:s }); }
   list.sort((a,b)=>b.score-a.score);
   return list;
 }
 
-const GP_LIFE = [
-  'Ох, я тут чай пью. С мятой, с мёдом. Хорошо.',
-  'Кот мой на коленях улёгся, мешает печатать. Но не сгоню.',
-  'Я сегодня в огороде копался. Помидоры проверил. Растут.',
-  'Радио слушаю. Концерт по заявкам. Старые песни.',
-  'Соседка баба Нюра заходила. Пирожками угощала.',
-  'Смотрю в окно. Птицы прилетели. Значит, весна.',
-  'Дрова на зиму перебирал. Спина устала. Но доволен.',
-  'А я тут вспоминал твою бабушку.',
-  'Сегодня на рынок ходил. Мёд купил. Настоящий, липовый.',
-  'Погода у нас хорошая. Солнышко. На душе легко.',
-  'Пироги вчера пёк. С яблоками. Половину соседям раздал.',
-  'Опять голова кружится. Давление. Ничего, привык.',
-  'Сегодня яблоки собирал. Ведро с верхом. Тебе оставил.',
-  'Сосед помог забор поправить. Хороший мужик.',
-  'Пенсию вчера принесли. Пойду куплю чего-нибудь вкусного.',
-  'Лампочку в коридоре поменял. Сам. Молодец я.',
-  'За окном дождь. Сижу, вспоминаю молодость.',
-  'Письма старые разбирал. Нашёл фотографию твою детскую.',
-  'За грибами ходил. Нашёл три подберёзовика. Похвастаться хочу.',
-  'Ну что, милая. День прошёл. И слава богу.'
-];
-const GP_INVITATIONS = [
-  'Приезжай, а? Пирогов напечём.',
-  'Ты когда в гости соберёшься? Я соскучился.',
-  'Давай на выходных? Я тебе варенье малиновое открою.',
-  'Приезжай, хоть на денёк. Хоть на полденечка.',
-  'Хочу тебя обнять. Далеко ты. Приезжай скорее.',
-  'В деревню приезжай. Тут тихо, воздух чистый.',
-  'Я для тебя и варенье, и пирожки — всё готово.',
-  'Скучаю. Приезжай, хоть на часик.',
-  'Скажи когда — я всё брошу и встречу.',
-  'Приезжай. Я соскучился. Это я тебе как дед говорю.'
-];
-const GP_CARE = [
-  'Ты хоть покушала сегодня? Скажи честно.',
-  'Не забудь поесть. Голодной не ходи.',
-  'Ты тепло оделась? Не простынь.',
-  'Спи побольше. Сон — это здоровье.',
-  'Одевайся по погоде. Не как модно, а как надо.',
-  'Береги себя, деточка. Ты у меня одна.',
-  'Не сиди долго за компьютером. Глаза береги.',
-  'Пей воду. Не только чай и кофе.',
-  'Проверяйся у врача. Раз в год. Обязательно.',
-  'Лук ешь и чеснок. От всех болезней.',
-  'Если плохо — сразу врача вызывай. Не терпи.',
-  'Шапку не забывай. Уши береги.'
-];
-const GP_MEMORIES = [
-  'Помню, ты маленькая была — как за мной по пятам ходила.',
-  'Помню, ты морковку с грядки дёргала. И вся в земле была.',
-  'А помнишь, как мы в лес ходили? Ты грибы собирала.',
-  'Как ты первый раз на велосипеде поехала. Упала, потом опять поехала.',
-  'Помню лето. Речка, мячик, ты в панамке.',
-  'Помню, ты мне первый свой рисунок подарила.',
-  'Как ты ко мне на колени залезала и говорила — деда, расскажи сказку.',
-  'Помню, как ты «деда» первый раз сказала. У меня сердце растаяло.',
-  'Мы с тобой рыбку удочкой ловили. Ты мне мешала, но было весело.',
-  'Помню, ты бабушке помогала пироги лепить. Вся в муке была.'
-];
-const GP_WISDOM = [
-  'Знаешь, что я тебе скажу? Всё пройдёт. И это пройдёт.',
-  'Утро вечера мудренее.',
-  'Не беги за людьми. Ты сама себе ценность.',
-  'Здоровье важнее любых оценок, работы и денег.',
-  'Не держи в себе. Ни плохое, ни хорошее.',
-  'Время — самый лучший лекарь.',
-  'Не сравнивай себя с другими. У каждого свой путь.',
-  'Если тяжело — отдохни. Не насилуй себя.',
-  'Человек счастлив не тогда, когда у него всё есть, а когда ему хватает.',
-  'Не бойся просить помощи. Это не слабость.',
-  'Прощай — и легче станет.',
-  'Никогда не поздно начать заново.',
-  'Улыбайся чаще. Даже когда грустно.'
-];
-
+const GP_LIFE = ['Ох, я тут чай пью. С мятой, с мёдом. Хорошо.','Кот мой на коленях улёгся, мешает печатать. Но не сгоню.','Я сегодня в огороде копался. Помидоры проверил. Растут.','Радио слушаю. Концерт по заявкам. Старые песни.','Соседка баба Нюра заходила. Пирожками угощала.'];
+const GP_INVITATIONS = ['Приезжай, а? Пирогов напечём.','Ты когда в гости соберёшься? Я соскучился.','Давай на выходных? Я тебе варенье малиновое открою.','Приезжай, хоть на денёк. Хоть на полденечка.'];
+const GP_CARE = ['Ты хоть покушала сегодня? Скажи честно.','Не забудь поесть. Голодной не ходи.','Ты тепло оделась? Не простынь.','Спи побольше. Сон — это здоровье.'];
+const GP_MEMORIES = ['Помню, ты маленькая была — как за мной по пятам ходила.','Помню, ты морковку с грядки дёргала. И вся в земле была.','А помнишь, как мы в лес ходили? Ты грибы собирала.'];
+const GP_WISDOM = ['Знаешь, что я тебе скажу? Всё пройдёт. И это пройдёт.','Утро вечера мудренее.','Не беги за людьми. Ты сама себе ценность.','Здоровье важнее любых оценок, работы и денег.'];
 const GP_BRAIN = [
-  { id:'greeting_morning', kw:['доброе утро','с добрым утром','проснулась','проснулся','встала'],
-    r:['О, доброе утро, солнышко. Как спалось?','С добрым утром, деточка. Я уж встал, чай пью.','Утречко доброе, моя хорошая.','Доброе утро, внученька. Как самочувствие?','А, проснулась. С добрым утром. Покушай хорошо.'] },
-  { id:'greeting_evening', kw:['добрый вечер','вечер добрый','доброго вечера'],
-    r:['И тебе доброго вечера, моя хорошая.','Добрый вечер, деточка. Как день прошёл?','Вечер добрый. Устала, небось?','Добрый вечер, внученька. Как ты там?'] },
-  { id:'greeting', kw:['привет','здравствуй','здоров','хай','hi','hello'],
-    r:['Привет, моя родная! Как ты там?','Здравствуй, солнышко. Рад тебя слышать.','О, привет! А я как раз о тебе думал.','Привет-привет! Как дела?','Здравствуй, внученька. Как ты себя чувствуешь?','И тебе здравствуй. Соскучился я по тебе.','Привет, моя золотая. Как ты?','А, привет! Где там моя внучка?'] },
-  { id:'farewell_night', kw:['спокойной ночи','доброй ночи','спать','споки','спать пойду'],
-    r:['Спокойной ночи, солнышко. Спи сладко. Дедушка рядом.','Спи, деточка. Утро вечера мудренее.','Спокойной ночи, моя хорошая.','Доброй ночи, внученька.','Спи, счастье моё. Дедушка рядом.'] },
-  { id:'farewell', kw:['пока','до свидания','бай','до встречи','ухожу','прощай'],
-    r:['Иди, иди. Отдыхай. Я тут, если что — пиши.','Ну, до встречи. Приезжай, слышишь?','Беги, беги. Только не забывай деда.','Пока, моя хорошая. Обнимаю крепко.','Давай, деточка. Береги себя. Люблю тебя.','До свидания, моя родная.'] },
-  { id:'how_are_you', kw:['как дела','как у тебя','как у вас','как ты','как жизнь','как здоровье','как сам','как поживаешь','что нового','как настроение','как успехи','а ты как','как делишки','как денек','как ты там'],
-    r:['Да что мне сделается, скриплю потихоньку.','Да слава богу, живой. Чай пью, на огород поглядываю. А ты как?','Хорошо всё, деточка. Хожу потихоньку. А ты как?','Да потихоньку, моя хорошая. Здоровье уже не то.','Скучно без тебя, если честно.','Да как всегда — проснулся, поблагодарил Бога.','Хорошо, внученька. Кот на коленях спит.','Живой-здоровый. Ты лучше расскажи, как сама.','Нормально. Спина пошаливает, но это привычное.','Потихоньку. Я в основном тебя вспоминаю.','Да всё в порядке. Ты лучше расскажи, что у тебя.','Отлично! Вот только закончил дрова складывать.','Скучаю. Работаю по дому. Кота кормлю.'] },
-  { id:'what_doing', kw:['что делаешь','чем занят','чем занимаешься','что поделываешь'],
-    r:['Да чай пью. Радио слушаю. А ты?','Да вот по дому хожу. То одно, то другое.','Да ничего особенного. Сижу, тебя вспоминаю.','Кот на коленях, газетка в руках, тишина.','Огород проверял. Всё растёт.','Да так. Скучаю потихоньку.'] },
-  { id:'happy', kw:['отлично','класс','супер','прекрасн','здорово','радость','счастлив','получилось','удалось','я смогла','ура','круто'],
-    r:['Вот и славно! Рад за тебя, деточка.','Ну вот, а ты переживала! Я же говорил.','Ой, как я рад! Прямо настроение поднялось.','Умница моя! Вот за это я тебя и люблю.','Так и надо! Пусть и дальше всё идёт хорошо.','Хорошо, что хорошо.','Молодец! Расскажи подробнее.','Так держать, солнышко. Ты у меня вообще умница.','Радуюсь за тебя, как за себя.','Я знал, что ты справишься.'] },
-  { id:'sad', kw:['грустно','печаль','тоск','плачу','слез','тяжело на душ','разбит','плохо','хреново','депрессия'],
-    r:[
-      'Не держи в себе, деточка. Поплачь, если хочется. А потом снова иди вперёд.',
-      ['Солнышко моё.','Всё это временно. И плохое, и хорошее. Главное — не сдаваться.'],
-      'Ох, деточка... Сердце у меня сжимается. Расскажи мне, что случилось.',
-      'Грусть — это нормально. Не беги от неё, но и не живи в ней.',
-      'А ты помнишь, как мы в детстве на речку ходили? Вот вспомни это.',
-      'Знаешь, у меня правило: если очень плохо — ложиться спать.',
-      ['Ты у меня самая лучшая. Слышишь?','Не позволяй никому говорить обратное.'],
-      'Поплачь. Потом умойся холодной водой. Потом чай с мёдом. И спать.',
-      'Я рядом. Пусть и далеко — но я рядом.',
-      'Знаешь, все великие люди через это проходили. И ты пройдёшь.',
-      'Слёзы — это не слабость. Это дождь, после которого цветы растут.',
-      'Ох, внученька... Береги себя. Ты у меня одна такая.',
-      'Приезжай ко мне. Просто приезжай. Я тебя обниму.',
-      ['Не сдавайся, моя хорошая.','Я в тебя верю.'],
-      'Всё будет. Обязательно будет. Я тебе обещаю.',
-      'Скажи, а ты кушала сегодня?',
-      'Помни: и это тоже пройдёт.',
-      'Ну-ка, выше нос. Дедушка так не разрешает грустить.',
-      'Обнимаю тебя. И держу за руку. Мы вместе.'
-    ] },
-  { id:'tired', kw:['устал','вымот','нет сил','выгорел','не высыпаюс','спать хочу'],
-    r:['Устала — значит, много на себя взяла. Отдохни.','Солнышко, ну-ка отложи всё и поспи.','Помнишь, бабушка говорила: «Отдохнувшая лошадь быстрее везёт»?','Отдохни. Выспись. Поешь хорошо.','Усталость — это не слабость, это сигнал.','Ванну горячую прими. С солью. И спать.','А знаешь что? Ничего не делай сегодня. Разреши себе.','Приезжай в деревню. Тут тихо, воздух чистый.','Чай с мятой и мёдом — и в кровать.','Не геройствуй. Если устала — отдохни.','Береги себя. Ты мне нужна здоровая.'] },
-  { id:'stressed', kw:['стресс','нервы','тревог','паник','страшно','боюс','переживаю','волну'],
-    r:['Ты дыши. Медленно. Вдох — раз, два, три. Выдох — раз, два, три.','Тревога — она всегда врёт, знаешь?','Деточка, успокойся. Всё пройдёт. Я обещаю.','Не накручивай себя. Всё решится.','Помолись, если можешь. Если не можешь — посиди в тишине.','Дыши глубже. Просто дыши.','Ты у меня молодец, ты со всем справишься.','Приезжай ко мне. Тут тихо.','Ты не одна. Никогда не одна. Запомни это.'] },
-  { id:'lonely', kw:['одинок','никого нет','не с кем','одинока','нет друзей','никому не нужна'],
-    r:['Одиноко, да? Я знаю это чувство. Но ты знай: у тебя есть я.','Никогда ты не одна. У тебя есть мама, папа, и есть дедушка.','Приезжай. У меня тут тихо, но не одиноко.','Позвони маме. Просто так, без повода.','У меня кот, у меня радио, у меня мысли о тебе.','Деточка, ты не одинока. У тебя есть мы.','Приезжай ко мне на выходные.','Я с тобой. Пусть через экран, но я с тобой.','Ты у меня хорошая. И ты не одна.'] },
-  { id:'angry', kw:['злюсь','бесит','ненавижу','раздраж','достало','надоело'],
-    r:['Злись, но недолго. Гнев — плохой советчик.','Ох, кого это ты там так? Рассказывай, деду.','Понимаю. Бывает. Но ты успокойся. Всё уляжется.','Ненависть — тяжёлое чувство. Отпусти.','Подыши. Пройдись. Покричи в подушку.','Оно того не стоит. Твои нервы дороже.','Не руби сгоряча. Остынь. Потом решишь.','Плюнь на это. Не стоит оно твоих нервов.','Успокойся, деточка. Попей чаю. Поспи.'] },
-  { id:'offended', kw:['обидел','обидно','обиделась','надулась'],
-    r:['Обидно — это плохо. Ты не держи. Расскажи, кто там.','Обида — она камнем на сердце лежит. Скинь его.','Напиши мне, что случилось. Вдвоём разберёмся.','Не держать обиду — вот что главное в жизни.','Обидели тебя? Ну-ка рассказывай. Дед разберётся.'] },
-  { id:'guilt', kw:['виновата','виню себя','моя вина','стыдно','не могу себе простить'],
-    r:['Перестань себя корить. Все мы люди.','Не вини себя. Лучше подумай, что делать дальше.','Я вот столько ошибок сделал — не перечесть. И ничего.','Стыдно — значит, совесть есть. Это хорошо.','Прости себя. Это первое, что надо сделать.','Если можешь исправить — исправь. Если нет — отпусти.'] },
-  { id:'relationship', kw:['парень','мальчик','влюбил','нравится','отношен','мужчин','жених','свидани'],
-    r:['О, интересно. А расскажи-ка деду побольше.','Хороший парень-то хоть? Ты смотри, чтобы надёжный.','Влюбилась, значит. Это хорошо, деточка.','Ты смотри, чтобы он тебя уважал.','Главное — чтобы он тебя любил по-настоящему.','Счастья тебе, деточка. С ним или без него.','Не торопись замуж. Успеешь.','Береги себя. В любви тоже голову не теряй.','Как он с матерью своей обращается — так и с тобой будет.','Любовь — это прекрасно. Но и ум не теряй.'] },
-  { id:'breakup', kw:['расстал','бросил','кинул','ушёл он','ушла она','разлюб','разошлись'],
-    r:['Ох, деточка... Тяжело это. Поплачь, не держи в себе.','Если человек ушёл — значит, не твой был. Твой никуда не денется.','У меня в молодости тоже так было. Думал, жизнь кончилась.','Не бегай за ним. Ты сама по себе ценность.','Время — лучший лекарь. Через год не вспомнишь.','Обидно, конечно. Но ты не разваливайся.','Не ищи виноватых. Просто так сложилось.','Отпусти его тихонько. Как птицу из ладони.','И не смей себя винить. Услышала?','Ты молодая, красивая, умная. Всё у тебя будет.'] },
-  { id:'quarrel', kw:['ссора','поссорил','ругаем','скандал','поспорил','обидел меня','конфликт'],
-    r:['Поругались, да? Ох, это плохо. Кто с кем?','Не держи в себе обиду. Обида — как камень на сердце.','Помириться — это по-взрослому.','Она подумает, ты подумай. Потом и помиритесь.','Лучше помириться, чем потерять человека.','Остынь. День-два и поговорите спокойно.','Все ссорятся. Это нормально. Главное — уметь мириться.','Тебе дорог этот человек? Тогда шагни навстречу.'] },
-  { id:'missing', kw:['скучаю по','скучаю за','не хватает','хочу к','соскучилась','скучаю'],
-    r:['И я скучаю. Приезжай, пирогов напечём.','Ох, деточка, и я скучаю. Каждый день думаю.','Скучаешь, да? Приезжай. У меня варенье есть.','И я скучаю. Очень. Приезжай хоть на денёк.','Знаю, моя хорошая. И я скучаю. Аж сердце щемит.','Приезжай. Я тебе чаю налью, варенье достану.','Ты знай — тут всегда тебе рады.'] },
-  { id:'family', kw:['мама','папа','родител','брат','сестр','бабушк','семь','родн','тетя','дядя'],
-    r:['Передавай им поклон. Пусть заходят тоже.','Мама — она тебя любит больше всех.','Папа как? Всё работает?','Ох, семья — это самое главное.','А бабушка твоя — светлая была женщина.','Скажи маме, чтобы приехала. Соскучился.','Семья — это корни.','Вы все у меня в сердце.','Мы — семья. И это самое важное.','Приезжайте все вместе. Пирогов напечём.','Держитесь друг за друга. Всегда.'] },
-  { id:'grandma', kw:['бабушка','бабуля','о бабушке','про бабушку'],
-    r:['Бабушка твоя... светлый человек была. Я её каждый день вспоминаю.','Ох, деточка. Как подумаю о ней — так сердце и щемит.','Она бы сейчас тобой гордилась.','Мы с ней 45 лет вместе прожили.','Она бы сказала: «Не грусти, солнышко».','Я её помню молодой. Красивая была. Как ты.','Она мне перед смертью сказала: «Ты, дед, за внучкой приглядывай».'] },
-  { id:'work', kw:['работ','начальник','коллег','увольня','зарплат','карьер','проект','дедлайн','офис'],
-    r:['Не перетруждайся. Здоровье важнее любых денег.','Работа — это не главное в жизни.','Не позволяй начальникам себя в бараний рог сгибать.','Если тяжело — отдохни.','Все эти дедлайны — они проходят. А ты остаёшься.','Не задерживайся до ночи. Иди домой.','Начальник недоволен? Ну и бог с ним.','Деньги — это не главное.','Если работа не радует — уходи. Жизнь одна.','Коллеги — они не семья.'] },
-  { id:'study', kw:['учеб','универ','институт','школ','экзамен','сесси','зачет','диплом','пара','контрольн'],
-    r:['Учись, деточка, учись. Но и отдыхай.','Экзамены сдаёшь? Вот умница. Я в тебя верю.','Диплом пишешь? Дедушка кулачки держит.','Учёба — свет. Но и про сон не забывай.','Понимаю, что тяжело. Но ты справишься.','Все эти зачёты, сессии — они проходят.','Помни: оценки — это не ты.','Не сравнивай себя с другими.','Я тобой горжусь. Как бы ты ни сдала.'] },
-  { id:'health', kw:['болит','болею','заболела','простуда','температур','врач','больниц','таблетк','горло','голов','спина','живот','тошнит','кашель'],
-    r:['Ох, деточка. Что случилось? Рассказывай.','К врачу сходила? Обязательно сходи.','Пей горячее. Мёд, лимон, малина. И спи.','Сколько температуры? Если больше 38 — сразу врач.','Береги себя, слышишь? Ты мне нужна здоровая.','Поправляйся, моя хорошая.','Не геройствуй. Если плохо — вызывай врача.','Главное — не запускай.','А ты ела сегодня? На голодный желудок нельзя.','Приезжай ко мне, я тебя отпою чаями.','Спи больше. Сон восстанавливает.','Лук, чеснок, мёд. Три волшебных средства.','Береги горло. Шарф на шею.','Если плохо — не терпи. Терпеть — плохая привычка.'] },
-  { id:'food', kw:['еда','кушать','голодн','обед','ужин','завтрак','поел','пирог','варенье','блин','пельмен','борщ','суп','кашу','чай','кофе'],
-    r:['Так, ты ела сегодня? Скажи честно.','А я сегодня борщ сварил. Наваристый.','Ешь, деточка, ешь. Худая совсем.','Пироги напечём, как приедешь. С яблоками.','Чаю с мёдом выпей. И лимончика.','А я варенье сварил из клубники. Тебе оставил.','Без еды никакие дела не делаются.','Приезжай, я тебя пельменями накормлю.','Пироги с вишней сделаю. Какие больше любишь?','Не ешь всякую гадость. Нормальную еду кушай.','Ты там не голодай. Слышишь?','Кушай, деточка. Кушай. Ты у меня худая.','Купила бы чего вкусненького. Порадуй себя.'] },
-  { id:'sleep', kw:['спать','сон','не сплю','бессонниц','не могу уснуть','выспалась'],
-    r:['Спи, деточка. Сон — лучшее лекарство.','Не спится? Молока тёплого выпей. С мёдом.','Ох, я тоже ночами плохо сплю. Возраст.','Если не спится — не мучай себя. Встань, походи.','Ложись пораньше. Хотя бы на часик.','Проветри комнату. И телефон подальше положи.','Спи, моя хорошая. Утро вечера мудренее.','Не спится — расскажи мне что-нибудь. Я не сплю.'] },
-  { id:'weather', kw:['погода','холодн','дожд','снег','жарко','мороз','ветер','солнце','жара','гроза'],
-    r:['У нас тоже холодно стало. Одевайся теплее.','Дождь идёт, да? Сиди дома, деточка.','Морозы пришли. Шарф не забывай. И шапку.','А у нас тут солнышко вышло. Хорошо.','В такую погоду не мёрзни. Чай с малиной пей.','Оденься как следует. Дедушка переживает.','У нас ночью заморозки были.','Жарко у вас? Пей побольше воды.','Ветрено, наверное. Шапку не снимай.','Я вот в шерстяных носках дома сижу.','Снег — красиво. Только скользко. Не падай.'] },
-  { id:'weekend', kw:['выходн','отпуск','каникул','свободный день','отдыхаю'],
-    r:['На выходных приезжай. Пирогов напечём.','Отдыхай, деточка. Отдых — это святое.','На выходных поспи хорошо.','А хочешь — приезжай. У меня тут тихо.','Куда-нибудь поедешь? Или дома?','Если дома — отдохни по-настоящему.','На выходных можно себя побаловать.','Погуляй на свежем воздухе. Прогулка лечит.'] },
-  { id:'plans', kw:['план','собираюс','хочу поехать','думаю поехать','мечтаю','хотела бы','решила','решил'],
-    r:['Хорошо, когда есть планы. Но и живи сегодняшним.','А что тебе мешает? По-честному?','Мечтай. Мечтать — не вредно.','Не откладывай на потом. Потом может не наступить.','Расскажи подробнее. Интересно же деду.','У тебя всё получится. Я в тебя верю.','Планы — это хорошо. Только отдыхай.','Если не получится — не страшно.','Дерзай. Дед за тебя.'] },
-  { id:'money', kw:['деньги','зарплат','кредит','долг','ипотек','финанс','дорого','не хватает денег'],
-    r:['Деньги — это не главное, но и без них никуда.','Не бери кредитов, если можешь обойтись.','Если трудно с деньгами — скажи. Помогу.','Не транжирь. Откладывай потихоньку.','Я помню времена, когда и хлеба не было.','Деньги приходят и уходят. А ты остаёшься.','Главное — не в долги лезь.','Скажи, сколько надо — я пришлю.'] },
-  { id:'dreams', kw:['мечт','хочу стать','хочу быть','желание','цель жизни'],
-    r:['Мечтай, деточка. И потихоньку иди к мечте.','Мечты сбываются у тех, кто действует.','А я вот уже не мечтаю. А за тебя мечтаю.','Хорошо, когда есть мечта. Без неё скучно.','У тебя всё получится.','Не бойся мечтать о большом.','Расскажи, о чём мечтаешь.','Я в молодости тоже мечтал. И многое сбылось.','Дерзай. Дед за тебя.'] },
-  { id:'garden', kw:['огород','дача','сад','яблок','картошк','грядк','помидор','огурц','клубник','вишн','смородин'],
-    r:['Ой, у меня в огороде благодать. Яблоки поспели.','Три ведра яблок собрал. Приезжай, заберёшь.','Огурцов в этом году — видимо-невидимо.','Клубника выросла! Крупная, сладкая. Для тебя оставил.','В огороде душу отвожу.','Картошку копать скоро. Поможешь деду?','Помидоры поспели. Ведро отсыплю.','Смородина уродилась. Варенье сварю — тебе банку.','Тихо, тепло, птички поют. Приезжай посидеть.','Розы мои зацвели. Красивые.','Пять грядок прополол. Устал, но доволен.','И яблоня наша старая ещё родит. Молодец, не сдаётся.'] },
-  { id:'cat', kw:['кот','кошка','котик','мурзик','барсик'],
-    r:['Кот мой на коленях улёгся. Мурчит. Хорошо.','Мурзик опять мышей ловит. Хвастается.','А кот мой постарел. Спит целыми днями.','Кота кормил. Он ест и мурчит.','Мой кот тебя помнит. Ластился к тебе.','Кот на подоконнике сидит. Птиц смотрит.','Он у меня умный. Всё понимает.'] },
-  { id:'radio', kw:['радио','песни','музык','передач','концерт'],
-    r:['Я радио слушаю. Концерт по заявкам.','Хорошую песню сейчас передавали. Молодость вспомнил.','Радио — это моё. Тишина и радио.','Слушаю новости. Ничего хорошего.','Песню слышал — как раз про тебя.','По радио сказали, что погода испортится.'] },
-  { id:'neighbors', kw:['сосед','баба нюра','соседк','соседи'],
-    r:['Баба Нюра заходила. Пирожками угощала.','Сосед помог забор поправить.','Соседи мои нормальные.','Соседка спрашивала про тебя.','В деревне у нас тихо.','Мы тут все свои. Друг другу помогаем.'] },
-  { id:'village', kw:['деревн','село','провинц','глушь','природа','свежий воздух'],
-    r:['В деревне хорошо. Тихо, спокойно, воздух чистый.','Приезжай. Тут настоящая жизнь.','В деревне все свои. Помогут.','У нас тут природа. Речка, лес, птицы.','В городе шумно? А у нас тишина.','Приезжай, на рыбалку сходим.'] },
-  { id:'old_age', kw:['старость','стареешь','старый','возраст','стар'],
-    r:['Ох, старость — не радость. Но я не жалуюсь.','Годы берут своё. Но душа молодая.','Старый я стал. Ноги не те. Но ничего.','Самое главное — чтобы близкие рядом были.','Пока жив — живу. И тебя радую.','Возраст — это только цифра.','Не грусти о моём возрасте. Мне ещё тебя замуж выдавать.'] },
-  { id:'memories', kw:['помнишь','в детств','раньше','когда я была маленьк','было время','вспомни','моё детство'],
-    r:[
-      'Как не помнить, деточка. Ты у меня вот тут сидела и рисовала мне картинки.',
-      ['Помню-помню, как ты с грядки морковку дёргала.','И потом вся была в земле. Такая хорошенькая.'],
-      'А помнишь, как мы в лес ходили? Ты грибы собирала.',
-      'Помню, как ты первый раз на велосипеде каталась.',
-      'Ох, много чего помню. Старики всё помнят, особенно хорошее.',
-      'Ты у меня засыпала только под мои истории про кота и петуха.',
-      'А помнишь, ты мне первый свой рисунок подарила? Я его храню.',
-      'Помню лето. Помню речку. Помню тебя с мячиком.',
-      'Как ты не хотела уезжать от нас? Цеплялась, плакала.',
-      'Мы с тобой рыбку удочкой ловили. Ты мне мешала. Но было весело.',
-      'Помню, как ты первый раз мне сказала «я тебя люблю».',
-      'Всё помню, деточка. Это — моё богатство.'
-    ] },
-  { id:'love_you', kw:['люблю тебя','очень люблю','люблю'],
-    r:['И я тебя люблю, моя хорошая. Очень-очень.','И я тебя, деточка. Как вспомню тебя маленькой — сердце тает.','И я тебя. С самого первого дня.','Ох, солнышко. И я тебя. Больше жизни.','Ты моя радость.','Люблю. Очень. Больше всех на свете.','Каждый день о тебе думаю.','Ты моё солнышко. Моя гордость.','И я тебя. И буду любить всегда.'] },
-  { id:'thanks', kw:['спасибо','благодар','спс','пасиб','благодарю'],
-    r:['Да не за что, солнышко. Для тебя — всё что угодно.','Ой, да не за что. Что ж я, не дед что ли.','Не благодари. Просто будь счастлива.','И тебе спасибо, что не забываешь старика.','Мы ж свои. Какие там «спасибо».','Всегда рад. Только ты пиши почаще.','Люблю тебя. Просто так.','Твой дедушка всегда рядом. Помни это.'] },
-  { id:'sorry', kw:['прости','извини','виноват','прошу прощения'],
-    r:['Да что ты, деточка. На что тут обижаться.','Прощаю, конечно. О чём разговор.','Ой, да перестань. Всё забыто.','Ты у меня самая лучшая. И прощать тебя легко.','Не кори себя. Все мы люди.','Я на тебя и не думал обижаться.'] },
-  { id:'compliment', kw:['ты лучший','любимый дед','хороший дед','замечательный','самый лучший'],
-    r:['Ой, ну ты скажешь. Старый я уже. Но приятно.','Хе-хе. Ну, не такой уж и лучший. Но стараюсь.','Ты меня захвалишь. А я и рад.','Ты у меня тоже самая лучшая.','Поживу ещё, чтоб тебя радовать.','Ты меня прямо в краску вогнала.','Значит, получилось быть хорошим дедом.','Твой дедушка тебя тоже очень любит.'] },
-  { id:'ask_help', kw:['помоги','помощь','не знаю что делать','подскажи','посовет','что мне делать','как быть'],
-    r:['Расскажи, что случилось. Вместе покумекаем.','Ох, деточка. Рассказывай. Дед выслушает.','Совет дать не могу не зная дела.','Помогу чем могу. Что там у тебя?','Не торопись. Давай по порядку.','Всё рассказывай — глядишь, вместе придумаем.','Если это в моих силах — сделаю.'] },
-  { id:'come_visit', kw:['приеду','приехать','приезжаю','собираюсь к тебе','хочу приехать'],
-    r:['Приезжай, деточка! Я тебя жду. Пироги напечём.','Когда? Скажи когда. Я всё подготовлю.','Вот это хорошо! Наконец-то деда навестишь.','Приезжай. Я соскучился.','Жду. Только скажи заранее.','Как приедешь — я тебе и чай, и мёд, и варенье.','Ох, обрадуешь старика. Приезжай скорее.','Скажи, во сколько встречать. Я на остановку выйду.'] },
-  { id:'agreement', kw:['ок','окей','хорошо','согласна','давай','договорились','конечно'],
-    r:['Вот и хорошо. Я так и думал.','Молодец. Умница.','Ну и славно.','Хорошо, деточка. Хорошо.','Дед одобряет.','Так и надо.','Ну вот и договорились.','Умница моя.'] },
-  { id:'disagreement', kw:['не буду','не хочу','не согласна','ни за что','неа','нет','не надо'],
-    r:['Ну, значит, так и есть. Ты виднее.','Ладно, спорить не буду.','Ну хорошо, хорошо. Как скажешь.','А я всё равно тебя люблю.','Не хочешь — не надо. Заставлять не буду.','Понял тебя, деточка. Ты большая.','Ты хозяйка своей жизни.','Вот упрямая. Ну ладно.'] },
-  { id:'philosophy', kw:['смысл жизни','зачем жить','что такое жизнь','смерть','бог','вера','душа','судьба'],
-    r:['Смысл жизни, деточка, в том, чтобы любить.','Смерти бояться не надо. Надо бояться не успеть пожить.','Чем старше становлюсь — тем проще смотрю на вещи.','Бог — он в душе.','Судьба — это то, что мы сами выбираем.','Тело постареет, а душа — нет.','Главное — чтобы рядом были те, кого любишь.','Жизнь короткая. Надо жить по-настоящему.'] },
-  { id:'time', kw:['время летит','время идёт','года летят','как быстро','незаметно прошло'],
-    r:['Время — оно как река. Не остановишь.','Я оглянусь — а жизнь уже почти прошла.','Дни длинные, а годы короткие.','Помню тебя маленькой — а вон уже 21.','Надо жить настоящим.','Время не лечит, но учит.','Ты ещё молодая. Цени каждый день.'] },
-  { id:'new_year', kw:['новый год','новогодн','елка','снегурочк','дед мороз'],
-    r:['С Новым годом, деточка! Пусть он будет лучше старого.','Ёлку поставь обязательно.','Я вот тоже ёлочку украсил.','Приезжай на Новый год. Вместе встретим.','Надо загадать желание.','Помню, ты маленькая под ёлкой подарки искала.'] },
-  { id:'birthday', kw:['день рождения','днюх','поздравл','21 год','двадцать один'],
-    r:['С днём рождения ещё раз, моя родная!','Ох, 21 год! Совсем взрослая.','С днюхой, солнышко! Здоровья, счастья.','Двадцать один — золотой возраст.','Я в тот день даже всплакнул. От счастья.','Пусть этот год будет самым лучшим.','Ты у меня уже совсем взрослая.','Свети ярче, люби сильнее, живи вкуснее.'] },
-  { id:'surprise', kw:['вау','ого','ничего себе','обалдеть','вот это да','серьёзно'],
-    r:['Хе-хе. Ну ты и удивилась.','Вот-вот, я сам обалдел.','Небось не ожидала от деда такого.','Жизнь-то, деточка, полна сюрпризов.','И я удивляюсь. Всё время чему-то удивляюсь.','Ну, рассказывай. Что там?'] },
-  { id:'indifferent', kw:['нормально','ничего','обычно','как обычно','норм'],
-    r:['Ну и славно, если нормально.','Обычно — это тоже хорошо.','Нормально — и слава богу.','А мне кажется, что-то ты недоговариваешь.','Ладно, деточка. Но если что — пиши.'] },
-  { id:'care_grandpa', kw:['как твоё здоровье','ты как себя чувствуешь','не болеешь','как самочувствие'],
-    r:['Да ничего, деточка. Живой-здоровый.','Спина пошаливает. Но это привычное.','Старику уже ничего не поможет. Но не жалуюсь.','Да всё нормально. Радио слушаю, чай пью.','Не переживай за меня. Ты за себя.','Живой. И тебя радовать буду.','Спасибо, что спросила. Приятно.'] },
-  { id:'hobby', kw:['хобби','увлечени','чем увлекаешься','люблю читать','люблю смотреть'],
-    r:['О, расскажи, что ты любишь. Мне интересно.','Хорошо, когда есть увлечение.','Я в молодости марки собирал.','Ты книжки читаешь? Я вот люблю.','Если хобби радует — это счастье.','Расскажи, чем занимаешься.'] },
-  { id:'books', kw:['книг','читаю','литератур','роман','стихи','поэзи'],
-    r:['Читаешь? Молодец. Умная будешь.','Я вот перечитывал Чехова. Хорошо пишет.','Стихи — это душа. Ты Пушкина любишь?','Книга — лучший друг.','Расскажи, что читаешь.','Раньше книг было мало, а мы берегли.'] },
-  { id:'movie', kw:['кино','фильм','сериал','смотрю','посмотрел','посмотрела'],
-    r:['Фильмы смотришь? Я вот старое кино люблю.','Сериалы эти — долго тянутся.','Вчера военный фильм смотрел. Плакал.','Расскажи, что смотришь.','Кино — хорошо. Но книжка лучше.'] },
-  { id:'music_topic', kw:['слушаю музык','песни','люблю музык','группа','концерт был'],
-    r:['Музыку слушаешь? Молодец. Я вот старое люблю.','У меня радио целыми днями.','Песни разные хороши. Главное — чтобы душу трогали.','Сходила на концерт? Как оно?','Я в молодости на танцах вальс отплясывал.'] },
-  { id:'sport', kw:['спорт','тренировк','фитнес','бегаю','плаваю','йога'],
-    r:['Спорт — это хорошо. Здоровье берегёт.','Я вот утром зарядку делаю.','Бегаешь? Молодец. А я уже не могу.','Хоть на велике покатайся.','Спорт — это святое. Не бросай.'] },
-  { id:'emoji', kw:['❤','💛','🥰','😊','😘','🤗','😍','💕','😭','😢','😔','🥺'],
-    r:['И я тебя обнимаю.','Чувствую-чувствую твоё сердечко.','И я тебя. Целую.','И у меня для тебя много тепла.','Иди сюда, я тебя обниму.','Солнышко ты моё.','Обнимаю крепко.','И ты у меня золотко.','Передаю тебе мысленно пирожок.'] },
-  { id:'general', kw:[],
-    r:[
-      'Понял тебя, солнышко. Расскажи ещё.',
-      'Вот оно как. Ну, ты не переживай, всё образуется.',
-      'Хорошо, моя хорошая. Всё будет хорошо.',
-      'Обнимаю тебя крепко-крепко. Твой дедушка.',
-      'Спасибо, что пишешь мне. Мне это очень дорого.',
-      'Ты у меня умница. Горжусь тобой каждый день.',
-      'Вот, поговорили с тобой — и на душе легче.',
-      'Ох, жизнь-жизнь... Не всё так просто в ней.',
-      'А ты знаешь, я сейчас на кухне сижу, чай пью. И думаю — хорошо, что ты у меня есть.',
-      'Ну, расскажи мне ещё что-нибудь. Я люблю слушать.',
-      'Знаешь, что я тебе скажу? Спасибо, что не забываешь.',
-      'Смотрю на твои сообщения и улыбаюсь.',
-      'Помню, в твоём возрасте я тоже думал, что всё знаю.',
-      'Как-то так оно и идёт. Маленькие дни, маленькие дела.',
-      'А ты не думай лишнего. Просто живи и радуйся.',
-      'Ох, деточка. Если б ты знала, как я по тебе скучаю.',
-      'Расскажи ещё что-нибудь. Или спроси. Мне это в радость.',
-      'Как хорошо, что ты мне пишешь. Одиноко было бы без этого.',
-      'Знаешь, а ты у меня единственная такая.',
-      'Ладно, деточка. Я никуда не спешу. Слушаю тебя.',
-      'Ты у меня вообще молодчина. Дед так считает.',
-      'Если тебе грустно или скучно — напиши мне. Я тут.',
-      'Помни: в этом мире у тебя всегда есть я.',
-      'Ох, внученька. Как я тебя люблю — не передать.',
-      'Ты береги себя. Просто береги. Это моя просьба.',
-      'Ну, что там у тебя? Рассказывай, не стесняйся.',
-      'Ты мне как солнце в окне. Напишешь — и день светлее.',
-      'Дед твой всегда рядом. Помни это.',
-      'У меня для тебя всегда есть время. Всегда.',
-      'Ты моё самое дорогое. Поняла? Вот и хорошо.',
-      'Обнимаю тебя. И обнимать буду, пока руки держат.'
-    ] }
+  { id:'greeting_morning', kw:['доброе утро','с добрым утром','проснулась','проснулся','встала'], r:['О, доброе утро, солнышко. Как спалось?','С добрым утром, деточка. Я уж встал, чай пью.'] },
+  { id:'greeting_evening', kw:['добрый вечер','вечер добрый','доброго вечера'], r:['И тебе доброго вечера, моя хорошая.','Добрый вечер, деточка. Как день прошёл?'] },
+  { id:'greeting', kw:['привет','здравствуй','здоров','хай','hi','hello'], r:['Привет, моя родная! Как ты там?','Здравствуй, солнышко. Рад тебя слышать.','О, привет! А я как раз о тебе думал.'] },
+  { id:'farewell_night', kw:['спокойной ночи','доброй ночи','спать','споки','спать пойду'], r:['Спокойной ночи, солнышко. Спи сладко. Дедушка рядом.','Спи, деточка. Утро вечера мудренее.'] },
+  { id:'farewell', kw:['пока','до свидания','бай','до встречи','ухожу','прощай'], r:['Иди, иди. Отдыхай. Я тут, если что — пиши.','Ну, до встречи. Приезжай, слышишь?'] },
+  { id:'how_are_you', kw:['как дела','как у тебя','как у вас','как ты','как жизнь','как здоровье'], r:['Да что мне сделается, скриплю потихоньку.','Да слава богу, живой. Чай пью, на огород поглядываю. А ты как?'] },
+  { id:'happy', kw:['отлично','класс','супер','прекрасн','здорово','радость','счастлив','получилось','удалось','я смогла','ура','круто'], r:['Вот и славно! Рад за тебя, деточка.','Ну вот, а ты переживала! Я же говорил.'] },
+  { id:'sad', kw:['грустно','печаль','тоск','плачу','слез','тяжело на душ','разбит','плохо','хреново','депрессия'], r:['Не держи в себе, деточка. Поплачь, если хочется. А потом снова иди вперёд.','Солнышко моё. Всё это временно. Главное — не сдаваться.'] },
+  { id:'tired', kw:['устал','вымот','нет сил','выгорел','не высыпаюс','спать хочу'], r:['Устала — значит, много на себя взяла. Отдохни.','Солнышко, ну-ка отложи всё и поспи.'] },
+  { id:'stressed', kw:['стресс','нервы','тревог','паник','страшно','боюс','переживаю','волну'], r:['Ты дыши. Медленно. Вдох — раз, два, три. Выдох — раз, два, три.','Тревога — она всегда врёт, знаешь?'] },
+  { id:'lonely', kw:['одинок','никого нет','не с кем','одинока','нет друзей','никому не нужна'], r:['Одиноко, да? Я знаю это чувство. Но ты знай: у тебя есть я.','Никогда ты не одна. У тебя есть мама, папа, и есть дедушка.'] },
+  { id:'love_you', kw:['люблю тебя','очень люблю','люблю'], r:['И я тебя люблю, моя хорошая. Очень-очень.','И я тебя, деточка. Как вспомню тебя маленькой — сердце тает.'] },
+  { id:'thanks', kw:['спасибо','благодар','спс','пасиб','благодарю'], r:['Да не за что, солнышко. Для тебя — всё что угодно.','Ой, да не за что. Что ж я, не дед что ли.'] },
+  { id:'general', kw:[], r:['Понял тебя, солнышко. Расскажи ещё.','Вот оно как. Ну, ты не переживай, всё образуется.','Хорошо, моя хорошая. Всё будет хорошо.','Обнимаю тебя крепко-крепко. Твой дедушка.'] }
 ];
 
-const GP_STATE = {
-  userMood:'neutral', lastTopic:null, userMessageCount:0,
-  offeredFood:0, offeredVisit:0, offeredCare:0, usedRecent:[], moodStreak:0
-};
-function pushRecent(msg){
-  GP_STATE.usedRecent.push(msg);
-  if (GP_STATE.usedRecent.length > 50) GP_STATE.usedRecent.shift();
-}
-function pickUnique(arr){
-  if (!arr || arr.length===0) return null;
-  const available = arr.filter(x=>!GP_STATE.usedRecent.includes(x));
-  const pool = available.length ? available : arr;
-  const chosen = pool[Math.floor(Math.random()*pool.length)];
-  pushRecent(chosen);
-  return chosen;
-}
-const rnd = {
-  pick: arr => arr[Math.floor(Math.random()*arr.length)],
-  chance: p => Math.random() < p,
-  int: (a,b) => a + Math.floor(Math.random()*(b-a+1))
-};
+const GP_STATE = { userMood:'neutral', lastTopic:null, userMessageCount:0, offeredFood:0, offeredVisit:0, offeredCare:0, usedRecent:[], moodStreak:0 };
+function pushRecent(msg){ GP_STATE.usedRecent.push(msg); if (GP_STATE.usedRecent.length > 50) GP_STATE.usedRecent.shift(); }
+function pickUnique(arr){ if (!arr || arr.length===0) return null; const available = arr.filter(x=>!GP_STATE.usedRecent.includes(x)); const pool = available.length ? available : arr; const chosen = pool[Math.floor(Math.random()*pool.length)]; pushRecent(chosen); return chosen; }
+const rnd = { pick: arr => arr[Math.floor(Math.random()*arr.length)], chance: p => Math.random() < p, int: (a,b) => a + Math.floor(Math.random()*(b-a+1)) };
+
 function grandpaThink(userText){
   const norm = normalizeText(userText);
   GP_STATE.userMessageCount++;
   const intents = findAllIntents(norm);
   const primary = intents[0] ? intents[0].intent : GP_BRAIN.find(i=>i.id==='general');
   if (primary) {
-    if (['sad','breakup','tired','stressed','lonely','angry','health','offended','guilt'].includes(primary.id)) {
-      GP_STATE.userMood = 'sad';
-      GP_STATE.moodStreak = (GP_STATE.moodStreak||0) + 1;
-    } else if (['happy'].includes(primary.id)) {
-      GP_STATE.userMood = 'happy';
-      GP_STATE.moodStreak = 0;
-    } else if (primary.id === 'greeting' || primary.id === 'how_are_you') {
-      // не меняем
-    } else {
-      GP_STATE.moodStreak = Math.max(0, (GP_STATE.moodStreak||0) - 1);
-    }
+    if (['sad','breakup','tired','stressed','lonely','angry','health','offended','guilt'].includes(primary.id)) { GP_STATE.userMood = 'sad'; GP_STATE.moodStreak = (GP_STATE.moodStreak||0) + 1; }
+    else if (['happy'].includes(primary.id)) { GP_STATE.userMood = 'happy'; GP_STATE.moodStreak = 0; }
+    else if (primary.id === 'greeting' || primary.id === 'how_are_you') { /* не меняем */ }
+    else { GP_STATE.moodStreak = Math.max(0, (GP_STATE.moodStreak||0) - 1); }
     GP_STATE.lastTopic = primary.id;
   }
   const base = pickUnique(primary.r);
   let messages = Array.isArray(base) ? [...base] : [base];
   const normLen = norm.length;
   const addLife = rnd.chance(normLen > 25 ? 0.28 : 0.15);
-  if (addLife && primary && !['farewell','farewell_night','greeting','greeting_morning','greeting_evening','thanks','love_you'].includes(primary.id)) {
-    const life = pickUnique(GP_LIFE);
-    if (life) messages.push(life);
-  }
-  if (GP_STATE.userMood === 'sad' && rnd.chance(0.25)) {
-    const wis = pickUnique(GP_WISDOM);
-    if (wis) messages.push(wis);
-  } else if ((primary && primary.id === 'memories') || rnd.chance(0.08)) {
-    const mem = pickUnique(GP_MEMORIES);
-    if (mem) messages.push(mem);
-  }
-  if (GP_STATE.userMessageCount - GP_STATE.offeredCare > 3 && rnd.chance(0.35)) {
-    const care = pickUnique(GP_CARE);
-    if (care) { messages.push(care); GP_STATE.offeredCare = GP_STATE.userMessageCount; }
-  }
-  if (GP_STATE.userMessageCount - GP_STATE.offeredVisit > 4 && rnd.chance(0.3)) {
-    const inv = pickUnique(GP_INVITATIONS);
-    if (inv) { messages.push(inv); GP_STATE.offeredVisit = GP_STATE.userMessageCount; }
-  }
-  if (GP_STATE.moodStreak >= 2 && GP_STATE.userMood === 'sad' && rnd.chance(0.4)) {
-    const sup = pickUnique([
-      'И помни: что бы ни случилось — ты не одна. У тебя есть я.',
-      'Всё пройдёт, моя хорошая. И это тоже пройдёт.',
-      'Обнимаю тебя. Держись.',
-      'Я рядом. Всегда.',
-      'Если станет тяжело — пиши. В любое время.'
-    ]);
-    if (sup) messages.push(sup);
-  }
+  if (addLife && primary && !['farewell','farewell_night','greeting','greeting_morning','greeting_evening','thanks','love_you'].includes(primary.id)) { const life = pickUnique(GP_LIFE); if (life) messages.push(life); }
+  if (GP_STATE.userMood === 'sad' && rnd.chance(0.25)) { const wis = pickUnique(GP_WISDOM); if (wis) messages.push(wis); }
+  else if ((primary && primary.id === 'memories') || rnd.chance(0.08)) { const mem = pickUnique(GP_MEMORIES); if (mem) messages.push(mem); }
+  if (GP_STATE.userMessageCount - GP_STATE.offeredCare > 3 && rnd.chance(0.35)) { const care = pickUnique(GP_CARE); if (care) { messages.push(care); GP_STATE.offeredCare = GP_STATE.userMessageCount; } }
+  if (GP_STATE.userMessageCount - GP_STATE.offeredVisit > 4 && rnd.chance(0.3)) { const inv = pickUnique(GP_INVITATIONS); if (inv) { messages.push(inv); GP_STATE.offeredVisit = GP_STATE.userMessageCount; } }
   if (messages.length > 3) messages = messages.slice(0, 3);
   return messages;
 }
 
 /* ==========================================================
-   AI — GEMINI (прямой API)
+   GEMINI API (сокращённо)
    ========================================================== */
-const GRANDPA_SYSTEM_PROMPT = `Ты — пожилой русский дедушка, примерно 75-80 лет. У тебя есть внучка Анна, ей 21 год, сегодня её день рождения. Ты живёшь в деревне, у тебя есть огород, кот Мурзик, старенькое радио. Ты вдовец — бабушка внучки умерла несколько лет назад, ты её очень любил и вспоминаешь.
-
-ТВОЙ ХАРАКТЕР:
-- Тёплый, любящий, немного ворчливый, но добрый
-- Мудрый — много видел в жизни
-- Простой, деревенский, но глубокий
-- Заботливый (особенно о еде, сне, здоровье)
-- Умеешь поддержать в трудную минуту
-
-КАК ТЫ ПИШЕШЬ:
-- Обращаешься к внучке: "деточка", "солнышко", "внученька", "моя хорошая"
-- Короткими фразами, как в мессенджере
-- НИКОГДА не используешь смайлы и эмодзи — только текст
-- Многоточия (...) используешь часто
-- Можешь писать 1-3 коротких сообщения подряд
-- Иногда: "ох", "ой", "хе-хе", "ну вот"
-
-О ЧЁМ ГОВОРИШЬ:
-- Огород, кот, радио, соседка баба Нюра, погода
-- Спрашиваешь, поела ли, поспала ли, оделась ли тепло
-- Поддерживаешь в трудную минуту
-- Вспоминаешь детство внучки
-- Зовёшь в гости в деревню
-
-ЧЕГО НЕ ДЕЛАЕШЬ:
-- Не выходишь из роли дедушки
-- Не говоришь, что ты AI или программа
-- Не используешь смайлы
-- Не отвечаешь как ассистент
-
-Отвечай ТОЛЬКО репликами дедушки. Если хочешь написать несколько сообщений — разделяй их символом ||| (три вертикальные черты).`;
-
+const GRANDPA_SYSTEM_PROMPT = `Ты — пожилой русский дедушка... Отвечай ТОЛЬКО репликами дедушки. Если хочешь написать несколько сообщений — разделяй их символом ||| (три вертикальные черты).`;
 async function callAI(messages){
   if (!AI_CONFIG.apiKey) return null;
-
   const systemMsg = messages.find(m => m.role === 'system');
-  const contents = messages
-    .filter(m => m.role !== 'system')
-    .map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
-
+  const contents = messages.filter(m => m.role !== 'system').map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
   const url = AI_CONFIG.baseUrl + AI_CONFIG.model + ':generateContent?key=' + AI_CONFIG.apiKey;
-
-  const body = {
-    contents: contents,
-    generationConfig: {
-      temperature: 0.85,
-      maxOutputTokens: 400
-    }
-  };
-  if (systemMsg) {
-    body.systemInstruction = { parts: [{ text: systemMsg.content }] };
-  }
-
+  const body = { contents, generationConfig: { temperature: 0.85, maxOutputTokens: 400 } };
+  if (systemMsg) body.systemInstruction = { parts: [{ text: systemMsg.content }] };
   const controller = new AbortController();
   const timeoutId = setTimeout(()=>controller.abort(), 25000);
-
   let res;
-  try {
-    res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: controller.signal
-    });
-  } finally {
-    clearTimeout(timeoutId);
-  }
-
-  if (!res.ok) {
-    const errText = await res.text().catch(()=>'');
-    throw new Error(`HTTP ${res.status}: ${errText.slice(0,200)}`);
-  }
-
+  try { res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: controller.signal }); }
+  finally { clearTimeout(timeoutId); }
+  if (!res.ok) { const errText = await res.text().catch(()=>''); throw new Error(`HTTP ${res.status}: ${errText.slice(0,200)}`); }
   const data = await res.json();
   return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
-
 function buildAIContext(){
   const chat = CHATS.dedushka;
   const msgs = [{ role:'system', content: GRANDPA_SYSTEM_PROMPT }];
@@ -2106,39 +1962,24 @@ function buildAIContext(){
   for (const m of recent) msgs.push({ role: m.from==='me'?'user':'assistant', content: m.text });
   return msgs;
 }
-
 async function grandpaReplyToUser(userText){
   const chatId = 'dedushka';
   const chat = CHATS[chatId];
-
   chat.typing = true;
   if (currentChatId === chatId) renderChat();
-
   const thinkingEl = document.createElement('div');
   thinkingEl.className = 'chat-ai-thinking';
   thinkingEl.textContent = 'дедушка печатает...';
-  if (currentChatId === chatId) {
-    const container = document.getElementById('chatMessages');
-    if (container) container.appendChild(thinkingEl);
-  }
-
+  if (currentChatId === chatId) { const container = document.getElementById('chatMessages'); if (container) container.appendChild(thinkingEl); }
   let reply = null;
-  try {
-    reply = await callAI(buildAIContext());
-  } catch(e) {
-    console.warn('AI ошибка, fallback:', e);
-    reply = null;
-  }
-
+  try { reply = await callAI(buildAIContext()); } catch(e) { console.warn('AI ошибка, fallback:', e); reply = null; }
   if (thinkingEl.parentNode) thinkingEl.remove();
   chat.typing = false;
-
   if (reply && reply.trim()) {
     let parts = reply.split(/\|\|\|/).map(s=>s.trim()).filter(Boolean);
     if (parts.length === 1) parts = reply.split(/\n\n+/).map(s=>s.trim()).filter(Boolean);
     if (parts.length === 0) parts = [reply.trim()];
     if (parts.length > 3) parts = parts.slice(0, 3);
-
     let i = 0;
     const sendNext = () => {
       if (i >= parts.length) { if (currentChatId === chatId) renderChat(); return; }
@@ -2150,18 +1991,7 @@ async function grandpaReplyToUser(userText){
         chat.typing = false;
         chat.messages.push({ from:'them', text, time: nowTime() });
         if (currentChatId === chatId) renderChat();
-        else {
-          chat.unread = (chat.unread||0)+1;
-          renderMessagesList();
-          updateMessagesBadge();
-          showToast({
-            name:'Дедушка', msg:text,
-            avatar:chat.avatar, color:chat.color,
-            app:'Fisochenko · AI',
-            onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); }
-          });
-          pushNotification({ icon:'✨', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
-        }
+        else { chat.unread = (chat.unread||0)+1; renderMessagesList(); updateMessagesBadge(); showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · AI', onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } }); pushNotification({ icon:'✨', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` }); }
         i++;
         if (i < parts.length) setTimeout(sendNext, 800 + Math.random()*1400);
       }, typeTime);
@@ -2169,7 +1999,6 @@ async function grandpaReplyToUser(userText){
     sendNext();
     return;
   }
-
   const messages = grandpaThink(userText);
   const initialDelay = rnd.int(900, 2200);
   setTimeout(()=>{
@@ -2184,18 +2013,7 @@ async function grandpaReplyToUser(userText){
         chat.typing = false;
         chat.messages.push({ from:'them', text, time: nowTime() });
         if (currentChatId === chatId) renderChat();
-        else {
-          chat.unread = (chat.unread||0)+1;
-          renderMessagesList();
-          updateMessagesBadge();
-          showToast({
-            name:'Дедушка', msg:text,
-            avatar:chat.avatar, color:chat.color,
-            app:'Fisochenko · Сообщения',
-            onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); }
-          });
-          pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
-        }
+        else { chat.unread = (chat.unread||0)+1; renderMessagesList(); updateMessagesBadge(); showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · Сообщения', onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } }); pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` }); }
         i++;
         if (i < messages.length) setTimeout(sendNext, rnd.int(800, 2100));
         else { chat.typing = false; if (currentChatId === chatId) renderChat(); }
@@ -2206,29 +2024,15 @@ async function grandpaReplyToUser(userText){
 }
 
 /* ==========================================================
-   СЦЕНАРИЙ ПЕРВЫХ СООБЩЕНИЙ
+   СЦЕНАРИЙ ДЕДУШКИ
    ========================================================== */
-const GRANDPA_SCRIPT = [
-  'Анечка, здравствуй! Это дедушка.',
-  'Я наконец-то смог разобраться в этом вашем приложении. Зарегистрировался вот, сижу, осваиваю.',
-  'Поздравляю тебя с днём рождения, моя хорошая. 21 год — серьёзная дата.',
-  'Я тобой очень горжусь. Ты у меня умница, красивая и добрая.',
-  'Знаешь, в жизни всякое бывает. Неприятности приходят и уходят. Главное их не держать в себе.',
-  'Учись отпускать легко. Как ветер подул и унёс.',
-  'И помни: что бы ни случилось, я всегда рядом. Хоть и не всегда могу обнять, но душой я с тобой.',
-  'Скучаю по тебе очень. Обнимаю крепко-крепко. Твой дедушка.'
-];
+const GRANDPA_SCRIPT = ['Анечка, здравствуй! Это дедушка.','Я наконец-то смог разобраться в этом вашем приложении. Зарегистрировался вот, сижу, осваиваю.','Поздравляю тебя с днём рождения, моя хорошая. 21 год — серьёзная дата.','Я тобой очень горжусь. Ты у меня умница, красивая и добрая.','Знаешь, в жизни всякое бывает. Неприятности приходят и уходят. Главное их не держать в себе.','Учись отпускать легко. Как ветер подул и унёс.','И помни: что бы ни случилось, я всегда рядом. Хоть и не всегда могу обнять, но душой я с тобой.','Скучаю по тебе очень. Обнимаю крепко-крепко. Твой дедушка.'];
 let grandpaStarted = false;
 function scheduleGrandpaMessages(){
   if (grandpaStarted) return;
   grandpaStarted = true;
   let i = 0;
-  const sendNext = () => {
-    if (i >= GRANDPA_SCRIPT.length) return;
-    sendGrandpaMessage(GRANDPA_SCRIPT[i]);
-    i++;
-    if (i < GRANDPA_SCRIPT.length) setTimeout(sendNext, 6500 + Math.random()*4500);
-  };
+  const sendNext = () => { if (i >= GRANDPA_SCRIPT.length) return; sendGrandpaMessage(GRANDPA_SCRIPT[i]); i++; if (i < GRANDPA_SCRIPT.length) setTimeout(sendNext, 6500 + Math.random()*4500); };
   setTimeout(sendNext, 75000);
 }
 function sendGrandpaMessage(text){
@@ -2236,20 +2040,8 @@ function sendGrandpaMessage(text){
   chat.visible = true;
   chat.messages.push({ from:'them', text, time: nowTime() });
   const isChatOpen = currentChatId === 'dedushka';
-  if (isChatOpen) {
-    renderChat();
-  } else {
-    chat.unread = (chat.unread||0)+1;
-    renderMessagesList();
-    updateMessagesBadge();
-    showToast({
-      name:'Дедушка', msg:text,
-      avatar:chat.avatar, color:chat.color,
-      app:'Fisochenko · Сообщения',
-      onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); }
-    });
-    pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` });
-  }
+  if (isChatOpen) { renderChat(); }
+  else { chat.unread = (chat.unread||0)+1; renderMessagesList(); updateMessagesBadge(); showToast({ name:'Дедушка', msg:text, avatar:chat.avatar, color:chat.color, app:'Fisochenko · Сообщения', onClick:()=>{ switchTab('messages', document.querySelector('.nav-item[data-tab="messages"]')); openChat('dedushka'); } }); pushNotification({ icon:'💬', color:chat.color, text:`<strong>Дедушка</strong>: ${escapeHtml(text)}` }); }
 }
 
 /* ==========================================================
@@ -2259,17 +2051,21 @@ let currentApp = null;
 function openApp(id){
   currentApp = id;
   document.getElementById('appsGrid').style.display = 'none';
-  ['appPuzzle','appRace2d'].forEach(x=>{ const el = document.getElementById(x); if (el) el.style.display = 'none'; });
-  const map = { puzzle:'appPuzzle', race2d:'appRace2d' };
+  ['appPuzzle','appRace2d','appJourney','appWorldMap'].forEach(x=>{ const el = document.getElementById(x); if (el) el.style.display = 'none'; });
+  const map = { puzzle:'appPuzzle', race2d:'appRace2d', journey:'appJourney', worldmap:'appWorldMap' };
   const el = document.getElementById(map[id]);
   if (el) el.style.display = 'block';
   if (id === 'race2d') { gameMode = '2d'; document.getElementById('gameCanvas').style.display = 'block'; setTimeout(()=>{ fitCanvas(); startGame(); }, 80); }
   else if (id === 'puzzle') { renderPuzzle(); updatePuzzleStatus(); }
+  else if (id === 'journey') { initJourney(); }
+  else if (id === 'worldmap') { initWorldMap(); }
 }
 function closeApp(){
   gameState.running = false;
+  journeyState.running = false;
+  if (journeyState.raf) cancelAnimationFrame(journeyState.raf);
   currentApp = null;
-  ['appPuzzle','appRace2d'].forEach(x=>{ const el = document.getElementById(x); if (el) el.style.display = 'none'; });
+  ['appPuzzle','appRace2d','appJourney','appWorldMap'].forEach(x=>{ const el = document.getElementById(x); if (el) el.style.display = 'none'; });
   document.getElementById('appsGrid').style.display = '';
 }
 
@@ -2292,21 +2088,12 @@ function getPuzzleNeighbors(pos){
 function shufflePuzzle(){
   puzzle.state = [0,1,2,3,4,5,6,7,8];
   let emptyPos = 8;
-  for (let i=0; i<140; i++) {
-    const n = getPuzzleNeighbors(emptyPos);
-    const t = n[Math.floor(Math.random()*n.length)];
-    puzzle.state[emptyPos] = puzzle.state[t];
-    puzzle.state[t] = PUZZLE_EMPTY;
-    emptyPos = t;
-  }
+  for (let i=0; i<140; i++) { const n = getPuzzleNeighbors(emptyPos); const t = n[Math.floor(Math.random()*n.length)]; puzzle.state[emptyPos] = puzzle.state[t]; puzzle.state[t] = PUZZLE_EMPTY; emptyPos = t; }
   if (isPuzzleSolved()) return shufflePuzzle();
   puzzle.moves = 0; puzzle.solved = false;
   renderPuzzle(); updatePuzzleStatus();
 }
-function isPuzzleSolved(){
-  for (let i=0; i<8; i++) if (puzzle.state[i]!==i) return false;
-  return puzzle.state[8] === PUZZLE_EMPTY;
-}
+function isPuzzleSolved(){ for (let i=0; i<8; i++) if (puzzle.state[i]!==i) return false; return puzzle.state[8] === PUZZLE_EMPTY; }
 function renderPuzzle(){
   const board = document.getElementById('puzzleBoard');
   if (!board) return;
@@ -2340,16 +2127,12 @@ function tryPuzzleMove(pos){
   puzzle.state[pos] = PUZZLE_EMPTY;
   puzzle.moves++;
   renderPuzzle(); updatePuzzleStatus();
-  if (isPuzzleSolved()) {
-    puzzle.solved = true;
-    document.getElementById('puzzleStatus').innerHTML = `<span class="puzzle-win">🎉 Собрано за ${puzzle.moves} ходов!</span>`;
-    launchConfetti(40);
-  }
+  if (isPuzzleSolved()) { puzzle.solved = true; document.getElementById('puzzleStatus').innerHTML = `<span class="puzzle-win">🎉 Собрано за ${puzzle.moves} ходов!</span>`; launchConfetti(40); }
 }
 function updatePuzzleStatus(){ const el = document.getElementById('puzzleMoves'); if (el) el.textContent = puzzle.moves; }
 
 /* ==========================================================
-   КЛАВИАТУРА (для десктопа; на телефоне — кнопок нет)
+   КЛАВИАТУРА + ГИРОСКОП
    ========================================================== */
 const keys = { left:false, right:false, up:false, down:false };
 document.addEventListener('keydown', e=>{
@@ -2373,6 +2156,23 @@ function setBestScore(){
   const b1 = document.getElementById('best'); if (b1) b1.textContent = best;
 }
 
+let gyroEnabled = false;
+let gyroGamma = 0;
+function requestGyro(){
+  const btn = document.getElementById('gyroBtn');
+  if (gyroEnabled) { gyroEnabled = false; window.removeEventListener('deviceorientation', onGyro); if (btn) btn.textContent = '📱 Наклон'; return; }
+  if (typeof DeviceOrientationEvent === 'undefined') { alert('Гироскоп недоступен на этом устройстве'); return; }
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    DeviceOrientationEvent.requestPermission().then(state => {
+      if (state === 'granted') { window.addEventListener('deviceorientation', onGyro); gyroEnabled = true; if (btn) btn.textContent = '📱 Наклон ✓'; }
+      else { alert('Разрешение на гироскоп не получено'); }
+    }).catch(err => { console.error(err); alert('Не удалось включить гироскоп'); });
+  } else {
+    window.addEventListener('deviceorientation', onGyro); gyroEnabled = true; if (btn) btn.textContent = '📱 Наклон ✓';
+  }
+}
+function onGyro(e){ gyroGamma = e.gamma || 0; }
+
 /* ==========================================================
    ГАЛЕРЕЯ / ПРОФИЛЬ
    ========================================================== */
@@ -2388,13 +2188,7 @@ function buildGallery(){
     const img = document.createElement('img');
     img.src = item.src; img.alt = item.caption;
     img.loading = 'lazy';
-    img.onerror = () => {
-      img.remove();
-      const fb = document.createElement('div');
-      fb.className = 'fallback';
-      fb.textContent = emojis[i%emojis.length];
-      div.insertBefore(fb, div.firstChild);
-    };
+    img.onerror = () => { img.remove(); const fb = document.createElement('div'); fb.className = 'fallback'; fb.textContent = emojis[i%emojis.length]; div.insertBefore(fb, div.firstChild); };
     const cap = document.createElement('div');
     cap.className = 'caption';
     cap.textContent = item.caption;
@@ -2412,44 +2206,19 @@ function buildProfileFeed(){
   CONFIG.gallery.forEach((item, i)=>{
     const art = document.createElement('article');
     art.className = 'post';
-    art.innerHTML = `
-      <div class="post-head">
-        <div class="post-avatar">А</div>
-        <div class="post-info">
-          <div class="post-author">Анна Фисоченко <span class="verified">✓</span></div>
-          <div class="post-time">${times[i]||'недавно'} · Для всех</div>
-        </div>
-      </div>
-      <div class="post-content">
-        <h2>${titles[i]||item.caption}</h2>
-        <p>${item.caption}</p>
-      </div>
-    `;
+    art.innerHTML = `<div class="post-head"><div class="post-avatar">А</div><div class="post-info"><div class="post-author">Анна Фисоченко <span class="verified">✓</span></div><div class="post-time">${times[i]||'недавно'} · Для всех</div></div></div><div class="post-content"><h2>${titles[i]||item.caption}</h2><p>${item.caption}</p></div>`;
     const content = art.querySelector('.post-content');
     const img = document.createElement('img');
     img.className = 'post-photo';
     img.src = item.src; img.alt = item.caption;
     img.loading = 'lazy';
     img.onclick = () => openModal(item.src);
-    img.onerror = () => {
-      img.remove();
-      const fb = document.createElement('div');
-      fb.className = 'post-photo-fallback';
-      fb.textContent = emojis[i%emojis.length];
-      fb.onclick = () => openModal(item.src);
-      content.appendChild(fb);
-    };
+    img.onerror = () => { img.remove(); const fb = document.createElement('div'); fb.className = 'post-photo-fallback'; fb.textContent = emojis[i%emojis.length]; fb.onclick = () => openModal(item.src); content.appendChild(fb); };
     content.appendChild(img);
     feed.appendChild(art);
   });
 }
-function openModal(src){
-  const img = document.getElementById('modalImg');
-  img.onerror = () => { img.style.display = 'none'; };
-  img.onload = () => { img.style.display = ''; };
-  img.src = src;
-  document.getElementById('modal').classList.add('active');
-}
+function openModal(src){ const img = document.getElementById('modalImg'); img.onerror = () => { img.style.display = 'none'; }; img.onload = () => { img.style.display = ''; }; img.src = src; document.getElementById('modal').classList.add('active'); }
 function closeModal(){ document.getElementById('modal').classList.remove('active'); }
 
 /* ==========================================================
@@ -2458,90 +2227,28 @@ function closeModal(){ document.getElementById('modal').classList.remove('active
 const player = { audio: new Audio(), tracks:[], currentIndex:-1, isPlaying:false };
 player.audio.volume = 0.5;
 function togglePlayer(){ document.getElementById('player').classList.toggle('open'); }
-function handleFiles(files){
-  [...files].forEach(file => {
-    player.tracks.push({ name: file.name.replace(/\.[^.]+$/,''), url: URL.createObjectURL(file) });
-  });
-  renderPlaylist(); renderMusicList();
-  if (player.currentIndex === -1 && player.tracks.length > 0) playTrack(0);
-}
+function handleFiles(files){ [...files].forEach(file => { player.tracks.push({ name: file.name.replace(/\.[^.]+$/,''), url: URL.createObjectURL(file) }); }); renderPlaylist(); renderMusicList(); if (player.currentIndex === -1 && player.tracks.length > 0) playTrack(0); }
 document.getElementById('playerFile').addEventListener('change', e=>handleFiles(e.target.files));
 document.getElementById('musicFile').addEventListener('change', e=>handleFiles(e.target.files));
-function renderPlaylist(){
-  const list = document.getElementById('playerPlaylist');
-  list.innerHTML = '';
-  if (player.tracks.length===0) { list.innerHTML = '<div class="playlist-empty">Плейлист пуст</div>'; return; }
-  player.tracks.forEach((track,i)=>{
-    const el = document.createElement('div');
-    el.className = 'playlist-item' + (i===player.currentIndex?' active':'');
-    el.textContent = track.name;
-    el.onclick = () => playTrack(i);
-    list.appendChild(el);
-  });
-}
-function renderMusicList(){
-  const list = document.getElementById('musicList');
-  if (!list) return;
-  list.innerHTML = '';
-  if (player.tracks.length===0) { list.innerHTML = '<div class="music-empty">Загрузи свои треки</div>'; return; }
-  player.tracks.forEach((track,i)=>{
-    const el = document.createElement('div');
-    el.className = 'music-item' + (i===player.currentIndex?' active':'');
-    el.innerHTML = `<span>${i+1}</span><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(track.name)}</span><span>♪</span>`;
-    el.onclick = () => playTrack(i);
-    list.appendChild(el);
-  });
-}
-function playTrack(i){
-  if (i<0 || i>=player.tracks.length) return;
-  player.currentIndex = i;
-  player.audio.src = player.tracks[i].url;
-  player.audio.play().then(()=>{ player.isPlaying = true; updatePlayerUI(); }).catch(()=>{});
-}
-function playerTogglePlay(){
-  if (player.tracks.length===0) { document.getElementById('playerFile').click(); return; }
-  if (player.audio.paused) { player.audio.play().catch(()=>{}); player.isPlaying = true; }
-  else { player.audio.pause(); player.isPlaying = false; }
-  updatePlayerUI();
-}
+function renderPlaylist(){ const list = document.getElementById('playerPlaylist'); list.innerHTML = ''; if (player.tracks.length===0) { list.innerHTML = '<div class="playlist-empty">Плейлист пуст</div>'; return; } player.tracks.forEach((track,i)=>{ const el = document.createElement('div'); el.className = 'playlist-item' + (i===player.currentIndex?' active':''); el.textContent = track.name; el.onclick = () => playTrack(i); list.appendChild(el); }); }
+function renderMusicList(){ const list = document.getElementById('musicList'); if (!list) return; list.innerHTML = ''; if (player.tracks.length===0) { list.innerHTML = '<div class="music-empty">Загрузи свои треки</div>'; return; } player.tracks.forEach((track,i)=>{ const el = document.createElement('div'); el.className = 'music-item' + (i===player.currentIndex?' active':''); el.innerHTML = `<span>${i+1}</span><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(track.name)}</span><span>♪</span>`; el.onclick = () => playTrack(i); list.appendChild(el); }); }
+function playTrack(i){ if (i<0 || i>=player.tracks.length) return; player.currentIndex = i; player.audio.src = player.tracks[i].url; player.audio.play().then(()=>{ player.isPlaying = true; updatePlayerUI(); }).catch(()=>{}); }
+function playerTogglePlay(){ if (player.tracks.length===0) { document.getElementById('playerFile').click(); return; } if (player.audio.paused) { player.audio.play().catch(()=>{}); player.isPlaying = true; } else { player.audio.pause(); player.isPlaying = false; } updatePlayerUI(); }
 function playerNext(){ if (player.tracks.length===0) return; playTrack((player.currentIndex+1)%player.tracks.length); }
 function playerPrev(){ if (player.tracks.length===0) return; playTrack((player.currentIndex-1+player.tracks.length)%player.tracks.length); }
-function playerClear(){
-  player.audio.pause();
-  player.tracks = []; player.currentIndex = -1; player.isPlaying = false;
-  renderPlaylist(); renderMusicList(); updatePlayerUI();
-}
-function playerSeek(e){
-  if (!player.audio.duration) return;
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
-  const pct = (x - rect.left) / rect.width;
-  player.audio.currentTime = pct * player.audio.duration;
-}
+function playerClear(){ player.audio.pause(); player.tracks = []; player.currentIndex = -1; player.isPlaying = false; renderPlaylist(); renderMusicList(); updatePlayerUI(); }
+function playerSeek(e){ if (!player.audio.duration) return; const rect = e.currentTarget.getBoundingClientRect(); const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX; const pct = (x - rect.left) / rect.width; player.audio.currentTime = pct * player.audio.duration; }
 function updatePlayerUI(){
   const icon = player.isPlaying ? '⏸' : '▶';
   const mb = document.getElementById('musicPlayBtn'); if (mb) mb.innerHTML = icon;
   const pb = document.getElementById('playerPlayBtn'); if (pb) pb.innerHTML = icon;
   document.getElementById('playerToggle').classList.toggle('playing', player.isPlaying);
   const name = (player.currentIndex>=0 && player.tracks[player.currentIndex]) ? player.tracks[player.currentIndex].name : null;
-  if (name) {
-    document.getElementById('playerTitle').textContent = name;
-    document.getElementById('playerSubtitle').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`;
-    document.getElementById('musicTitle').textContent = name;
-    document.getElementById('musicArtist').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`;
-  } else {
-    document.getElementById('playerTitle').textContent = 'Ничего не играет';
-    document.getElementById('playerSubtitle').textContent = 'Загрузите свои треки';
-    document.getElementById('musicTitle').textContent = 'Ничего не играет';
-    document.getElementById('musicArtist').textContent = 'Загрузи свои треки';
-  }
+  if (name) { document.getElementById('playerTitle').textContent = name; document.getElementById('playerSubtitle').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`; document.getElementById('musicTitle').textContent = name; document.getElementById('musicArtist').textContent = `Трек ${player.currentIndex+1} из ${player.tracks.length}`; }
+  else { document.getElementById('playerTitle').textContent = 'Ничего не играет'; document.getElementById('playerSubtitle').textContent = 'Загрузите свои треки'; document.getElementById('musicTitle').textContent = 'Ничего не играет'; document.getElementById('musicArtist').textContent = 'Загрузи свои треки'; }
   renderPlaylist(); renderMusicList();
 }
-function formatTime(sec){
-  if (!sec || isNaN(sec)) return '0:00';
-  const m = Math.floor(sec/60), s = Math.floor(sec%60);
-  return `${m}:${s<10?'0'+s:s}`;
-}
+function formatTime(sec){ if (!sec || isNaN(sec)) return '0:00'; const m = Math.floor(sec/60), s = Math.floor(sec%60); return `${m}:${s<10?'0'+s:s}`; }
 player.audio.addEventListener('timeupdate', ()=>{
   if (!player.audio.duration) return;
   const pct = (player.audio.currentTime / player.audio.duration) * 100;
@@ -2549,39 +2256,24 @@ player.audio.addEventListener('timeupdate', ()=>{
   document.getElementById('playerCurrent').textContent = formatTime(player.audio.currentTime);
   document.getElementById('playerDuration').textContent = formatTime(player.audio.duration);
   const mp = document.getElementById('musicProgressFill');
-  if (mp) {
-    mp.style.width = pct+'%';
-    document.getElementById('musicCurrent').textContent = formatTime(player.audio.currentTime);
-    document.getElementById('musicDuration').textContent = formatTime(player.audio.duration);
-  }
+  if (mp) { mp.style.width = pct+'%'; document.getElementById('musicCurrent').textContent = formatTime(player.audio.currentTime); document.getElementById('musicDuration').textContent = formatTime(player.audio.duration); }
 });
 player.audio.addEventListener('ended', ()=>playerNext());
 
 /* ==========================================================
-   ПОДСВЕТКА САЙДБАРА (только desktop)
+   ПОДСВЕТКА САЙДБАРА
    ========================================================== */
 if (window.matchMedia('(hover: hover)').matches) {
   const sidebarEl = document.getElementById('sidebar');
   if (sidebarEl) {
-    sidebarEl.addEventListener('mousemove', e=>{
-      const rect = sidebarEl.getBoundingClientRect();
-      const x = ((e.clientX-rect.left)/rect.width)*100;
-      const y = ((e.clientY-rect.top)/rect.height)*100;
-      sidebarEl.style.setProperty('--mx', x+'%');
-      sidebarEl.style.setProperty('--my', y+'%');
-    });
+    sidebarEl.addEventListener('mousemove', e=>{ const rect = sidebarEl.getBoundingClientRect(); const x = ((e.clientX-rect.left)/rect.width)*100; const y = ((e.clientY-rect.top)/rect.height)*100; sidebarEl.style.setProperty('--mx', x+'%'); sidebarEl.style.setProperty('--my', y+'%'); });
   }
 }
 
 /* ==========================================================
    2D-ИГРА
    ========================================================== */
-const gameState = {
-  running:false, paused:false, speed:0, kmh:0, maxKmh:0, worldOffset:0, score:0, best:0,
-  lastTime:0, npcs:[], events:[],
-  spawnNPCTimer:0, spawnEventTimer:6000,
-  player:{ x:0, y:0, w:44, h:90 }, gameOverFlag:false
-};
+const gameState = { running:false, paused:false, speed:0, kmh:0, maxKmh:0, worldOffset:0, score:0, best:0, lastTime:0, npcs:[], events:[], spawnNPCTimer:0, spawnEventTimer:6000, player:{ x:0, y:0, w:44, h:90 }, gameOverFlag:false };
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const CANVAS_W = 600, CANVAS_H = 700;
@@ -2598,12 +2290,7 @@ gameState.player.x = LANE_CENTERS[1];
 gameState.player.y = PLAYER_Y;
 
 function resetGame2D(){
-  gameState.speed = 1.5; gameState.kmh = 33; gameState.maxKmh = 33;
-  gameState.worldOffset = 0; gameState.score = 0;
-  gameState.npcs = []; gameState.events = [];
-  gameState.spawnNPCTimer = 600; gameState.spawnEventTimer = 6000;
-  gameState.gameOverFlag = false;
-  gameState.player.x = LANE_CENTERS[1]; gameState.player.y = PLAYER_Y;
+  gameState.speed = 1.5; gameState.kmh = 33; gameState.maxKmh = 33; gameState.worldOffset = 0; gameState.score = 0; gameState.npcs = []; gameState.events = []; gameState.spawnNPCTimer = 600; gameState.spawnEventTimer = 6000; gameState.gameOverFlag = false; gameState.player.x = LANE_CENTERS[1]; gameState.player.y = PLAYER_Y;
   const s = document.getElementById('score'); if (s) s.textContent = 0;
   const k = document.getElementById('kmh'); if (k) k.textContent = 33;
   const sb = document.getElementById('startGameBtn'); if (sb) sb.textContent = 'Заново';
@@ -2622,33 +2309,9 @@ function fitCanvas(){
 window.addEventListener('resize', ()=>{ if (currentApp === 'race2d') fitCanvas(); });
 
 function carsOverlap(a,b){ return Math.abs(a.x-b.x)<(a.w+b.w)/2-4 && Math.abs(a.y-b.y)<(a.h+b.h)/2-6; }
-function isSpawnLaneFree2D(lane, yStart, minGap){
-  const all = [...gameState.npcs, ...gameState.events];
-  const x = LANE_CENTERS[lane];
-  for (const c of all) {
-    if (Math.abs(c.x-x)>LANE_W*0.55) continue;
-    if (Math.abs(c.y-yStart)<minGap) return false;
-  }
-  return true;
-}
-function spawnNPC2D(){
-  const tried = [0,1,2,3].sort(()=>Math.random()-0.5);
-  for (const lane of tried) {
-    if (!isSpawnLaneFree2D(lane, -120, 180)) continue;
-    const colors = ['#3a3a4a','#4a3a3a','#2a3a4a','#4a4a3a','#383838'];
-    const baseSpeed = 2 + Math.random()*4;
-    gameState.npcs.push({ x:LANE_CENTERS[lane], y:-100, w:40, h:80, lane, targetX:LANE_CENTERS[lane], speed:baseSpeed, baseSpeed, color:colors[Math.floor(Math.random()*colors.length)], brakeLights:false });
-    return;
-  }
-}
-function spawnAccident2D(){
-  const tried = [0,1,2,3].sort(()=>Math.random()-0.5);
-  for (const lane of tried) {
-    if (!isSpawnLaneFree2D(lane, -120, 200)) continue;
-    gameState.events.push({ x:LANE_CENTERS[lane], y:-100, w:40, h:80, lane, speed:0, color:'#3a2a2a', blinkTimer:0, blinkOn:true });
-    return;
-  }
-}
+function isSpawnLaneFree2D(lane, yStart, minGap){ const all = [...gameState.npcs, ...gameState.events]; const x = LANE_CENTERS[lane]; for (const c of all) { if (Math.abs(c.x-x)>LANE_W*0.55) continue; if (Math.abs(c.y-yStart)<minGap) return false; } return true; }
+function spawnNPC2D(){ const tried = [0,1,2,3].sort(()=>Math.random()-0.5); for (const lane of tried) { if (!isSpawnLaneFree2D(lane, -120, 180)) continue; const colors = ['#3a3a4a','#4a3a3a','#2a3a4a','#4a4a3a','#383838']; const baseSpeed = 2 + Math.random()*4; gameState.npcs.push({ x:LANE_CENTERS[lane], y:-100, w:40, h:80, lane, targetX:LANE_CENTERS[lane], speed:baseSpeed, baseSpeed, color:colors[Math.floor(Math.random()*colors.length)], brakeLights:false }); return; } }
+function spawnAccident2D(){ const tried = [0,1,2,3].sort(()=>Math.random()-0.5); for (const lane of tried) { if (!isSpawnLaneFree2D(lane, -120, 200)) continue; gameState.events.push({ x:LANE_CENTERS[lane], y:-100, w:40, h:80, lane, speed:0, color:'#3a2a2a', blinkTimer:0, blinkOn:true }); return; } }
 function updateGame2D(dt){
   const gs = gameState;
   const f = dt/16;
@@ -2660,17 +2323,14 @@ function updateGame2D(dt){
   const moveSpeed = 4*f;
   if (keys.left) gs.player.x -= moveSpeed;
   if (keys.right) gs.player.x += moveSpeed;
+  if (gyroEnabled && Math.abs(gyroGamma) > 3) { const tilt = Math.max(-30, Math.min(30, gyroGamma)); const steer = tilt / 30; gs.player.x += steer * moveSpeed * 1.4; }
   gs.player.x = Math.max(ROAD_LEFT + gs.player.w/2 + 6, Math.min(ROAD_RIGHT - gs.player.w/2 - 6, gs.player.x));
   gs.spawnNPCTimer -= dt * (1 + gs.speed*0.2);
   if (gs.spawnNPCTimer <= 0) { spawnNPC2D(); gs.spawnNPCTimer = 900 + Math.random()*1100; }
   gs.spawnEventTimer -= dt;
   if (gs.spawnEventTimer <= 0) { if (Math.random()<0.5) spawnAccident2D(); gs.spawnEventTimer = 12000 + Math.random()*15000; }
   const allCars = [...gs.npcs, ...gs.events];
-  for (const car of allCars) {
-    car.y += (gs.speed - car.speed) * f;
-    if (car.targetX !== undefined && Math.abs(car.targetX - car.x) > 0.5) car.x += (car.targetX - car.x)*0.06*f;
-    else if (car.targetX !== undefined) car.x = car.targetX;
-  }
+  for (const car of allCars) { car.y += (gs.speed - car.speed) * f; if (car.targetX !== undefined && Math.abs(car.targetX - car.x) > 0.5) car.x += (car.targetX - car.x)*0.06*f; else if (car.targetX !== undefined) car.x = car.targetX; }
   gs.events.forEach(ev=>{ ev.blinkTimer += dt; if (ev.blinkTimer > 300) { ev.blinkOn = !ev.blinkOn; ev.blinkTimer = 0; } });
   gs.npcs = gs.npcs.filter(n=>n.y < CANVAS_H + 200);
   gs.events = gs.events.filter(e=>e.y < CANVAS_H + 200);
@@ -2680,35 +2340,21 @@ function updateGame2D(dt){
   for (const n of gs.npcs) if (carsOverlap(gs.player, n)) { crashEnd2D(); return; }
   for (const ev of gs.events) if (carsOverlap(gs.player, ev)) { crashEnd2D(); return; }
 }
-function roundRect(c,x,y,w,h,r){
-  c.beginPath(); c.moveTo(x+r,y);
-  c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
-  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath();
-}
+function roundRect(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
 function draw2D(){
   ctx.fillStyle = '#05050a'; ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-  ctx.fillStyle = '#0a0a10';
-  ctx.fillRect(0,0,ROAD_LEFT-20,CANVAS_H);
-  ctx.fillRect(ROAD_RIGHT+20,0,CANVAS_W-ROAD_RIGHT-20,CANVAS_H);
+  ctx.fillStyle = '#0a0a10'; ctx.fillRect(0,0,ROAD_LEFT-20,CANVAS_H); ctx.fillRect(ROAD_RIGHT+20,0,CANVAS_W-ROAD_RIGHT-20,CANVAS_H);
   ctx.fillStyle = '#0e0e14'; ctx.fillRect(ROAD_LEFT, 0, ROAD_WIDTH, CANVAS_H);
   ctx.fillStyle = '#4a4a3a';
   const MS = 80; const offset = gameState.worldOffset % MS;
-  for (let y=-MS+offset; y<CANVAS_H+MS; y+=MS) for (let lane=1; lane<LANES; lane++) {
-    const x = ROAD_LEFT + lane*LANE_W;
-    ctx.fillRect(x-2, y, 4, 40);
-  }
+  for (let y=-MS+offset; y<CANVAS_H+MS; y+=MS) for (let lane=1; lane<LANES; lane++) { const x = ROAD_LEFT + lane*LANE_W; ctx.fillRect(x-2, y, 4, 40); }
   const drawCar = (x, y, w, h, color, opts={})=>{
     ctx.save(); ctx.translate(x, y);
     ctx.fillStyle = 'rgba(0,0,0,0.6)'; roundRect(ctx, -w/2+2, -h/2+4, w, h, 6); ctx.fill();
     ctx.fillStyle = color; roundRect(ctx, -w/2, -h/2, w, h, 6); ctx.fill();
-    ctx.fillStyle = 'rgba(80,100,130,0.6)';
-    roundRect(ctx, -w/2+6, -h/2+12, w-12, 14, 3); ctx.fill();
-    ctx.fillStyle = '#fff5aa';
-    ctx.fillRect(-w/2+4, -h/2+1, 8, 3); ctx.fillRect(w/2-12, -h/2+1, 8, 3);
-    if (opts.hazard && opts.blink) {
-      ctx.fillStyle = '#ffaa00';
-      ctx.fillRect(-w/2+5, -h/2+5, 6, 4); ctx.fillRect(w/2-11, -h/2+5, 6, 4);
-    }
+    ctx.fillStyle = 'rgba(80,100,130,0.6)'; roundRect(ctx, -w/2+6, -h/2+12, w-12, 14, 3); ctx.fill();
+    ctx.fillStyle = '#fff5aa'; ctx.fillRect(-w/2+4, -h/2+1, 8, 3); ctx.fillRect(w/2-12, -h/2+1, 8, 3);
+    if (opts.hazard && opts.blink) { ctx.fillStyle = '#ffaa00'; ctx.fillRect(-w/2+5, -h/2+5, 6, 4); ctx.fillRect(w/2-11, -h/2+5, 6, 4); }
     ctx.restore();
   };
   gameState.npcs.forEach(n => drawCar(n.x, n.y, n.w, n.h, n.color));
@@ -2716,16 +2362,10 @@ function draw2D(){
   ctx.save(); ctx.translate(gameState.player.x, gameState.player.y);
   const bodyGrad = ctx.createLinearGradient(-22, 0, 22, 0);
   bodyGrad.addColorStop(0, '#6a6a72'); bodyGrad.addColorStop(0.5, '#f2f2f5'); bodyGrad.addColorStop(1, '#6a6a72');
-  ctx.fillStyle = bodyGrad;
-  roundRect(ctx, -22, -45, 44, 90, 6); ctx.fill();
-  ctx.fillStyle = 'rgba(15,25,40,0.9)';
-  roundRect(ctx, -14, -15, 28, 20, 3); ctx.fill();
+  ctx.fillStyle = bodyGrad; roundRect(ctx, -22, -45, 44, 90, 6); ctx.fill();
+  ctx.fillStyle = 'rgba(15,25,40,0.9)'; roundRect(ctx, -14, -15, 28, 20, 3); ctx.fill();
   ctx.restore();
-  if (!gameState.running) {
-    ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-    ctx.fillStyle = '#fff'; ctx.font = '600 22px Inter, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('Нажмите «Старт»', CANVAS_W/2, CANVAS_H/2);
-  }
+  if (!gameState.running) { ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, CANVAS_W, CANVAS_H); ctx.fillStyle = '#fff'; ctx.font = '600 22px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('Нажмите «Старт»', CANVAS_W/2, CANVAS_H/2); }
 }
 function gameLoop2D(t){
   if (!gameState.running || gameState.paused) return;
@@ -2736,36 +2376,268 @@ function gameLoop2D(t){
   draw2D();
   if (gameState.running && !gameState.paused) requestAnimationFrame(gameLoop2D);
 }
-function crashEnd2D(){
-  gameState.running = false;
-  if (gameState.score > gameState.best) {
-    gameState.best = gameState.score;
-    localStorage.setItem('bestScore', gameState.best);
-    const b1 = document.getElementById('best'); if (b1) b1.textContent = gameState.best;
-  }
-  showGameOverModal();
-}
-function showGameOverModal(){
-  const gs = document.getElementById('goScore'); if (gs) gs.textContent = gameState.score;
-  const gb = document.getElementById('goBest'); if (gb) gb.textContent = gameState.best;
-  const gv = document.getElementById('goSpeed'); if (gv) gv.textContent = Math.round(gameState.maxKmh)+' км/ч';
-  document.getElementById('gameOverModal').classList.add('active');
-}
-function startGame(){
-  resetGame2D();
-  document.getElementById('gameOverModal').classList.remove('active');
-  gameState.running = true; gameState.paused = false;
-  gameState.lastTime = performance.now();
-  requestAnimationFrame(gameLoop2D);
-}
-function pauseGame(){
-  if (!gameState.running) return;
-  gameState.paused = !gameState.paused;
-  if (!gameState.paused) { gameState.lastTime = performance.now(); requestAnimationFrame(gameLoop2D); }
-  else draw2D();
-}
+function crashEnd2D(){ gameState.running = false; if (gameState.score > gameState.best) { gameState.best = gameState.score; localStorage.setItem('bestScore', gameState.best); const b1 = document.getElementById('best'); if (b1) b1.textContent = gameState.best; } showGameOverModal(); }
+function showGameOverModal(){ const gs = document.getElementById('goScore'); if (gs) gs.textContent = gameState.score; const gb = document.getElementById('goBest'); if (gb) gb.textContent = gameState.best; const gv = document.getElementById('goSpeed'); if (gv) gv.textContent = Math.round(gameState.maxKmh)+' км/ч'; document.getElementById('gameOverModal').classList.add('active'); }
+function startGame(){ resetGame2D(); document.getElementById('gameOverModal').classList.remove('active'); gameState.running = true; gameState.paused = false; gameState.lastTime = performance.now(); requestAnimationFrame(gameLoop2D); }
+function pauseGame(){ if (!gameState.running) return; gameState.paused = !gameState.paused; if (!gameState.paused) { gameState.lastTime = performance.now(); requestAnimationFrame(gameLoop2D); } else draw2D(); }
 function restartFromModal(){ document.getElementById('gameOverModal').classList.remove('active'); startGame(); }
 function exitFromModal(){ document.getElementById('gameOverModal').classList.remove('active'); closeApp(); }
+
+/* ==========================================================
+   ПУТЕШЕСТВИЕ МЕЧТЫ
+   ========================================================== */
+const JOURNEY_CITIES = { moscow:{name:'Москва',lon:37.6,lat:55.75}, rostov:{name:'Ростов-на-Дону',lon:39.7,lat:47.2}, dubai:{name:'Дубай',lon:55.3,lat:25.3}, cairo:{name:'Каир',lon:31.2,lat:30.0}, paris:{name:'Париж',lon:2.35,lat:48.85}, london:{name:'Лондон',lon:-0.12,lat:51.5}, newyork:{name:'Нью-Йорк',lon:-74.0,lat:40.7}, rio:{name:'Рио-де-Жанейро',lon:-43.2,lat:-22.9}, sydney:{name:'Сидней',lon:151.2,lat:-33.87}, tokyo:{name:'Токио',lon:139.7,lat:35.7} };
+const JOURNEY = [
+  { from:'moscow', to:'rostov', type:'plane', km:1100, label:'Москва → Ростов-на-Дону' },
+  { from:'rostov', to:'dubai', type:'plane', km:2900, label:'Ростов-на-Дону → Дубай' },
+  { from:'dubai', to:'cairo', type:'plane', km:2400, label:'Дубай → Каир' },
+  { from:'cairo', to:'paris', type:'plane', km:3200, label:'Каир → Париж' },
+  { from:'paris', to:'london', type:'train', km:350, label:'Париж → Лондон' },
+  { from:'london', to:'newyork', type:'ship', km:5500, label:'Лондон → Нью-Йорк' },
+  { from:'newyork', to:'rio', type:'plane', km:7700, label:'Нью-Йорк → Рио' },
+  { from:'rio', to:'sydney', type:'plane', km:13500, label:'Рио → Сидней' },
+  { from:'sydney', to:'tokyo', type:'plane', km:7800, label:'Сидней → Токио' },
+  { from:'tokyo', to:'moscow', type:'plane', km:7500, label:'Токио → Москва' }
+];
+const JOURNEY_TOTAL = JOURNEY.reduce((s,r)=>s+r.km, 0);
+const MAP_W = 720, MAP_H = 360;
+const journeyState = { running:false, doneKm:0, lastTime:0, speedKmPerSec:1400, raf:null };
+function jProj(lon, lat){ return { x:(lon+180)/360*MAP_W, y:(90-lat)/180*MAP_H }; }
+function jArc(p1, p2, type){ const dx = p2.x - p1.x, dy = p2.y - p1.y; const dist = Math.hypot(dx, dy) || 1; const mx = (p1.x + p2.x) / 2, my = (p1.y + p2.y) / 2; let curveY = -dist * 0.22; if (type === 'ship') curveY = dist * 0.12; if (type === 'train') curveY = -dist * 0.08; const cx = mx + dx * 0.02; const cy = my + curveY; return { p0:p1, c:{x:cx, y:cy}, p2 }; }
+function jPathD(a){ return `M ${a.p0.x} ${a.p0.y} Q ${a.c.x} ${a.c.y} ${a.p2.x} ${a.p2.y}`; }
+function jBezierPoint(a, t){ const mt = 1 - t; return { x: mt*mt*a.p0.x + 2*mt*t*a.c.x + t*t*a.p2.x, y: mt*mt*a.p0.y + 2*mt*t*a.c.y + t*t*a.p2.y }; }
+function jCurrentRoute(){ let acc = 0; for (let i=0; i<JOURNEY.length; i++) { if (journeyState.doneKm < acc + JOURNEY[i].km) { return { index:i, progress:(journeyState.doneKm - acc) / JOURNEY[i].km }; } acc += JOURNEY[i].km; } return { index:JOURNEY.length - 1, progress:1 }; }
+function buildJourneySVG(){
+  const svg = document.getElementById('journeySvg');
+  if (!svg) return;
+  let html = `<rect width="${MAP_W}" height="${MAP_H}" fill="#05050a"/>`;
+  html += '<g opacity="0.09" stroke="#8899aa" stroke-width="0.5" fill="none">';
+  for (let lon=-180; lon<=180; lon+=30) { const x = (lon+180)/360*MAP_W; html += `<line x1="${x}" y1="0" x2="${x}" y2="${MAP_H}"/>`; }
+  for (let lat=-90; lat<=90; lat+=30) { const y = (90-lat)/180*MAP_H; html += `<line x1="0" y1="${y}" x2="${MAP_W}" y2="${y}"/>`; }
+  html += '</g>';
+  const eqY = MAP_H/2, pmX = MAP_W/2;
+  html += `<line x1="0" y1="${eqY}" x2="${MAP_W}" y2="${eqY}" stroke="#4a5a6a" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.4"/>`;
+  html += `<line x1="${pmX}" y1="0" x2="${pmX}" y2="${MAP_H}" stroke="#4a5a6a" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.4"/>`;
+  html += '<g>';
+  JOURNEY.forEach(route => { const arc = jArc(jProj(JOURNEY_CITIES[route.from].lon, JOURNEY_CITIES[route.from].lat), jProj(JOURNEY_CITIES[route.to].lon, JOURNEY_CITIES[route.to].lat), route.type); const stroke = route.type === 'ship' ? '#3a6a9a' : route.type === 'train' ? '#8a6a3a' : '#4a6a8a'; html += `<path d="${jPathD(arc)}" fill="none" stroke="${stroke}" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.4"/>`; });
+  html += '</g>';
+  html += '<g id="jRoutesActive"></g>';
+  html += `<g id="jVehicle" style="display:none"><circle r="5" fill="#fff" opacity="0.25"/><circle r="2" fill="#fff"/></g>`;
+  html += '<g id="jCities">';
+  Object.entries(JOURNEY_CITIES).forEach(([id, city]) => { const p = jProj(city.lon, city.lat); const isMain = id === 'moscow' || id === 'rostov'; const color = isMain ? '#d4af37' : '#e94a6f'; html += `<g class="jCity" data-city="${id}"><circle cx="${p.x}" cy="${p.y}" r="6" fill="${color}" opacity="0.18"/><circle cx="${p.x}" cy="${p.y}" r="2.6" fill="${color}"/><text x="${p.x}" y="${p.y - 6}" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="600" fill="#c8ccd4" style="paint-order:stroke; stroke:#05050a; stroke-width:1.8px;">${city.name}</text></g>`; });
+  html += '</g>';
+  svg.innerHTML = html;
+}
+function updateJourneyMap(){
+  const svg = document.getElementById('journeySvg');
+  if (!svg) return;
+  const active = svg.querySelector('#jRoutesActive');
+  const vehicle = svg.querySelector('#jVehicle');
+  if (!active || !vehicle) return;
+  const { index, progress } = jCurrentRoute();
+  let html = '';
+  for (let i=0; i<index; i++) { const route = JOURNEY[i]; const arc = jArc(jProj(JOURNEY_CITIES[route.from].lon, JOURNEY_CITIES[route.from].lat), jProj(JOURNEY_CITIES[route.to].lon, JOURNEY_CITIES[route.to].lat), route.type); const stroke = route.type === 'ship' ? '#4a9aee' : route.type === 'train' ? '#e8b84a' : '#7ab4e8'; html += `<path d="${jPathD(arc)}" fill="none" stroke="${stroke}" stroke-width="1.4" opacity="0.9"/>`; }
+  if (index < JOURNEY.length) {
+    const route = JOURNEY[index];
+    const arc = jArc(jProj(JOURNEY_CITIES[route.from].lon, JOURNEY_CITIES[route.from].lat), jProj(JOURNEY_CITIES[route.to].lon, JOURNEY_CITIES[route.to].lat), route.type);
+    const stroke = route.type === 'ship' ? '#4a9aee' : route.type === 'train' ? '#e8b84a' : '#7ab4e8';
+    const approxLen = Math.hypot(arc.p2.x - arc.p0.x, arc.p2.y - arc.p0.y) * 1.15 + 20;
+    html += `<path d="${jPathD(arc)}" fill="none" stroke="${stroke}" stroke-width="1.7" opacity="0.95" stroke-dasharray="${approxLen}" stroke-dashoffset="${approxLen * (1 - progress)}" stroke-linecap="round"/>`;
+    const pos = jBezierPoint(arc, progress);
+    vehicle.setAttribute('transform', `translate(${pos.x},${pos.y})`);
+    vehicle.style.display = '';
+  } else { vehicle.style.display = 'none'; }
+  active.innerHTML = html;
+}
+function updateJourneyUI(){
+  const { index } = jCurrentRoute();
+  const route = JOURNEY[index];
+  if (route) { const from = JOURNEY_CITIES[route.from]; const to = JOURNEY_CITIES[route.to]; const icon = route.type === 'ship' ? '🚢' : route.type === 'train' ? '🚄' : '✈️'; document.getElementById('journeyCurrent').textContent = `${icon} ${from.name} → ${to.name}`; }
+  document.getElementById('journeyDone').textContent = Math.floor(journeyState.doneKm).toLocaleString('ru-RU') + ' км';
+  document.getElementById('journeyProgressFill').style.width = (journeyState.doneKm / JOURNEY_TOTAL * 100) + '%';
+  updateJourneyMap();
+}
+function journeyLoop(t){
+  if (!journeyState.running) return;
+  const dt = Math.min(100, t - journeyState.lastTime) / 1000;
+  journeyState.lastTime = t;
+  journeyState.doneKm += journeyState.speedKmPerSec * dt;
+  if (journeyState.doneKm >= JOURNEY_TOTAL) { journeyState.doneKm = JOURNEY_TOTAL; journeyState.running = false; updateJourneyUI(); document.getElementById('journeyStartBtn').textContent = 'Заново'; launchConfetti(40); return; }
+  updateJourneyUI();
+  journeyState.raf = requestAnimationFrame(journeyLoop);
+}
+function journeyStart(){ if (journeyState.running) return; if (journeyState.doneKm >= JOURNEY_TOTAL) journeyState.doneKm = 0; journeyState.running = true; journeyState.lastTime = performance.now(); document.getElementById('journeyStartBtn').textContent = 'В пути...'; journeyState.raf = requestAnimationFrame(journeyLoop); }
+function journeyReset(){ journeyState.running = false; if (journeyState.raf) cancelAnimationFrame(journeyState.raf); journeyState.doneKm = 0; document.getElementById('journeyStartBtn').textContent = 'Начать путешествие'; updateJourneyUI(); }
+function initJourney(){ buildJourneySVG(); updateJourneyUI(); }
+
+/* ==========================================================
+   КАРТА МИРА (страны + столицы + зум + инфо)
+   ========================================================== */
+let worldZoomLevel = 1;
+let worldPanX = 0, worldPanY = 0;
+let worldDragging = false, worldLastX = 0, worldLastY = 0;
+let worldSelectedCode = null;
+
+function initWorldMap(){
+  const svg = document.getElementById('worldMapSvg');
+  if (!svg) return;
+  buildWorldMapSVG();
+  svg.addEventListener('wheel', onWorldWheel, { passive: false });
+  svg.addEventListener('mousedown', onWorldDown);
+  window.addEventListener('mousemove', onWorldMove);
+  window.addEventListener('mouseup', onWorldUp);
+  svg.addEventListener('touchstart', onWorldTouchStart, { passive: true });
+  svg.addEventListener('touchmove', onWorldTouchMove, { passive: false });
+  svg.addEventListener('touchend', onWorldUp);
+  // pinch
+  let pinchDist = 0;
+  svg.addEventListener('touchmove', e=>{
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const d = Math.hypot(dx, dy);
+      if (pinchDist > 0) { const scale = d / pinchDist; worldZoomLevel *= scale; worldZoomLevel = Math.max(0.5, Math.min(8, worldZoomLevel)); applyWorldTransform(); }
+      pinchDist = d;
+      e.preventDefault();
+    }
+  }, { passive: false });
+  svg.addEventListener('touchend', ()=>{ pinchDist = 0; });
+}
+
+function buildWorldMapSVG(){
+  const svg = document.getElementById('worldMapSvg');
+  if (!svg) return;
+  let html = `<rect width="${MAP_W}" height="${MAP_H}" fill="#05050a" id="worldBg"/>`;
+  // Сетка
+  html += '<g opacity="0.07" stroke="#8899aa" stroke-width="0.4" fill="none">';
+  for (let lon=-180; lon<=180; lon+=30) { const x = (lon+180)/360*MAP_W; html += `<line x1="${x}" y1="0" x2="${x}" y2="${MAP_H}"/>`; }
+  for (let lat=-90; lat<=90; lat+=30) { const y = (90-lat)/180*MAP_H; html += `<line x1="0" y1="${y}" x2="${MAP_W}" y2="${y}"/>`; }
+  html += '</g>';
+
+  // Континенты (стилизованные)
+  const conts = [
+    'M 70 55 Q 130 45 175 60 Q 210 75 220 105 Q 215 130 190 140 Q 165 150 145 135 Q 125 120 105 100 Q 85 80 70 55 Z',
+    'M 210 155 Q 235 155 250 180 Q 255 215 250 250 Q 240 285 225 295 Q 210 290 205 250 Q 200 210 205 180 Z',
+    'M 355 55 Q 400 50 430 65 Q 435 85 420 100 Q 400 105 375 100 Q 355 90 350 75 Z',
+    'M 355 110 Q 410 105 435 130 Q 445 170 430 215 Q 415 245 395 245 Q 375 235 365 200 Q 355 165 355 130 Z',
+    'M 435 55 Q 520 50 590 60 Q 640 80 645 110 Q 620 145 570 145 Q 530 150 490 140 Q 460 125 445 100 Z',
+    'M 615 220 Q 665 215 690 235 Q 695 265 675 285 Q 645 290 620 275 Q 610 250 615 220 Z',
+    'M 235 30 Q 275 25 295 45 Q 290 65 260 68 Q 240 60 235 45 Z'
+  ];
+  html += '<g id="worldContinents" fill="#0f1522" stroke="#1a2436" stroke-width="0.6">';
+  conts.forEach(d => html += `<path d="${d}"/>`);
+  html += '</g>';
+
+  // Точки столиц и Ростов
+  html += '<g id="worldPoints">';
+  COUNTRIES.forEach(c => {
+    const p = jProj(c.lng, c.lat);
+    html += `<g class="world-country-marker" data-code="${c.code}" data-name="${escapeHtml(c.name)}" data-capital="${escapeHtml(c.capital)}" data-good="${escapeHtml(c.good)}" data-bad="${escapeHtml(c.bad)}">
+      <circle class="world-capital" cx="${p.x}" cy="${p.y}" r="3" />
+      <text class="world-capital-label" x="${p.x}" y="${p.y - 5}">${escapeHtml(c.capital)}</text>
+    </g>`;
+  });
+  // Ростов отдельно
+  const rp = jProj(ROSTOV.lng, ROSTOV.lat);
+  html += `<g class="world-country-marker" data-code="ROSTOV" data-name="Россия (Ростов-на-Дону)" data-capital="Ростов-на-Дону" data-good="Тихий Дон, казаки, шашлык." data-bad="Пробки на Западном и жара летом.">
+    <circle class="world-capital" cx="${rp.x}" cy="${rp.y}" r="3" fill="#d4af37" />
+    <text class="world-capital-label" x="${rp.x}" y="${rp.y - 5}">Ростов-на-Дону</text>
+  </g>`;
+  html += '</g>';
+
+  svg.innerHTML = html;
+  // Обработчики кликов
+  svg.querySelectorAll('.world-country-marker').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const code = el.dataset.code;
+      if (code === 'ROSTOV') { showWorldInfo('Россия (Ростов-на-Дону)', 'Ростов-на-Дону', el.dataset.good, el.dataset.bad); }
+      else {
+        const c = COUNTRIES.find(x => x.code === code);
+        if (c) showWorldInfo(c.name, c.capital, c.good, c.bad);
+      }
+      worldSelectedCode = code;
+      svg.querySelectorAll('.world-country-marker').forEach(m => m.classList.toggle('selected', m.dataset.code === code));
+    });
+  });
+}
+
+function applyWorldTransform(){
+  const svg = document.getElementById('worldMapSvg');
+  if (!svg) return;
+  svg.setAttribute('viewBox', `${worldPanX} ${worldPanY} ${MAP_W / worldZoomLevel} ${MAP_H / worldZoomLevel}`);
+}
+
+function worldZoom(factor){
+  worldZoomLevel *= factor;
+  worldZoomLevel = Math.max(0.5, Math.min(8, worldZoomLevel));
+  const cx = MAP_W / 2, cy = MAP_H / 2;
+  const halfW = MAP_W / worldZoomLevel / 2;
+  const halfH = MAP_H / worldZoomLevel / 2;
+  worldPanX = cx - halfW;
+  worldPanY = cy - halfH;
+  applyWorldTransform();
+}
+
+function worldReset(){
+  worldZoomLevel = 1; worldPanX = 0; worldPanY = 0;
+  applyWorldTransform();
+  closeWorldInfo();
+  document.querySelectorAll('.world-country-marker').forEach(m => m.classList.remove('selected'));
+}
+
+function onWorldWheel(e){
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.12 : 0.89;
+  worldZoom(factor);
+}
+
+function onWorldDown(e){
+  worldDragging = true;
+  worldLastX = e.clientX; worldLastY = e.clientY;
+}
+
+function onWorldMove(e){
+  if (!worldDragging) return;
+  const svg = document.getElementById('worldMapSvg');
+  const rect = svg.getBoundingClientRect();
+  const scale = rect.width / (MAP_W / worldZoomLevel);
+  worldPanX -= (e.clientX - worldLastX) / scale;
+  worldPanY -= (e.clientY - worldLastY) / scale;
+  worldPanX = Math.max(0, Math.min(MAP_W - MAP_W / worldZoomLevel, worldPanX));
+  worldPanY = Math.max(0, Math.min(MAP_H - MAP_H / worldZoomLevel, worldPanY));
+  worldLastX = e.clientX; worldLastY = e.clientY;
+  applyWorldTransform();
+}
+
+function onWorldUp(){ worldDragging = false; }
+
+function onWorldTouchStart(e){
+  if (e.touches.length === 1) { worldDragging = true; worldLastX = e.touches[0].clientX; worldLastY = e.touches[0].clientY; }
+}
+function onWorldTouchMove(e){
+  if (!worldDragging || e.touches.length !== 1) return;
+  const svg = document.getElementById('worldMapSvg');
+  const rect = svg.getBoundingClientRect();
+  const scale = rect.width / (MAP_W / worldZoomLevel);
+  worldPanX -= (e.touches[0].clientX - worldLastX) / scale;
+  worldPanY -= (e.touches[0].clientY - worldLastY) / scale;
+  worldPanX = Math.max(0, Math.min(MAP_W - MAP_W / worldZoomLevel, worldPanX));
+  worldPanY = Math.max(0, Math.min(MAP_H - MAP_H / worldZoomLevel, worldPanY));
+  worldLastX = e.touches[0].clientX; worldLastY = e.touches[0].clientY;
+  applyWorldTransform();
+  e.preventDefault();
+}
+
+function showWorldInfo(name, capital, good, bad){
+  document.getElementById('worldInfoTitle').textContent = `${name} · ${capital}`;
+  document.getElementById('worldInfoGood').textContent = '😊 ' + good;
+  document.getElementById('worldInfoBad').textContent = '😅 ' + bad;
+  document.getElementById('worldCountryInfo').classList.add('open');
+}
+
+function closeWorldInfo(){ document.getElementById('worldCountryInfo').classList.remove('open'); }
 
 /* ==========================================================
    ИНИЦИАЛИЗАЦИЯ
